@@ -4,7 +4,7 @@ import type { boardI, taskI } from '../../redux/slice'
 
 import styles from './Board.less'
 
-const BoardContext = React.createContext(1)
+export const BoardContext = React.createContext(1)
 
 const Board = ({ id, name, tasks }: boardI) => {
 

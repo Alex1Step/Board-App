@@ -1,11 +1,10 @@
 import React from "react"
-import BoardContext from '../../../containers/Board/Board'
 
 interface InputProps {
     type: string,
     label: string,
     value: string,
-    onChange: ()=>void
+    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEventHandler<HTMLSelectElement>)=>void
 }
 
 const Input = (props: InputProps) => {
