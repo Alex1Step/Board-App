@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import redFromSlice from './slice'
+import tempReducer from './slice'
 
 const store = configureStore({
     reducer: {
-      reducer: redFromSlice
+      globalReducer: tempReducer
     },
   })
 

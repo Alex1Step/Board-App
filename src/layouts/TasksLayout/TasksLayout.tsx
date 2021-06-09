@@ -1,19 +1,25 @@
 import React from 'react'
+import Board from '../../containers/Board/Board'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../redux/store'
-import { increment, decrement } from '../../redux/slice'
+import { temp1 } from '../../redux/slice'
+import { boardI } from '../../redux/slice'
 
+import styles from './TasksLayout.less'
 
 
 const TasksLayout = () => { 
-    const counter = useSelector((state: RootState) => state.reducer.counter)
-    const dispatch = useDispatch()
+    const boards: boardI[] = useSelector((state: RootState) => state.globalReducer.boards)
+    let arrBoards = boards.map( (b, i) => <Board key={i} id={b.id} name={b.name} tasks={b.tasks} /> )        
+
+    const cls = [
+        styles.TasksLayout
+      ]
+    
 
     return (
-        <div className="tasksLayout">
-            <p>{counter}</p>
-            <button onClick={() => dispatch(increment())}>+</button>
-            <button onClick={() => dispatch(decrement())}>+</button>
+        <div className={cls.join(" ")}>
+            {arrBoards}
         </div>
     )
 }

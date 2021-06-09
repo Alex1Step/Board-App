@@ -23,6 +23,7 @@
     "outDir": "build"
   },
   "include": [
-    "src"
+    "src",
+    "src/externals.d.ts"
   ]
 }
