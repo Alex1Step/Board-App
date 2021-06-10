@@ -3,6 +3,7 @@ import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
 import type { changeValue } from '../components/Card/Card'
 
 export type taskI = {
+  [index: string]: string | number,
   id: number,
   taskName: string,
   deadlineDate: string,
@@ -108,11 +109,20 @@ const initialState = {
     name: 'board',
     initialState,
     reducers: {
-      changeFromInput(state, action: PayloadAction<changeValue>) {
-        state=state
+      changeFromInput(state, action: PayloadAction<changeValue>) {   
+        state.boards[Number(action.payload.boardID)-1].tasks[Number(action.payload.taskID)-1][(action.payload.inputID).toString()] = action.payload.payLoad
+      },
+      boardDeleting(state, action: PayloadAction<number>) {
+        // state.boards.splice(action.payload-1, 1)
+        delete state.boards[action.payload-1]
+      },
+      taskDeleting(state, action: PayloadAction<>) {
+        // state.boards.splice(action.payload-1, 1)
+        // delete state.boards[action.payload-1]
+        delete state.boards[action.payload-1]
       }
     },
   })
   
-  export const { changeFromInput } = boardsSlice.actions
+  export const { changeFromInput, boardDeleting, taskDeleting } = boardsSlice.actions
   export default boardsSlice.reducer

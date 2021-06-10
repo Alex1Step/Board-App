@@ -1,12 +1,17 @@
 import React, { createContext } from "react";
 import Card from "../../components/Card/Card"
-import type { boardI, taskI } from '../../redux/slice'
+import Button from "../../components/UI/Button/Button"
+import type { boardI } from '../../redux/slice'
+import { useDispatch } from 'react-redux'
+import { boardDeleting } from '../../redux/slice'
 
 import styles from './Board.less'
 
 export const BoardContext = React.createContext(1)
 
 const Board = ({ id, name, tasks }: boardI) => {
+
+    const dispatch = useDispatch()
 
     let arrTasks = tasks.map( (t, i) => <Card 
         key={i}
@@ -18,9 +23,14 @@ const Board = ({ id, name, tasks }: boardI) => {
         description={t.description}
     /> )
 
+    function handleDeleteBoard() {
+        dispatch(boardDeleting(id))
+    }
+
     return (
         <div className="Board">
             <p>board {name}</p>
+            <Button onClick={ handleDeleteBoard }/>
             <BoardContext.Provider value={id}>
                 {arrTasks}
             </BoardContext.Provider>
@@ -29,12 +39,3 @@ const Board = ({ id, name, tasks }: boardI) => {
 }
 
 export default Board
-
-
-
-// id: number,
-// taskName: string,
-// deadlineDate: string,
-// priority: string,
-// assignee: string,
-// description: string

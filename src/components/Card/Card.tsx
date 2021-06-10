@@ -2,14 +2,13 @@ import React from "react";
 //COMPONENTS
 import Input from '../UI/Input/Input'
 import Select from '../UI/Select/Select'
+import Button from "../UI/Button/Button"
 //TYPES
-import type { taskI } from '../../redux/slice'
+import { boardDeleting, taskI } from '../../redux/slice'
 import { BoardContext } from '../../containers/Board/Board'
 //REDUX
 import { useDispatch, useSelector } from 'react-redux'
-import type { RootState } from '../../redux/store'
-import { changeFromInput } from '../../redux/slice'
-import store from '../../redux/store'
+import { changeFromInput, taskDeleting } from '../../redux/slice'
 
 import * as styles from './Card.less'
 
@@ -38,9 +37,18 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: t
         dispatch(changeFromInput(newValue))      
     }
 
+    function handleDeleteTask() {
+        let taskReq = {
+            boardID: boardID,
+            
+        }
+        dispatch(taskDeleting(id))
+    }
+
     return (
         <BoardContext.Consumer>
             { value => <div className={cls.join(" ")}>
+            <Button onClick={ handleDeleteTask }/>
             <Input 
                 type={"text"} 
                 label={"Task"} 
