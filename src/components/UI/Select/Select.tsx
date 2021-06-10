@@ -5,7 +5,7 @@ interface InputProps {
     type: string,
     label: string,
     value: string,
-    onChange: (e: any)=>void
+    onChange: (event: { target: HTMLInputElement | HTMLSelectElement })=>void
 }
 
 const Select = (props: InputProps) => {

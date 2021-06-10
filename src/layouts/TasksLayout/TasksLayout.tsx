@@ -2,7 +2,6 @@ import React from 'react'
 import Board from '../../containers/Board/Board'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../redux/store'
-import { temp1 } from '../../redux/slice'
 import { boardI } from '../../redux/slice'
 
 import styles from './TasksLayout.less'

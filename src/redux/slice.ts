@@ -1,4 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
+
+import type { changeValue } from '../components/Card/Card'
 
 export type taskI = {
   id: number,
@@ -106,11 +108,11 @@ const initialState = {
     name: 'board',
     initialState,
     reducers: {
-      temp1(state) {
-        state = state
+      changeFromInput(state, action: PayloadAction<changeValue>) {
+        state=state
       }
     },
   })
   
-  export const { temp1 } = boardsSlice.actions
+  export const { changeFromInput } = boardsSlice.actions
   export default boardsSlice.reducer
