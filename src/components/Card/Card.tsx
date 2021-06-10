@@ -37,18 +37,16 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: t
         dispatch(changeFromInput(newValue))      
     }
 
-    function handleDeleteTask() {
-        let taskReq = {
-            boardID: boardID,
-            
-        }
-        dispatch(taskDeleting(id))
-    }
-
     return (
         <BoardContext.Consumer>
             { value => <div className={cls.join(" ")}>
-            <Button onClick={ handleDeleteTask }/>
+            <Button onClick={ () => {
+                let taskReq = {
+                    boardID: value,
+                    taskID: id
+                }
+                dispatch(taskDeleting(taskReq))
+            } }/>
             <Input 
                 type={"text"} 
                 label={"Task"} 

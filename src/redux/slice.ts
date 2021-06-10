@@ -116,10 +116,10 @@ const initialState = {
         // state.boards.splice(action.payload-1, 1)
         delete state.boards[action.payload-1]
       },
-      taskDeleting(state, action: PayloadAction<>) {
+      taskDeleting(state, action: PayloadAction<{boardID: number, taskID: number}>) {
         // state.boards.splice(action.payload-1, 1)
         // delete state.boards[action.payload-1]
-        delete state.boards[action.payload-1]
+        delete state.boards[action.payload.boardID-1].tasks[action.payload.taskID-1]
       }
     },
   })
