@@ -1,5 +1,6 @@
 import React from "react";
 import Input from '../UI/Input/Input'
+import Select from '../UI/Select/Select'
 import type { taskI } from '../../redux/slice'
 import { BoardContext } from '../../containers/Board/Board'
 
@@ -25,7 +26,7 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: t
                 onChange={ (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEventHandler<HTMLSelectElement>) => handleChange(e,value, id) }
             />
             <Input type={"text"} label={"Deadline"} value={deadlineDate} onChange={ (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEventHandler<HTMLSelectElement>) => handleChange(e, value, id) } />
-            <Input type={"select"} label={"Priority"} value={priority} onChange={ (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEventHandler<HTMLSelectElement>) => handleChange(e, value, id) } />
+            <Select type={"select"} label={"Priority"} value={priority} onChange={ (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEventHandler<HTMLSelectElement>) => handleChange(e, value, id) } />
             <Input type={"text"} label={"Assignee"} value={assignee} onChange={ (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEventHandler<HTMLSelectElement>) => handleChange(e, value, id) } />
             <Input type={"text"} label={"Description"} value={description} onChange={ (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEventHandler<HTMLSelectElement>) => handleChange(e, value, id) } />
         </div> }
