@@ -41,7 +41,7 @@ const initialState = {
                   id: 0,
                   taskName: "First Task",
                   deadlineDate: "11.01.2011",
-                  priority: "Hight",
+                  priority: "High",
                   assignee: "Mike",
                   description: "TODO for First Task"
               },

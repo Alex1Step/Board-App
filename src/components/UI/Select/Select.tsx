@@ -16,7 +16,7 @@ const Select = (props: InputProps) => {
     const htmlFor: string = `${inputType}-${Math.random()}`;
     let optionsForSelect: any;
     if (inputType === "select") {
-        let options = ["Height", "Medium", "Low"]
+        let options = ["High", "Medium", "Low"]
         optionsForSelect = options.map( (opt, i) => <option key={i} value={opt}>{opt}</option> )
     }
 

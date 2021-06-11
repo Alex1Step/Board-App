@@ -26,6 +26,13 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
         styles.painted
       ]
     
+    let colorsByPriority: {[key:string]: string} = {
+        High: "red",
+        Medium: "yellow",
+        Low: "green"
+    }
+    
+
     const dispatch = useDispatch()
 
     function handleChange(event: { target: HTMLInputElement | HTMLSelectElement }, boardID: number, taskID: number, inputID: string) {
@@ -40,7 +47,7 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
 
     return (
         <BoardContext.Consumer>
-            { value => <div className={cls.join(" ")}>
+            { value => <div className={cls.join(" ")} style={ {background: colorsByPriority[priority]} }>
             <Button onClick={ () => {
                 let taskReq = {
                     boardID: value,
