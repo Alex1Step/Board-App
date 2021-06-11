@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './AddButton.less'
 
 interface AddButtonProps {
@@ -8,9 +7,7 @@ interface AddButtonProps {
 }
 
 const AddButton = (props: AddButtonProps) => {
-
     let cls = [styles[props.type]]
-
     return (
         <div onClick={props.onClick} className={cls.join(' ')}>
             <span>

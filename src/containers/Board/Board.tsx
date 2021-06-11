@@ -16,20 +16,10 @@ import styles from './Board.less'
 import { useDrop } from 'react-dnd'
 export const ItemTypes = {
     BOX: 'box',
-  }
-  export interface DustbinProps {
+}
+export interface DustbinProps {
     allowedDropEffect: string
-  }
-  
-  function selectBackgroundColor(isActive: boolean, canDrop: boolean) {
-    if (isActive) {
-      return 'darkgreen'
-    } else if (canDrop) {
-      return 'darkkhaki'
-    } else {
-      return '#222'
-    }
-  }
+}
 //DND END
 
 
@@ -37,36 +27,36 @@ export const BoardContext = React.createContext(1)
 
 const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps) => {
 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-    //prepare to create Task List
-    let arrTasks = tasks.map( (t, i) => <Card 
-        key={i}
-        id={t.id}
-        taskName={t.taskName}
-        deadlineDate={t.deadlineDate}
-        priority={t.priority}
-        assignee={t.assignee}
-        description={t.description}
-    /> )
+  //prepare to create Task List
+  let arrTasks = tasks.map( (t, i) => <Card 
+    key={i}
+    id={t.id}
+    taskName={t.taskName}
+    deadlineDate={t.deadlineDate}
+    priority={t.priority}
+    assignee={t.assignee}
+    description={t.description}
+  /> )
 
-    //handler to deleting this board
-    function handleDeleteBoard() {
-        dispatch(boardDeleting(id))
+  //handler to deleting this board
+  function handleDeleteBoard() {
+    dispatch(boardDeleting(id))
+  }
+
+  //handler for ADD new task to board
+  function addNewTask() {
+    dispatch(taskAdd(id))
+  }
+
+  function handlerChangeBoardName(event: { target: HTMLInputElement | HTMLSelectElement }) {
+    const chBName = {
+      boardID: id,
+      newBoardName: event.target.value
     }
-
-    //handler for ADD new task to board
-    function addNewTask() {
-        dispatch(taskAdd(id))
-    }
-
-    function handlerChangeBoardName(event: { target: HTMLInputElement | HTMLSelectElement }) {
-        const chBName = {
-            boardID: id,
-            newBoardName: event.target.value
-        }
-        dispatch(changeBoardName(chBName))
-    }
+    dispatch(changeBoardName(chBName))
+  }
 
     //MODAL
     const [isModal, setModal] = React.useState(false)
@@ -76,7 +66,7 @@ const [{ canDrop, isOver }, drop] = useDrop(
   () => ({
     accept: ItemTypes.BOX,
     drop: () => ({
-      name: `${allowedDropEffect} Dustbin`,
+      name: id,
       allowedDropEffect,
     }),
     collect: (monitor: any) => ({

@@ -1,4 +1,3 @@
-import React, { useRef, useEffect } from "react";
 //COMPONENTS
 import Input from '../UI/Input/Input'
 import Select from '../UI/Select/Select'
@@ -9,10 +8,10 @@ import { BoardContext } from '../../containers/Board/Board'
 //REDUX
 import { useDispatch } from 'react-redux'
 import { changeFromInput, taskDeleting } from '../../redux/slice'
-
+//STYLES
 import * as styles from './Card.less'
 //DND START
-import { useDrag, DragSourceMonitor } from 'react-dnd'
+import { useDrag, DragSourceMonitor, DropTarget } from 'react-dnd'
 interface DropResult {
     allowedDropEffect: string
     dropEffect: string
@@ -43,7 +42,6 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
         Low: "green"
     }
     
-
     const dispatch = useDispatch()
 
     function handleChange(event: { target: HTMLInputElement | HTMLSelectElement }, boardID: number, taskID: number, inputID: string) {
@@ -55,6 +53,7 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
         }
         dispatch(changeFromInput(newValue))      
     }
+
     //DND START
     const [{ opacity }, drag] = useDrag(
         () => ({
@@ -63,7 +62,7 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
           end(item, monitor) {
             const dropResult = monitor.getDropResult() as DropResult
             if (item && dropResult) {
-              let alertMessage = ''
+              let alertMessage = '!!!'
               const isDropAllowed =
                 dropResult.allowedDropEffect === 'any' ||
                 dropResult.allowedDropEffect === dropResult.dropEffect
@@ -75,7 +74,12 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
               } else {
                 // alertMessage = `You cannot ${dropResult.dropEffect} an item into the ${dropResult.name}`
               }
-              alert(alertMessage)
+              // alert(alertMessage)
+              // let moveTaskInfo = {
+              //   destinationBoard: dropResult.name,
+              //   fromBoard: 
+              // }
+              // dispatch(moveTask()) 
             }
           },
           collect: (monitor: DragSourceMonitor) => ({
