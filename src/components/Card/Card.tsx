@@ -4,10 +4,10 @@ import Input from '../UI/Input/Input'
 import Select from '../UI/Select/Select'
 import Button from "../UI/Button/Button"
 //TYPES
-import { boardDeleting, taskI } from '../../redux/slice'
+import { TaskI } from '../../redux/slice'
 import { BoardContext } from '../../containers/Board/Board'
 //REDUX
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { changeFromInput, taskDeleting } from '../../redux/slice'
 
 import * as styles from './Card.less'
@@ -19,7 +19,7 @@ export type changeValue = {
     payLoad: string
 }
 
-const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: taskI) => {    
+const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: TaskI) => {    
     const cls = [
         styles.Card,  
         styles.painted

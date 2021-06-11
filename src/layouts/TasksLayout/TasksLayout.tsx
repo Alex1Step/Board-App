@@ -2,13 +2,13 @@ import React from 'react'
 import Board from '../../containers/Board/Board'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../redux/store'
-import { boardI } from '../../redux/slice'
+import { BoardI } from '../../redux/slice'
 
 import styles from './TasksLayout.less'
 
 
 const TasksLayout = () => { 
-    const boards: boardI[] = useSelector((state: RootState) => state.globalReducer.boards)
+    const boards: BoardI[] = useSelector((state: RootState) => state.globalReducer.boards)
     let arrBoards = boards.map( (b, i) => <Board key={i} id={b.id} name={b.name} tasks={b.tasks} /> )        
 
     const cls = [

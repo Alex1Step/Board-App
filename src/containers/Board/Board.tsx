@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 import Card from "../../components/Card/Card"
 import Button from "../../components/UI/Button/Button"
-import type { boardI } from '../../redux/slice'
+import type { BoardI } from '../../redux/slice'
 import { useDispatch } from 'react-redux'
 import { boardDeleting } from '../../redux/slice'
 
@@ -9,7 +9,7 @@ import styles from './Board.less'
 
 export const BoardContext = React.createContext(1)
 
-const Board = ({ id, name, tasks }: boardI) => {
+const Board = ({ id, name, tasks }: BoardI) => {
 
     const dispatch = useDispatch()
 

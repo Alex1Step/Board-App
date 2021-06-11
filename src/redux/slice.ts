@@ -2,7 +2,7 @@ import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
 
 import type { changeValue } from '../components/Card/Card'
 
-export type taskI = {
+export interface TaskI {
   [index: string]: string | number,
   id: number,
   taskName: string,
@@ -12,16 +12,16 @@ export type taskI = {
   description: string
 }
 
-export type boardI = {
+export interface BoardI {
   id: number,
   name: string,
-  tasks: taskI[]
+  tasks: TaskI[]
 }
 
-type globalState = {
+interface GlobalState {
   userID: number,
   userName: string,
-  boards: boardI[]
+  boards: BoardI[]
 }
   
 const initialState = {
@@ -103,7 +103,7 @@ const initialState = {
         ]
       }
   ]
-} as globalState
+} as GlobalState
 
   const boardsSlice = createSlice({
     name: 'board',
@@ -117,8 +117,6 @@ const initialState = {
         delete state.boards[action.payload-1]
       },
       taskDeleting(state, action: PayloadAction<{boardID: number, taskID: number}>) {
-        // state.boards.splice(action.payload-1, 1)
-        // delete state.boards[action.payload-1]
         delete state.boards[action.payload.boardID-1].tasks[action.payload.taskID-1]
       }
     },
