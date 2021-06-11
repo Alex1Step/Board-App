@@ -10,10 +10,6 @@ interface ButtonI {
 
 const Button = (props: ButtonI) => {
 
-    const handler = () => {
-
-    }
-
     const cls = [
         styles.Button
       ]

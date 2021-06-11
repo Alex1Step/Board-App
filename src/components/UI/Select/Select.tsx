@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useRef } from "react"
 import styles from './Select.less'
 
 interface InputProps {
@@ -9,6 +9,9 @@ interface InputProps {
 }
 
 const Select = (props: InputProps) => {
+    const [hideShow, setHideShow] = useState(1);
+    const textSelect = useRef<HTMLSelectElement>(null);
+
     const inputType: string = props.type || "text";
     const htmlFor: string = `${inputType}-${Math.random()}`;
     let optionsForSelect: any;
@@ -16,13 +19,33 @@ const Select = (props: InputProps) => {
         let options = ["Height", "Medium", "Low"]
         optionsForSelect = options.map( (opt, i) => <option key={i} value={opt}>{opt}</option> )
     }
+
+    let clsSelect = [styles.selectHide];
+    let clsP = [styles.textShow];
+    if (hideShow===0) {
+        clsSelect = [styles.selectShow];
+        clsP = [styles.textHide];
+    }
+
     return (
             <React.Fragment>
                 <label htmlFor={htmlFor}>{props.label}</label>
+                <p className={clsP.join(' ')} onClick={ () => {
+                    setHideShow (0)
+                    if (textSelect.current !== null) {
+                        textSelect.current?.click()                                 
+                    }
+                }
+                }>
+                    {props.value}
+                </p>
                 <select 
+                    ref={textSelect}
                     id={htmlFor}
                     value={props.value}
+                    className={clsSelect.join(' ')}
                     onChange={props.onChange}
+                    onBlur={ () => {setHideShow (1)} }
                 >
                     {optionsForSelect}
                 </select>

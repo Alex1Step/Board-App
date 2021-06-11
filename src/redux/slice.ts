@@ -2,6 +2,11 @@ import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
 
 import type { changeValue } from '../components/Card/Card'
 
+interface changeBoardNameI {
+  boardID: number,
+  newBoardName: string
+}
+
 export interface TaskI {
   [index: string]: string | number,
   id: number,
@@ -25,15 +30,15 @@ interface GlobalState {
 }
   
 const initialState = {
-  userID: 1,
+  userID: 0,
   userName: "Alex Stepanchuk",
   boards: [
       {
-          id: 1,
+          id: 0,
           name: "board-1",
           tasks: [
               {
-                  id: 1,
+                  id: 0,
                   taskName: "First Task",
                   deadlineDate: "11.01.2011",
                   priority: "Hight",
@@ -41,7 +46,7 @@ const initialState = {
                   description: "TODO for First Task"
               },
               {
-                  id: 2,
+                  id: 1,
                   taskName: "Second Task",
                   deadlineDate: "22.02.2022",
                   priority: "Low",
@@ -49,7 +54,7 @@ const initialState = {
                   description: "TODO for Second Task"
               },
               {
-                id: 3,
+                id: 2,
                 taskName: "Third Task",
                 deadlineDate: "21.12.2021",
                 priority: "Medium",
@@ -59,11 +64,11 @@ const initialState = {
           ]
       },
       {
-          id: 2,
+          id: 1,
           name: "board-2",
           tasks: [
               {
-                  id: 1,
+                  id: 0,
                   taskName: "First Task of Board-2",
                   deadlineDate: "33.03.2033",
                   priority: "Medium",
@@ -71,7 +76,7 @@ const initialState = {
                   description: "TODO for First Task of Board-2"
               },
               {
-                  id: 2,
+                  id: 1,
                   taskName: "Second Task of Board-2",
                   deadlineDate: "44.04.2044",
                   priority: "Low",
@@ -81,11 +86,11 @@ const initialState = {
           ]
       },
       {
-        id: 3,
+        id: 2,
         name: "board-3",
         tasks: [
             {
-                id: 1,
+                id: 0,
                 taskName: "First Task of Board-3",
                 deadlineDate: "55.55.2055",
                 priority: "Medium",
@@ -93,7 +98,7 @@ const initialState = {
                 description: "TODO for First Task of Board-3"
             },
             {
-                id: 2,
+                id: 1,
                 taskName: "Second Task of Board-3",
                 deadlineDate: "66.66.2066",
                 priority: "Low",
@@ -110,17 +115,41 @@ const initialState = {
     initialState,
     reducers: {
       changeFromInput(state, action: PayloadAction<changeValue>) {   
-        state.boards[Number(action.payload.boardID)-1].tasks[Number(action.payload.taskID)-1][(action.payload.inputID).toString()] = action.payload.payLoad
+        state.boards[Number(action.payload.boardID)].tasks[Number(action.payload.taskID)][(action.payload.inputID).toString()] = action.payload.payLoad
       },
       boardDeleting(state, action: PayloadAction<number>) {
         // state.boards.splice(action.payload-1, 1)
-        delete state.boards[action.payload-1]
+        delete state.boards[action.payload]
       },
       taskDeleting(state, action: PayloadAction<{boardID: number, taskID: number}>) {
-        delete state.boards[action.payload.boardID-1].tasks[action.payload.taskID-1]
+        delete state.boards[action.payload.boardID].tasks[action.payload.taskID]
+      },
+      taskAdd(state, action: PayloadAction<number>) {
+
+        let newTask: TaskI = {
+          id: current(state).boards[action.payload].tasks.length,
+          taskName: "default",
+          deadlineDate: "default",
+          priority: "default",
+          assignee: "default",
+          description: "default"
+        }
+        
+        state.boards[action.payload].tasks.push(newTask)
+      },
+      boardAdd(state) {
+        let newBoard: BoardI = {
+          id: current(state).boards.length,
+          name: "default",
+          tasks: []
+        }
+        state.boards.push(newBoard)
+      },
+      changeBoardName(state, action: PayloadAction<changeBoardNameI>) {
+        state.boards[action.payload.boardID].name = action.payload.newBoardName
       }
     },
   })
   
-  export const { changeFromInput, boardDeleting, taskDeleting } = boardsSlice.actions
+  export const { changeFromInput, boardDeleting, taskDeleting, taskAdd, boardAdd, changeBoardName } = boardsSlice.actions
   export default boardsSlice.reducer
