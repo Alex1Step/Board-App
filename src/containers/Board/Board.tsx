@@ -12,11 +12,30 @@ import { useDispatch } from 'react-redux'
 import { boardDeleting, taskAdd, changeBoardName } from '../../redux/slice'
 //styles
 import styles from './Board.less'
+//DND START
+import { useDrop } from 'react-dnd'
+export const ItemTypes = {
+    BOX: 'box',
+  }
+  export interface DustbinProps {
+    allowedDropEffect: string
+  }
+  
+  function selectBackgroundColor(isActive: boolean, canDrop: boolean) {
+    if (isActive) {
+      return 'darkgreen'
+    } else if (canDrop) {
+      return 'darkkhaki'
+    } else {
+      return '#222'
+    }
+  }
+//DND END
 
 
 export const BoardContext = React.createContext(1)
 
-const Board = ({ id, name, tasks }: BoardI) => {
+const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps) => {
 
     const dispatch = useDispatch()
 
@@ -52,9 +71,26 @@ const Board = ({ id, name, tasks }: BoardI) => {
     //MODAL
     const [isModal, setModal] = React.useState(false)
     const onClose = () => setModal(false)
+//DND START
+const [{ canDrop, isOver }, drop] = useDrop(
+  () => ({
+    accept: ItemTypes.BOX,
+    drop: () => ({
+      name: `${allowedDropEffect} Dustbin`,
+      allowedDropEffect,
+    }),
+    collect: (monitor: any) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }),
+  [allowedDropEffect],
+)
+const isActive = canDrop && isOver
+//DND END   
 
     return (
-        <div className="Board">
+        <div className="Board" ref={drop}>
             <p className={styles.boardname} onClick={() => setModal(true)}>{name}</p>
             <Modal
                 visible={isModal}

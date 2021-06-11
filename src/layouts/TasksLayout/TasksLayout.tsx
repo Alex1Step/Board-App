@@ -5,6 +5,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../redux/store'
 import { BoardI } from '../../redux/slice'
 import { boardAdd } from '../../redux/slice'
+//DND
+import { render } from 'react-dom'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import styles from './TasksLayout.less'
 
@@ -19,12 +23,14 @@ const TasksLayout = () => {
     }
 
     return (
-        <div className={styles.TaskLayout}>
-            <AddButton onClick={addBoard} text={"Add new board"} type={"Board"} />
-            <section style={ {display: 'flex', flexDirection: 'row', justifyContent: 'space-around'} }>
-                {arrBoards}
-            </section>
-        </div>
+        <DndProvider backend={HTML5Backend}>
+            <div className={styles.TaskLayout}>
+                <AddButton onClick={addBoard} text={"Add new board"} type={"Board"} />
+                <section style={ {display: 'flex', flexDirection: 'row', justifyContent: 'space-around'} }>
+                    {arrBoards}
+                </section>
+            </div>
+        </DndProvider>
     )
 }
 

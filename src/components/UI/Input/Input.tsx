@@ -12,7 +12,6 @@ interface InputProps {
 const Input = (props: InputProps) => {
 
     const [hideShow, setHideShow] = useState(1);
-    const textInput = useRef<HTMLInputElement>(null);
 
     const inputType: string = props.type || "text";
     const htmlFor: string = `${inputType}-${Math.random()}`;
@@ -39,15 +38,12 @@ const Input = (props: InputProps) => {
                     <label htmlFor={htmlFor}>{props.label}</label>
                     <p className={clsP.join(' ')} onClick={ () => {
                         setHideShow (0);
-                        if (textInput.current !== null) {
-                            textInput.current?.click()                                 
-                        }
                     }
                     }>
                         {props.value}
                     </p>
                     <input 
-                        ref={textInput}
+                        ref = {(ref) => ref?.focus()}
                         className={clsInput.join(' ')}
                         type={inputType}
                         id={htmlFor}

@@ -10,7 +10,6 @@ interface InputProps {
 
 const Select = (props: InputProps) => {
     const [hideShow, setHideShow] = useState(1);
-    const textSelect = useRef<HTMLSelectElement>(null);
 
     const inputType: string = props.type || "text";
     const htmlFor: string = `${inputType}-${Math.random()}`;
@@ -32,15 +31,12 @@ const Select = (props: InputProps) => {
                 <label htmlFor={htmlFor}>{props.label}</label>
                 <p className={clsP.join(' ')} onClick={ () => {
                     setHideShow (0)
-                    if (textSelect.current !== null) {
-                        textSelect.current?.click()                                 
-                    }
                 }
                 }>
                     {props.value}
                 </p>
                 <select 
-                    ref={textSelect}
+                    ref = {(ref) => ref?.focus()}
                     id={htmlFor}
                     value={props.value}
                     className={clsSelect.join(' ')}

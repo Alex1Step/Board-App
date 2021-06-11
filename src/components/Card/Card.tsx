@@ -11,6 +11,17 @@ import { useDispatch } from 'react-redux'
 import { changeFromInput, taskDeleting } from '../../redux/slice'
 
 import * as styles from './Card.less'
+//DND START
+import { useDrag, DragSourceMonitor } from 'react-dnd'
+interface DropResult {
+    allowedDropEffect: string
+    dropEffect: string
+    name: string
+  }
+  export const ItemTypes = {
+    BOX: 'box',
+  }
+//DND END
 
 export type changeValue = {
     boardID: number,
@@ -44,10 +55,40 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
         }
         dispatch(changeFromInput(newValue))      
     }
+    //DND START
+    const [{ opacity }, drag] = useDrag(
+        () => ({
+          type: ItemTypes.BOX,
+          item: { taskName },
+          end(item, monitor) {
+            const dropResult = monitor.getDropResult() as DropResult
+            if (item && dropResult) {
+              let alertMessage = ''
+              const isDropAllowed =
+                dropResult.allowedDropEffect === 'any' ||
+                dropResult.allowedDropEffect === dropResult.dropEffect
+    
+              if (isDropAllowed) {
+                const isCopyAction = dropResult.dropEffect === 'copy'
+                const actionName = isCopyAction ? 'copied' : 'moved'
+                // alertMessage = `You ${actionName} ${item.name} into ${dropResult.name}!`
+              } else {
+                // alertMessage = `You cannot ${dropResult.dropEffect} an item into the ${dropResult.name}`
+              }
+              alert(alertMessage)
+            }
+          },
+          collect: (monitor: DragSourceMonitor) => ({
+            opacity: monitor.isDragging() ? 0.4 : 1,
+          }),
+        }),
+        [taskName],
+      )
+    //DND END
 
     return (
         <BoardContext.Consumer>
-            { value => <div className={cls.join(" ")} style={ {background: colorsByPriority[priority]} }>
+            { value => <div ref={drag} className={cls.join(" ")} style={ {background: colorsByPriority[priority]} }>
                 <Button onClick={ () => {
                     let taskReq = {
                         boardID: value,
