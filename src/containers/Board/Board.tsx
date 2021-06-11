@@ -1,4 +1,4 @@
-import React, { ReactDOM } from "react";
+import React from "react";
 //components
 import Card from "../../components/Card/Card"
 import Button from "../../components/UI/Button/Button"
