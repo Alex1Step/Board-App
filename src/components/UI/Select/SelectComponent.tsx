@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+import { Select } from 'antd';
 import styles from './Select.less'
+import store from "../../../redux/store";
 
 interface InputProps {
     type: string,
@@ -8,7 +10,7 @@ interface InputProps {
     onChange: (event: { target: HTMLInputElement | HTMLSelectElement })=>void
 }
 
-const Select = (props: InputProps) => {
+const SelectComponent = (props: InputProps) => {
     const [hideShow, setHideShow] = useState(1);
 
     const inputType: string = props.type || "text";
@@ -25,16 +27,17 @@ const Select = (props: InputProps) => {
         clsSelect = [styles.selectShow];
         clsP = [styles.textHide];
     }
+    
 
     return (
-            <React.Fragment>
+            <div className={styles["select-container"]}>
                 <label htmlFor={htmlFor}>{props.label}</label>
-                <p className={clsP.join(' ')} onClick={ () => {
+                <span className={clsP.join(' ')} onClick={ () => {
                     setHideShow (0)
                 }
                 }>
                     {props.value}
-                </p>
+                </span>
                 <select 
                     ref = {(ref) => ref?.focus()}
                     id={htmlFor}
@@ -45,8 +48,8 @@ const Select = (props: InputProps) => {
                 >
                     {optionsForSelect}
                 </select>
-            </React.Fragment>    
+            </div>    
     )
 }
 
-export default Select
+export default SelectComponent

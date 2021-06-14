@@ -1,10 +1,11 @@
 import React from "react";
 //components
 import Card from "../../components/Card/Card"
-import Button from "../../components/UI/Button/Button"
+import ButtonComponent from "../../components/UI/Button/ButtonComponent"
 import AddButton from '../../components/UI/AddButton/AddButton'
 import Modal from '../../components/Modal/Modal'
-import Input from '../../components/UI/Input/Input'
+import InputComponent from '../../components/UI/Input/InputComponent'
+import { Divider } from 'antd';
 //interfaces
 import type { BoardI } from '../../redux/slice'
 //redux
@@ -19,6 +20,13 @@ export const ItemTypes = {
 }
 export interface DustbinProps {
     allowedDropEffect: string
+}
+function selectBackgroundColor(isActive: boolean, canDrop: boolean) {
+  if (isActive) {
+    return 'rgb(55, 136, 212)'
+  } else if (canDrop) {
+    return 'white'
+  }
 }
 //DND END
 
@@ -38,6 +46,7 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps)
     priority={t.priority}
     assignee={t.assignee}
     description={t.description}
+    fromBoard={t.fromBoard}
   /> )
 
   //handler to deleting this board
@@ -77,19 +86,22 @@ const [{ canDrop, isOver }, drop] = useDrop(
   [allowedDropEffect],
 )
 const isActive = canDrop && isOver
+const backgroundColor = selectBackgroundColor(isActive, canDrop)
 //DND END   
 
+    let cls = [
+      styles.Board
+    ]
+
     return (
-        <div className="Board" ref={drop}>
-            <p className={styles.boardname} onClick={() => setModal(true)}>{name}</p>
+        <div className={cls.join(" ")} ref={drop} style={{ backgroundColor }}>
+            <span className={styles.boardname} onClick={() => setModal(true)}>{name}</span>
             <Modal
                 visible={isModal}
                 title='Change BOARD name'
-                content={<p>Please input new NAME</p>}
-                footer={<button onClick={onClose}>Закрыть</button>}
                 onClose={onClose}
             >
-                <Input 
+                <InputComponent 
                     type={"text"} 
                     label={""} 
                     value={name} 
@@ -97,8 +109,11 @@ const isActive = canDrop && isOver
                     withoutSubstitution={true}
                 />
             </Modal>
-            <Button onClick={ handleDeleteBoard }/> 
+            <div className={styles["board-button-container"]}>
             <AddButton text={"Add new task"} type={"Task"} onClick={addNewTask} />
+            <ButtonComponent onClick={ handleDeleteBoard } message={"Delete this board"} /> 
+            </div>
+            <Divider />
             <BoardContext.Provider value={id}>
                 {arrTasks}
             </BoardContext.Provider>

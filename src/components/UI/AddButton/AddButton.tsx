@@ -1,3 +1,4 @@
+import { Button } from 'antd'
 import styles from './AddButton.less'
 
 interface AddButtonProps {
@@ -8,12 +9,9 @@ interface AddButtonProps {
 
 const AddButton = (props: AddButtonProps) => {
     let cls = [styles[props.type]]
+
     return (
-        <div onClick={props.onClick} className={cls.join(' ')}>
-            <span>
-                {props.text}
-            </span>
-        </div>
+        <Button className={cls.join(" ")} onClick={props.onClick} type="primary">{props.text}</Button>
     )
 }
 

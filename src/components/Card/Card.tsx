@@ -1,13 +1,13 @@
 //COMPONENTS
-import Input from '../UI/Input/Input'
-import Select from '../UI/Select/Select'
-import Button from "../UI/Button/Button"
+import InputComponent from '../UI/Input/InputComponent'
+import SelectComponent from '../UI/Select/SelectComponent'
+import ButtonComponent from "../UI/Button/ButtonComponent"
 //TYPES
 import { TaskI } from '../../redux/slice'
 import { BoardContext } from '../../containers/Board/Board'
 //REDUX
 import { useDispatch } from 'react-redux'
-import { changeFromInput, taskDeleting } from '../../redux/slice'
+import { changeFromInput, taskDeleting, moveTask } from '../../redux/slice'
 //STYLES
 import * as styles from './Card.less'
 //DND START
@@ -29,7 +29,7 @@ export type changeValue = {
     payLoad: string
 }
 
-const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: TaskI) => {    
+const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fromBoard }: TaskI) => {    
  
     const cls = [
         styles.Card,  
@@ -37,9 +37,9 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
       ]
     
     let colorsByPriority: {[key:string]: string} = {
-        High: "red",
-        Medium: "yellow",
-        Low: "green"
+        High: "linear-gradient(45deg, rgb(255, 0, 0) 30%, rgb(255, 157, 0))",
+        Medium: "linear-gradient(225deg, rgb(164, 180, 71), rgb(255, 236, 0) 100%)",
+        Low: "linear-gradient(225deg, rgb(0, 238, 196), rgb(15, 255, 0) 100%)"
     }
     
     const dispatch = useDispatch()
@@ -62,28 +62,24 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
           end(item, monitor) {
             const dropResult = monitor.getDropResult() as DropResult
             if (item && dropResult) {
-              let alertMessage = '!!!'
               const isDropAllowed =
                 dropResult.allowedDropEffect === 'any' ||
                 dropResult.allowedDropEffect === dropResult.dropEffect
-    
+              
               if (isDropAllowed) {
                 const isCopyAction = dropResult.dropEffect === 'copy'
                 const actionName = isCopyAction ? 'copied' : 'moved'
-                // alertMessage = `You ${actionName} ${item.name} into ${dropResult.name}!`
-              } else {
-                // alertMessage = `You cannot ${dropResult.dropEffect} an item into the ${dropResult.name}`
               }
-              // alert(alertMessage)
-              // let moveTaskInfo = {
-              //   destinationBoard: dropResult.name,
-              //   fromBoard: 
-              // }
-              // dispatch(moveTask()) 
+              let moveTaskInfo = {
+                destinationBoard: dropResult.name,
+                fromBoard: fromBoard,
+                taskID: id
+              }
+              dispatch(moveTask(moveTaskInfo)) 
             }
           },
           collect: (monitor: DragSourceMonitor) => ({
-            opacity: monitor.isDragging() ? 0.4 : 1,
+            opacity: monitor.isDragging() ? 0.9 : 1,
           }),
         }),
         [taskName],
@@ -92,44 +88,47 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description }: T
 
     return (
         <BoardContext.Consumer>
-            { value => <div ref={drag} className={cls.join(" ")} style={ {background: colorsByPriority[priority]} }>
-                <Button onClick={ () => {
-                    let taskReq = {
-                        boardID: value,
-                        taskID: id
-                    }
-                    dispatch(taskDeleting(taskReq))
-                } }/>
-                <Input 
+            { value => <div ref={drag} className={cls.join(" ")} style={ {background: colorsByPriority[priority], boxShadow: '4px 4px 8px 0px rgba(34, 60, 80, 0.2)'} }>
+                <InputComponent 
                     type={"text"} 
                     label={"Task:"} 
                     value={taskName} 
                     onChange={ (event: { target: HTMLInputElement | HTMLSelectElement }) => handleChange(event, value, id, "taskName") }
                 />
-                <Input 
+                <InputComponent
                     type={"date"} 
                     label={"Deadline:"} 
                     value={deadlineDate} 
                     onChange={ (event: { target: HTMLInputElement | HTMLSelectElement }) => handleChange(event, value, id, "deadlineDate") }
                 />
-                <Select 
+                <SelectComponent 
                     type={"select"} 
                     label={"Priority:"} 
                     value={priority} 
                     onChange={ (event: { target: HTMLInputElement | HTMLSelectElement }) => handleChange(event, value, id, "priority") }
                 />
-                <Input 
+                <InputComponent 
                     type={"text"} 
                     label={"Assignee:"} 
                     value={assignee} 
                     onChange={ (event: { target: HTMLInputElement | HTMLSelectElement }) => handleChange(event, value, id, "assignee") }
                 />
-                <Input 
+                <InputComponent 
                     type={"text"} 
                     label={"Description:"} 
                     value={description} 
                     onChange={ (event: { target: HTMLInputElement | HTMLSelectElement }) => handleChange(event, value, id, "description") }
                 />
+                <div className={styles['card-button-container']}>
+                <ButtonComponent onClick={ () => {
+                    let taskReq = {
+                        boardID: value,
+                        taskID: id,
+                        message: "Delete this task"
+                    }
+                    dispatch(taskDeleting(taskReq))
+                } }/>
+                </div>
             </div> }
         </BoardContext.Consumer>
     )

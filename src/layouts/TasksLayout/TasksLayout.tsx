@@ -16,17 +16,20 @@ import styles from './TasksLayout.less'
 const TasksLayout = () => { 
     const dispatch = useDispatch()
     const boards: BoardI[] = useSelector((state: RootState) => state.globalReducer.boards)
+    const user: string = useSelector((state: RootState) => state.globalReducer.userName)
     let arrBoards = boards.map( (b, i) => <Board key={i} id={b.id} name={b.name} tasks={b.tasks} /> )        
     //add board handler
     function addBoard() {
         dispatch(boardAdd())
     }
+    
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className={styles.TaskLayout}>
+            <div className={styles["TasksLayout"]}>
+                <h1>{user}</h1>
                 <AddButton onClick={addBoard} text={"Add new board"} type={"Board"} />
-                <section style={ {display: 'flex', flexDirection: 'row', justifyContent: 'space-around'} }>
+                <section className={styles["boards-container"]}>
                     {arrBoards}
                 </section>
             </div>

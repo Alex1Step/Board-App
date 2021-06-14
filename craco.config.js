@@ -10,7 +10,17 @@ module.exports = {
             modules: { 
               localIdentName: "[local]___[hash:base64:5]", 
             }, 
-          }, 
+          },
+          lessLoaderOptions: {
+            lessOptions: {
+              modifyVars: {
+                '@primary-color': '#1DA57A',
+                '@board-name-font-size': '8px',
+                '@h1-username': '16px',
+              },
+              javascriptEnabled: true,
+            },
+          },  
           babelPluginImportOptions: { 
             libraryDirectory: "es", 
           }, 

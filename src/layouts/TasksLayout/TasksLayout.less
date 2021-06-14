@@ -1,11 +1,16 @@
-@variab: green;
-
 .TasksLayout {
-    background: @variab;
-}
-
-.boards-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  button {
+    margin-bottom: 20px;
+  }
+  .boards-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-direction: row;
+    flex-wrap: wrap;
+    width: inherit;
+  }
 }

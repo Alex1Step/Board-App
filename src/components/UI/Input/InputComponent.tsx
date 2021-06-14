@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import styles from './Input.less'
+import { Input } from 'antd';
+import styles from './InputComponent.less'
 
 interface InputProps {
     type: string,
@@ -9,7 +10,7 @@ interface InputProps {
     withoutSubstitution?: boolean
 }
 
-const Input = (props: InputProps) => {
+const InputComponent = (props: InputProps) => {
 
     const [hideShow, setHideShow] = useState(1);
 
@@ -26,23 +27,24 @@ const Input = (props: InputProps) => {
     return (
             (props.withoutSubstitution===true)?
                 (<React.Fragment>
-                    <input
+                    <Input
                         type={inputType}
                         id={htmlFor}
                         value={props.value}
                         onChange={props.onChange}
+                        autoFocus={true}
                     />
                 </React.Fragment>)
             :
-                (<React.Fragment>
+                (<div className={styles["input-container"]}>
                     <label htmlFor={htmlFor}>{props.label}</label>
-                    <p className={clsP.join(' ')} onClick={ () => {
+                    <span className={clsP.join(' ')} onClick={ () => {
                         setHideShow (0);
                     }
                     }>
                         {props.value}
-                    </p>
-                    <input 
+                    </span>
+                    <Input
                         ref = {(ref) => ref?.focus()}
                         className={clsInput.join(' ')}
                         type={inputType}
@@ -51,8 +53,8 @@ const Input = (props: InputProps) => {
                         onChange={props.onChange}
                         onBlur={ () => {setHideShow (1)} }
                     />
-                </React.Fragment>)
+                </div>)
     )
 }
 
-export default Input
+export default InputComponent
