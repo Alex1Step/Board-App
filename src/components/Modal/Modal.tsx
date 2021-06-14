@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import './Modal.css'
+import styles from './Modal.less'
 
 interface ModalProps {
   visible: boolean
@@ -8,17 +8,9 @@ interface ModalProps {
   children: ReactElement
 }
 
-const Modal = ({
-  visible = false,
-  title = '',
-  onClose,
-  children,
-}: ModalProps) => {
+const Modal = ({visible = false, title = '', onClose, children,}: ModalProps) => {
   const onKeydown = ({ key }: KeyboardEvent) => {
     switch (key) {
-      case 'Escape':
-        onClose()
-        break
       case 'Enter':
         onClose()
         break
@@ -33,15 +25,15 @@ const Modal = ({
   if (!visible) return null
 
   return (
-    <div className='modal' onClick={onClose}>
-      <div className='modal-dialog' onClick={e => e.stopPropagation()}>
-        <div className='modal-header'>
-          <h3 className='modal-title'>{title}</h3>
-          <span className='modal-close' onClick={onClose}>
+    <div className={styles['modal']} onClick={onClose}>
+      <div className={styles['modal-dialog']} onClick={e => e.stopPropagation()}>
+        <div className={styles['modal-header']}>
+          <h3 className={styles['modal-title']}>{title}</h3>
+          <span className={styles['modal-close']} onClick={onClose}>
             &times;
           </span>
         </div>
-        <div className='modal-body'>
+        <div className={styles['modal-body']}>
           {children}
         </div>
       </div>
