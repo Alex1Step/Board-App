@@ -172,12 +172,12 @@ const initialState = {
           //find new id for relocateble tsk
         let newTaskId = state.boards[destination].tasks.reduce( (r, v) => (v.id > r) ? v.id : r , 0 ) + 1
         relocatebleTask.id = Number(newTaskId)
-        console.log(relocatebleTask);
+        // console.log(relocatebleTask);
         //push new task to destination board
         state.boards[destination].tasks.push(relocatebleTask)
         //delete from old board
         delete state.boards[from].tasks[action.payload.taskID]
-        console.log(current(state));
+        // console.log(current(state));
         
       }
     },
