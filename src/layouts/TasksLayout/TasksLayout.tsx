@@ -14,7 +14,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import styles from './TasksLayout.less';
 
-const TasksLayout = () => {
+const TasksLayout: React.FunctionComponent = () => {
     const dispatch = useDispatch();
 
     const boards: BoardI[] = useSelector((state: RootState) => state.globalReducer.boards);
@@ -28,11 +28,11 @@ const TasksLayout = () => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className={styles.TasksLayout}>
+            <section className={styles.TasksLayout}>
                 <h1>{user}</h1>
                 <AddButton onClick={addBoard} text={'Add new board'} type={'Board'} />
                 <section className={styles.boardsContainer}>{arrBoards}</section>
-            </div>
+            </section>
         </DndProvider>
     );
 };
