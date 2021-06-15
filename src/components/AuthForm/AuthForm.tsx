@@ -17,20 +17,21 @@ interface LoginI {
 }
 
 const AuthForm: React.FunctionComponent = () => {
+    //LogIn handler
     const onFinish = async (values: LoginI) => {
-        const authData = {
-            email: values.username,
-            password: values.password,
-            returnSecureToken: true,
-        };
-        const options = {
-            method: 'post',
-            'Content-Type': 'application/json',
-            payload: JSON.stringify(authData),
-        };
         const response = await fetch(
             'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAgTJyexl3AhXyoRfnB6LSyv0ZBoaP3Nm8',
-            options,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: values.username,
+                    password: values.password,
+                    returnSecureToken: true,
+                }),
+            },
         );
         console.log(response);
     };
