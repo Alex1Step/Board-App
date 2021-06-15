@@ -1,10 +1,13 @@
-import styles from './Blackout.less'
+import React from 'react';
+import styles from './Blackout.less';
 
 interface BlackoutI {
-    onClick: ()=>void,
-    isOpen: boolean
+    onClick: () => void;
+    isOpen: boolean;
 }
 
-const Blackout = (props: BlackoutI) => { return (<div className={ styles.Blackout } onClick={ props.onClick }></div>) }
+const Blackout = (props: BlackoutI) => {
+    return <div className={styles.Blackout} onClick={props.onClick}></div>;
+};
 
-export default Blackout
+export default Blackout;

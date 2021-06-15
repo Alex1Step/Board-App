@@ -1,32 +1,31 @@
-import styles from './Pull.less'
-import Blackout from '../Blackout/Blackout'
+import React from 'react';
+import styles from './Pull.less';
+import Blackout from '../Blackout/Blackout';
 
 interface PullPropsI {
-    isOpen: boolean,
-    onClick: ()=>void
+    isOpen: boolean;
+    onClick: () => void;
 }
 
 const Pull = (props: PullPropsI) => {
-    const cls = [
-        styles.Pull
-    ]
+    const cls = [styles.Pull];
 
     if (!props.isOpen) {
-        cls.push(styles.close)
+        cls.push(styles.close);
     }
 
     return (
         <>
-            <nav className={cls.join(" ")}>
+            <nav className={cls.join(' ')}>
                 <ul>
-                <li>qwe</li>
-                <li>asd</li>
-                <li>zxc</li>
+                    <li>qwe</li>
+                    <li>asd</li>
+                    <li>zxc</li>
                 </ul>
             </nav>
-            { (props.isOpen)? <Blackout isOpen={props.isOpen} onClick={ props.onClick }/> : null }
+            {props.isOpen ? <Blackout isOpen={props.isOpen} onClick={props.onClick} /> : null}
         </>
-    )
-}
+    );
+};
 
-export default Pull
+export default Pull;
