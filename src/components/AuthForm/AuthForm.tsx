@@ -32,8 +32,9 @@ const AuthForm: React.FunctionComponent = () => {
                     returnSecureToken: true,
                 }),
             },
-        );
-        console.log(response);
+        )
+            .then((response) => response.json())
+            .then((response) => console.log(response));
     };
 
     const onFinishFailed = (errorInfo: any) => {
