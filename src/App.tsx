@@ -11,10 +11,14 @@ const App: React.FC = () => {
     setBurgerOpen(!burgerOpen)
   }
 
+  const handlerBorgerClose = () => {
+    setBurgerOpen(false)
+  }
+
   return (
     <div className="App">
       <Burger isOpen={burgerOpen} onClick={ handlerBurger } />
-      <Pull isOpen={burgerOpen} />
+      <Pull isOpen={burgerOpen} onClick={ handlerBorgerClose } />
       <TasksLayout />
     </div>
   );
