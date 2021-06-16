@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import tempReducer from './slice';
+import rootReducer from './slice';
 
 const store = configureStore({
     reducer: {
-        globalReducer: tempReducer,
+        globalReducer: rootReducer,
     },
 });
 

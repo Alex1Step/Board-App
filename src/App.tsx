@@ -15,21 +15,21 @@ const App: React.FC = () => {
         setBurgerOpen(!burgerOpen);
     };
 
-    const handlerBorgerClose = () => {
+    const handlerBurgerClose = () => {
         setBurgerOpen(false);
     };
 
     const links = [
-        { to: '/boards', text: 'Boards' },
-        { to: '/login', text: 'Log In' },
-        { to: '/register', text: 'Register' },
-        { to: '/about', text: 'About' },
+        { to: '/boards', text: 'Boards', exact: true },
+        { to: '/login', text: 'Log In', exact: true },
+        { to: '/register', text: 'Register', exact: true },
+        { to: '/about', text: 'About', exact: true },
     ];
 
     return (
         <div className="App">
             <Burger isOpen={burgerOpen} onClick={handlerBurger} />
-            <Pull isOpen={burgerOpen} onClick={handlerBorgerClose} listOfLinks={links} />
+            <Pull isOpen={burgerOpen} onClick={handlerBurgerClose} listOfLinks={links} />
             <Switch>
                 <Route path="/boards" component={TasksLayout} />
                 <Route path="/login" component={LogInLayout} />

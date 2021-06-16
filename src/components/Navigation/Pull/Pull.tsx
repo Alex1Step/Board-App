@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from './Pull.less';
 import Blackout from '../Blackout/Blackout';
+import { NavLink } from 'react-router-dom';
 
 interface linkI {
     to: string;
     text: string;
+    exact: boolean;
 }
 
 interface PullPropsI {
@@ -26,7 +28,9 @@ const Pull = (props: PullPropsI) => {
                 <ul className={styles.linksInNav}>
                     {props.listOfLinks.map((link, index) => (
                         <li key={index}>
-                            <a href={link.to}>{link.text}</a>
+                            <NavLink to={link.to} exact={link.exact} onClick={props.onClick}>
+                                {link.text}
+                            </NavLink>
                         </li>
                     ))}
                 </ul>

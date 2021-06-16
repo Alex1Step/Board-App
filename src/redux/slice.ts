@@ -174,15 +174,52 @@ const boardsSlice = createSlice({
             const newTaskId = state.boards[destination].tasks.reduce((r, v) => (v.id > r ? v.id : r), 0) + 1;
             relocatebleTask.id = Number(newTaskId);
             // console.log(relocatebleTask);
-            //push new task to destination board
-            state.boards[destination].tasks.push(relocatebleTask);
             //delete from old board
             delete state.boards[from].tasks[action.payload.taskID];
+            //push new task to destination board
+            state.boards[destination].tasks.push(relocatebleTask);
             // console.log(current(state));
+        },
+        succesLogIn(state, action: PayloadAction<string>) {
+            console.log(action.payload);
+            state = state;
+        },
+        succesCreateNewUser(state, action: PayloadAction<string>) {
+            const newUser = {
+                userID: 0,
+                userName: action.payload,
+                boards: [
+                    {
+                        id: 0,
+                        name: 'My first board',
+                        tasks: [
+                            {
+                                id: 0,
+                                taskName: 'My first task',
+                                deadlineDate: 'default',
+                                priority: 'default',
+                                assignee: 'default',
+                                description: 'default',
+                                fromBoard: 0,
+                            },
+                        ],
+                    },
+                ],
+            };
+            return newUser;
         },
     },
 });
 
-export const { changeFromInput, boardDeleting, taskDeleting, taskAdd, boardAdd, changeBoardName, moveTask } =
-    boardsSlice.actions;
+export const {
+    changeFromInput,
+    boardDeleting,
+    taskDeleting,
+    taskAdd,
+    boardAdd,
+    changeBoardName,
+    moveTask,
+    succesLogIn,
+    succesCreateNewUser,
+} = boardsSlice.actions;
 export default boardsSlice.reducer;
