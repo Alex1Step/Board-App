@@ -18,7 +18,7 @@ interface LoginI {
 }
 
 interface PropsI {
-    handler: (values: LoginI) => Promise<void>;
+    handler: (values: LoginI) => void;
     textOnButton: string;
 }
 

@@ -5,6 +5,7 @@
   "dependencies": {
     "@craco/craco": "^6.1.2",
     "@react-firebase/auth": "^0.2.10",
+    "@react-firebase/database": "^0.3.11",
     "@reduxjs/toolkit": "^1.6.0",
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/react": "^11.2.7",

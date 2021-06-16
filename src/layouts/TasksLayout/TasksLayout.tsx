@@ -2,6 +2,7 @@ import React from 'react';
 //COMPONENTS
 import Board from '../../containers/Board/Board';
 import AddButton from '../../components/UI/AddButton/AddButton';
+import { Button } from 'antd';
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../redux/store';
@@ -13,6 +14,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 //DND END
 
 import styles from './TasksLayout.less';
+import { IfFirebaseAuthed } from '@react-firebase/auth';
+import firebase from 'firebase';
 
 const TasksLayout: React.FunctionComponent = () => {
     const dispatch = useDispatch();
@@ -26,9 +29,26 @@ const TasksLayout: React.FunctionComponent = () => {
         dispatch(boardAdd());
     }
 
+    const logOutHandler = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                console.log('LOGGED OUT');
+            })
+            .catch((error) => {
+                console.log('NOT LOGGED OUT');
+            });
+    };
+
     return (
         <DndProvider backend={HTML5Backend}>
             <section className={styles.TasksLayout}>
+                <IfFirebaseAuthed>
+                    {() => {
+                        return <Button onClick={logOutHandler}>Logout</Button>;
+                    }}
+                </IfFirebaseAuthed>
                 <h1>{user}</h1>
                 <AddButton onClick={addBoard} text={'Add new board'} type={'Board'} />
                 <section className={styles.boardsContainer}>{arrBoards}</section>
