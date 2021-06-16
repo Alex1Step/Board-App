@@ -11,6 +11,7 @@ import store from './redux/store';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { FirebaseAuthProvider } from '@react-firebase/auth';
+import { FirebaseDatabaseProvider } from '@react-firebase/database';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAgTJyexl3AhXyoRfnB6LSyv0ZBoaP3Nm8',
@@ -25,13 +26,15 @@ const firebaseConfig = {
 
 const app = (
     <FirebaseAuthProvider firebase={firebase} {...firebaseConfig}>
-        <Provider store={store}>
-            <BrowserRouter>
-                <React.StrictMode>
-                    <App />
-                </React.StrictMode>
-            </BrowserRouter>
-        </Provider>
+        <FirebaseDatabaseProvider firebase={firebase} {...firebaseConfig}>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <React.StrictMode>
+                        <App />
+                    </React.StrictMode>
+                </BrowserRouter>
+            </Provider>
+        </FirebaseDatabaseProvider>
     </FirebaseAuthProvider>
 );
 

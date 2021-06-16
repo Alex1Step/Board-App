@@ -1,4 +1,5 @@
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import firebase from 'firebase';
 
 import type { changeValue } from '../components/Card/Card';
 
@@ -206,6 +207,10 @@ const boardsSlice = createSlice({
                     },
                 ],
             };
+            firebase
+                .database()
+                .ref()
+                .update({ [action.payload.substr(0, 5)]: newUser });
             return newUser;
         },
     },

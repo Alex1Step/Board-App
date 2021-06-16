@@ -43,12 +43,18 @@ const TasksLayout: React.FunctionComponent = () => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <section className={styles.TasksLayout}>
+            <header>
                 <IfFirebaseAuthed>
                     {() => {
-                        return <Button onClick={logOutHandler}>Logout</Button>;
+                        return (
+                            <Button type="primary" danger onClick={logOutHandler}>
+                                Logout
+                            </Button>
+                        );
                     }}
                 </IfFirebaseAuthed>
+            </header>
+            <section className={styles.TasksLayout}>
                 <h1>{user}</h1>
                 <AddButton onClick={addBoard} text={'Add new board'} type={'Board'} />
                 <section className={styles.boardsContainer}>{arrBoards}</section>
