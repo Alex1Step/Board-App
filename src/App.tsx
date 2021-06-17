@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.less';
-import TasksLayout from './layouts/TasksLayout/TasksLayout';
-import Burger from './components/Navigation/Burger/Burger';
-import Pull from './components/Navigation/Pull/Pull';
-import LogInLayout from './layouts/LogInLayout/LogInLayout';
-import RegLayout from './layouts/RegLayout/RegLayout';
-import AboutLayout from './layouts/AboutLayout/AboutLayout';
+import TasksLayout from './pages/TasksLayout/TasksLayout';
+import Burger from './components/custom/Navigation/Burger/Burger';
+import Pull from './components/custom/Navigation/Pull/Pull';
+import LogInLayout from './pages/LogInLayout/LogInLayout';
+import RegLayout from './pages/RegLayout/RegLayout';
+import AboutLayout from './pages/AboutLayout/AboutLayout';
 
 const App: React.FC = () => {
     const [burgerOpen, setBurgerOpen] = useState(false);

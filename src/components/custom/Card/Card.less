@@ -1,0 +1,29 @@
+.Card {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 7px;
+  border: 1px solid rgb(216, 209, 209);
+  border-radius: 10px;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  transition: all 0.1s;
+  &:hover {
+    transform: scale(1.02);
+  }
+  .cardButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.high {
+  background: linear-gradient(45deg, rgb(255, 0, 0) 30%, rgb(255, 157, 0));
+}
+.medium {
+  background: linear-gradient(225deg, rgb(164, 180, 71), rgb(255, 236, 0) 100%);
+}
+.low {
+  background: linear-gradient(225deg, rgb(0, 238, 196), rgb(15, 255, 0) 100%);
+}
