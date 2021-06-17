@@ -12,7 +12,7 @@ export const signIn = createAsyncThunk<string, LoginI, { dispatch: AppDispatch }
     'board/fetchIsSignIn',
     async (userData) => {
         let userInfo = '';
-        await firebase
+        const response = await firebase
             .auth()
             .signInWithEmailAndPassword(userData.username, userData.password)
             .then((userCredential) => {
@@ -119,7 +119,6 @@ const boardsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(signIn.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.userName = action.payload;
         });
     },
