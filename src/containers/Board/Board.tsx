@@ -1,10 +1,10 @@
 import React from 'react';
 //components
-import Card from '../../components/Card/Card';
-import ButtonComponent from '../../components/UI/Button/ButtonComponent';
-import AddButton from '../../components/UI/AddButton/AddButton';
-import Modal from '../../components/Modal/Modal';
-import InputComponent from '../../components/UI/Input/InputComponent';
+import Card from '../../components/custom/Card/Card';
+import ButtonComponent from '../../components/base/Button/ButtonComponent';
+import AddButton from '../../components/base/AddButton/AddButton';
+import Modal from '../../components/custom/Modal/Modal';
+import InputComponent from '../../components/base/Input/InputComponent';
 import { Divider } from 'antd';
 //interfaces
 import type { BoardI } from '../../redux/slice';

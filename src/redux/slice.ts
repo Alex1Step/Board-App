@@ -1,7 +1,7 @@
 import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 import firebase from 'firebase';
 
-import type { changeValue } from '../components/Card/Card';
+import type { IchangeValue } from '../components/custom/Card/interfaces';
 
 interface moveTaskI {
     destinationBoard: string;
@@ -129,7 +129,7 @@ const boardsSlice = createSlice({
     name: 'board',
     initialState,
     reducers: {
-        changeFromInput(state, action: PayloadAction<changeValue>) {
+        changeFromInput(state, action: PayloadAction<IchangeValue>) {
             state.boards[Number(action.payload.boardID)].tasks[Number(action.payload.taskID)][
                 action.payload.inputID.toString()
             ] = action.payload.payLoad;
