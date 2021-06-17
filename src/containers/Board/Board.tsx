@@ -7,36 +7,25 @@ import Modal from '../../components/custom/Modal/Modal';
 import InputComponent from '../../components/base/Input/InputComponent';
 import { Divider } from 'antd';
 //interfaces
-import type { BoardI } from '../../redux/slice';
+import type { BoardI } from '../../redux/interfaces';
 //redux
 import { useDispatch } from 'react-redux';
 import { boardDeleting, taskAdd, changeBoardName } from '../../redux/slice';
 //styles
 import styles from './Board.less';
-
-//DND START
+//reactDND
 import { useDrop } from 'react-dnd';
+import { IdustbinProps } from './interfaces';
 
-export const ItemTypes = {
+const ItemTypes = {
     BOX: 'box',
 };
 
-export interface DustbinProps {
-    allowedDropEffect: string;
-}
-
-function selectBackgroundColor(isActive: boolean, canDrop: boolean) {
-    if (isActive) {
-        return 'rgb(58, 212, 55)';
-    } else if (canDrop) {
-        return 'white';
-    }
-}
-//DND END
-
 export const BoardContext = React.createContext(1);
 
-const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps): JSX.Element => {
+const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): JSX.Element => {
+    const cls = [styles.Board];
+
     const dispatch = useDispatch();
 
     //prepare to create Task List
@@ -62,7 +51,7 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps)
     function addNewTask() {
         dispatch(taskAdd(id));
     }
-
+    //handler for rename board
     function handlerChangeBoardName(event: { target: HTMLInputElement | HTMLSelectElement }) {
         const chBName = {
             boardID: id,
@@ -71,11 +60,11 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps)
         dispatch(changeBoardName(chBName));
     }
 
-    //MODAL
+    //MODAL window
     const [isModal, setModal] = React.useState(false);
     const onClose = () => setModal(false);
 
-    //DND START
+    //ReactDND for handle active board
     const [{ canDrop, isOver }, drop] = useDrop(
         () => ({
             accept: ItemTypes.BOX,
@@ -92,12 +81,18 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps)
     );
     const isActive = canDrop && isOver;
     const backgroundColor = selectBackgroundColor(isActive, canDrop);
-    //DND END
 
-    const cls = [styles.Board];
+    //ReactDND support function
+    function selectBackgroundColor(isActive: boolean, canDrop: boolean) {
+        if (isActive) {
+            cls.push(styles.active);
+        } else if (canDrop) {
+            cls.push(styles.noactive);
+        }
+    }
 
     return (
-        <div className={cls.join(' ')} ref={drop} style={{ backgroundColor }}>
+        <div className={cls.join(' ')} ref={drop}>
             <span className={styles.boardname} onClick={() => setModal(true)}>
                 {name}
             </span>

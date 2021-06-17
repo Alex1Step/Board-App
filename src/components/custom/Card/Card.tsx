@@ -4,7 +4,7 @@ import InputComponent from '../../base/Input/InputComponent';
 import SelectComponent from '../../base/Select/SelectComponent';
 import ButtonComponent from '../../base/Button/ButtonComponent';
 //TYPES
-import { TaskI } from '../../../redux/slice';
+import { TaskI } from '../../../redux/interfaces';
 import { IchangeValue } from './interfaces';
 import { BoardContext } from '../../../containers/Board/Board';
 //REDUX
@@ -12,26 +12,33 @@ import { useDispatch } from 'react-redux';
 import { changeFromInput, taskDeleting, moveTask } from '../../../redux/slice';
 //STYLES
 import * as styles from './Card.less';
-//DND START
+//ReactDND
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { IdropResult } from './interfaces';
 
-export const ItemTypes = {
+const ItemTypes = {
     BOX: 'box',
 };
-//DND END
 
 const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fromBoard }: TaskI): JSX.Element => {
-    const cls = [styles.Card, styles.painted];
-
-    const colorsByPriority: { [key: string]: string } = {
-        High: 'linear-gradient(45deg, rgb(255, 0, 0) 30%, rgb(255, 157, 0))',
-        Medium: 'linear-gradient(225deg, rgb(164, 180, 71), rgb(255, 236, 0) 100%)',
-        Low: 'linear-gradient(225deg, rgb(0, 238, 196), rgb(15, 255, 0) 100%)',
-    };
-
     const dispatch = useDispatch();
 
+    const cls = [styles.Card];
+
+    //change color of cards ordered by priority
+    switch (priority) {
+        case 'High':
+            cls.push(styles.high);
+            break;
+        case 'Medium':
+            cls.push(styles.medium);
+            break;
+        case 'Low':
+            cls.push(styles.low);
+            break;
+    }
+
+    //handler for listening changes in inputs
     function handleChange(
         event: { target: HTMLInputElement | HTMLSelectElement },
         boardID: number,
@@ -47,7 +54,7 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fro
         dispatch(changeFromInput(newValue));
     }
 
-    //DND START
+    //ReactDND for work with active cards
     const [{ opacity }, drag] = useDrag(
         () => ({
             type: ItemTypes.BOX,
@@ -69,19 +76,11 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fro
         }),
         [taskName],
     );
-    //DND END
 
     return (
         <BoardContext.Consumer>
             {(value) => (
-                <div
-                    ref={drag}
-                    className={cls.join(' ')}
-                    style={{
-                        background: colorsByPriority[priority],
-                        boxShadow: '4px 4px 8px 0px rgba(34, 60, 80, 0.2)',
-                    }}
-                >
+                <div ref={drag} className={cls.join(' ')}>
                     <InputComponent
                         type={'text'}
                         label={'Task:'}

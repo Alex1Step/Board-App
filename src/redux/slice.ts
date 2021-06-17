@@ -1,129 +1,30 @@
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction, createAsyncThunk, unwrapResult } from '@reduxjs/toolkit';
 import firebase from 'firebase';
+//interfaces
+import { AppDispatch, RootState } from './store';
+import { IchangeValue } from '../components/custom/Card/interfaces';
+import { moveTaskI, changeBoardNameI, TaskI, BoardI } from './interfaces';
+import { LoginI } from '../pages/LogInLayout/LogInLayout';
+//init state
+import { initialState } from './initialState';
 
-import type { IchangeValue } from '../components/custom/Card/interfaces';
-
-interface moveTaskI {
-    destinationBoard: string;
-    fromBoard: string | number;
-    taskID: number;
-}
-
-interface changeBoardNameI {
-    boardID: number;
-    newBoardName: string;
-}
-
-export interface TaskI {
-    [index: string]: string | number;
-    id: number;
-    taskName: string;
-    deadlineDate: string;
-    priority: string;
-    assignee: string;
-    description: string;
-    fromBoard: string | number;
-}
-
-export interface BoardI {
-    id: number;
-    name: string;
-    tasks: TaskI[];
-}
-
-interface GlobalState {
-    userID: number;
-    userName: string;
-    boards: BoardI[];
-}
-
-const initialState = {
-    userID: 0,
-    userName: 'Alex Stepanchuk',
-    boards: [
-        {
-            id: 0,
-            name: 'board-1',
-            tasks: [
-                {
-                    id: 0,
-                    taskName: 'First Task',
-                    deadlineDate: '11.01.2011',
-                    priority: 'High',
-                    assignee: 'Mike',
-                    description: 'TODO for First Task',
-                    fromBoard: 0,
-                },
-                {
-                    id: 1,
-                    taskName: 'Second Task',
-                    deadlineDate: '22.02.2022',
-                    priority: 'Low',
-                    assignee: 'Jake',
-                    description: 'TODO for Second Task',
-                    fromBoard: 0,
-                },
-                {
-                    id: 2,
-                    taskName: 'Third Task',
-                    deadlineDate: '21.12.2021',
-                    priority: 'Medium',
-                    assignee: 'JakeJones',
-                    description: 'TODO for Third Task',
-                    fromBoard: 0,
-                },
-            ],
-        },
-        {
-            id: 1,
-            name: 'board-2',
-            tasks: [
-                {
-                    id: 0,
-                    taskName: 'First Task of Board-2',
-                    deadlineDate: '33.03.2033',
-                    priority: 'Medium',
-                    assignee: 'Jane',
-                    description: 'TODO for First Task of Board-2',
-                    fromBoard: 1,
-                },
-                {
-                    id: 1,
-                    taskName: 'Second Task of Board-2',
-                    deadlineDate: '44.04.2044',
-                    priority: 'Low',
-                    assignee: 'MAry',
-                    description: 'TODO for Second Task of Board-2',
-                    fromBoard: 1,
-                },
-            ],
-        },
-        {
-            id: 2,
-            name: 'board-3',
-            tasks: [
-                {
-                    id: 0,
-                    taskName: 'First Task of Board-3',
-                    deadlineDate: '55.55.2055',
-                    priority: 'Medium',
-                    assignee: 'Person1',
-                    description: 'TODO for First Task of Board-3',
-                    fromBoard: 2,
-                },
-                {
-                    id: 1,
-                    taskName: 'Second Task of Board-3',
-                    deadlineDate: '66.66.2066',
-                    priority: 'Low',
-                    assignee: 'Person2',
-                    description: 'TODO for Second Task of Board-3',
-                    fromBoard: 2,
-                },
-            ],
-        },
-    ],
-} as GlobalState;
+export const signIn = createAsyncThunk<string, LoginI, { dispatch: AppDispatch }>(
+    'board/fetchIsSignIn',
+    async (userData) => {
+        let userInfo = '';
+        await firebase
+            .auth()
+            .signInWithEmailAndPassword(userData.username, userData.password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                if (user?.email) userInfo = user.email;
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
+        return userInfo;
+    },
+);
 
 const boardsSlice = createSlice({
     name: 'board',
@@ -181,10 +82,12 @@ const boardsSlice = createSlice({
             state.boards[destination].tasks.push(relocatebleTask);
             // console.log(current(state));
         },
+        /*ASYNC!!!*/
         succesLogIn(state, action: PayloadAction<string>) {
             console.log(action.payload);
             state = state;
         },
+        /*ASYNC!!!*/
         succesCreateNewUser(state, action: PayloadAction<string>) {
             const newUser = {
                 userID: 0,
@@ -213,6 +116,12 @@ const boardsSlice = createSlice({
                 .update({ [action.payload.substr(0, 5)]: newUser });
             return newUser;
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(signIn.fulfilled, (state, action) => {
+            console.log(action.payload);
+            state.userName = action.payload;
+        });
     },
 });
 

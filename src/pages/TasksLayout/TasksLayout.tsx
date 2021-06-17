@@ -6,12 +6,11 @@ import { Button } from 'antd';
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../redux/store';
-import { BoardI } from '../../redux/slice';
+import { BoardI } from '../../redux/interfaces';
 import { boardAdd } from '../../redux/slice';
-//DND START
+//REACT DND
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-//DND END
 
 import styles from './TasksLayout.less';
 import { IfFirebaseAuthed } from '@react-firebase/auth';
