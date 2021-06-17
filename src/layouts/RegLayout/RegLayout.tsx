@@ -17,8 +17,7 @@ const RegLayout: React.FunctionComponent = () => {
         firebase
             .auth()
             .createUserWithEmailAndPassword(values.username, values.password)
-            .then((userCredential) => {
-                const user = userCredential.user;
+            .then(() => {
                 console.log('SUCCES');
                 dispatch(succesCreateNewUser(values.username));
             })

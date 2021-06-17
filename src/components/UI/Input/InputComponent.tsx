@@ -10,7 +10,7 @@ interface InputProps {
     withoutSubstitution?: boolean;
 }
 
-const InputComponent = (props: InputProps) => {
+const InputComponent = (props: InputProps): JSX.Element => {
     const [hideShow, setHideShow] = useState(1);
 
     const inputType: string = props.type || 'text';
@@ -23,10 +23,8 @@ const InputComponent = (props: InputProps) => {
         clsP = [styles.textHide];
     }
 
-    return props.withoutSubstitution === true ? (
-        <React.Fragment>
-            <Input type={inputType} id={htmlFor} value={props.value} onChange={props.onChange} autoFocus={true} />
-        </React.Fragment>
+    return props.withoutSubstitution ? (
+        <Input type={inputType} id={htmlFor} value={props.value} onChange={props.onChange} autoFocus={true} />
     ) : (
         <div className={styles.inputContainer}>
             <label htmlFor={htmlFor}>{props.label}</label>
@@ -45,9 +43,7 @@ const InputComponent = (props: InputProps) => {
                 id={htmlFor}
                 value={props.value}
                 onChange={props.onChange}
-                onBlur={() => {
-                    setHideShow(1);
-                }}
+                onBlur={() => setHideShow(1)}
             />
         </div>
     );

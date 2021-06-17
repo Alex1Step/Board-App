@@ -15,7 +15,7 @@ interface PullPropsI {
     listOfLinks: linkI[];
 }
 
-const Pull = (props: PullPropsI) => {
+const Pull = (props: PullPropsI): JSX.Element => {
     const cls = [styles.Pull];
 
     if (!props.isOpen) {

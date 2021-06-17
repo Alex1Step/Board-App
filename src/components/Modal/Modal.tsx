@@ -8,7 +8,7 @@ interface ModalProps {
     children: ReactElement;
 }
 
-const Modal = ({ visible = false, title = '', onClose, children }: ModalProps) => {
+const Modal = ({ visible = false, title = '', onClose, children }: ModalProps): JSX.Element | null => {
     const onKeydown = ({ key }: KeyboardEvent) => {
         switch (key) {
             case 'Enter':

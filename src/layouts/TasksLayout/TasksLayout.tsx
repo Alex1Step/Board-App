@@ -36,7 +36,7 @@ const TasksLayout: React.FunctionComponent = () => {
             .then(() => {
                 console.log('LOGGED OUT');
             })
-            .catch((error) => {
+            .catch(() => {
                 console.log('NOT LOGGED OUT');
             });
     };

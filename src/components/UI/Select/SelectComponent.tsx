@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
-import { Select } from 'antd';
 import styles from './Select.less';
-import store from '../../../redux/store';
+import { IinputProps } from './interfaces';
 
-interface InputProps {
-    type: string;
-    label: string;
-    value: string;
-    onChange: (event: { target: HTMLInputElement | HTMLSelectElement }) => void;
-}
-
-const SelectComponent = (props: InputProps) => {
+const SelectComponent = (props: IinputProps): JSX.Element => {
     const [hideShow, setHideShow] = useState(1);
 
     const inputType: string = props.type || 'text';
     const htmlFor = `${inputType}-${Math.random()}`;
-    let optionsForSelect: any;
+    let optionsForSelect: Array<React.ReactNode> = [];
     if (inputType === 'select') {
         const options = ['High', 'Medium', 'Low'];
         optionsForSelect = options.map((opt, i) => (
@@ -35,12 +27,7 @@ const SelectComponent = (props: InputProps) => {
     return (
         <div className={styles.selectContainer}>
             <label htmlFor={htmlFor}>{props.label}</label>
-            <span
-                className={clsP.join(' ')}
-                onClick={() => {
-                    setHideShow(0);
-                }}
-            >
+            <span className={clsP.join(' ')} onClick={() => setHideShow(0)}>
                 {props.value}
             </span>
             <select
@@ -49,9 +36,7 @@ const SelectComponent = (props: InputProps) => {
                 value={props.value}
                 className={clsSelect.join(' ')}
                 onChange={props.onChange}
-                onBlur={() => {
-                    setHideShow(1);
-                }}
+                onBlur={() => setHideShow(1)}
             >
                 {optionsForSelect}
             </select>

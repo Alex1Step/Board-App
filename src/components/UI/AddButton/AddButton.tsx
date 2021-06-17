@@ -8,7 +8,7 @@ interface AddButtonProps {
     onClick: () => void;
 }
 
-const AddButton = (props: AddButtonProps) => {
+const AddButton = (props: AddButtonProps): JSX.Element => {
     const cls = [styles[props.type]];
 
     return (

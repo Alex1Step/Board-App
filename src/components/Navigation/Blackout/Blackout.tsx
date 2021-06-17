@@ -6,7 +6,7 @@ interface BlackoutI {
     isOpen: boolean;
 }
 
-const Blackout = (props: BlackoutI) => {
+const Blackout = (props: BlackoutI): JSX.Element => {
     return <div className={styles.Blackout} onClick={props.onClick}></div>;
 };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './Burger.less';
-import { Button } from 'antd';
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
 
 interface burgerPropsI {
@@ -8,7 +7,7 @@ interface burgerPropsI {
     onClick: () => void;
 }
 
-const Burger = (props: burgerPropsI) => {
+const Burger = (props: burgerPropsI): JSX.Element => {
     const cls = [styles.Burger];
 
     if (props.isOpen) cls.push(styles.open);

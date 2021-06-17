@@ -1,6 +1,4 @@
-import React, { Props } from 'react';
-import styles from './AuthForm.less';
-
+import React from 'react';
 import { Form, Input, Button } from 'antd';
 
 const layout = {
@@ -22,7 +20,7 @@ interface PropsI {
     textOnButton: string;
 }
 
-const AuthForm = (props: PropsI) => {
+const AuthForm = (props: PropsI): JSX.Element => {
     return (
         <Form {...layout} name="basic" initialValues={{ remember: true }} onFinish={props.handler}>
             <Form.Item

@@ -9,11 +9,11 @@ interface ButtonI {
     message?: string;
 }
 
-const ButtonComponent = (props: ButtonI) => {
+const ButtonComponent = (props: ButtonI): JSX.Element => {
     const cls = [styles.Button];
 
     return (
-        <Tooltip title={props.message} style={{ zIndex: 5 }}>
+        <Tooltip title={props.message}>
             <Button
                 className={cls.join(' ')}
                 type="primary"

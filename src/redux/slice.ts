@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 import firebase from 'firebase';
 
 import type { changeValue } from '../components/Card/Card';

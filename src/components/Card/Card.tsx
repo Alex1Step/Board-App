@@ -12,7 +12,7 @@ import { changeFromInput, taskDeleting, moveTask } from '../../redux/slice';
 //STYLES
 import * as styles from './Card.less';
 //DND START
-import { useDrag, DragSourceMonitor, DropTarget } from 'react-dnd';
+import { useDrag, DragSourceMonitor } from 'react-dnd';
 interface DropResult {
     allowedDropEffect: string;
     dropEffect: string;
@@ -30,7 +30,7 @@ export type changeValue = {
     payLoad: string;
 };
 
-const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fromBoard }: TaskI) => {
+const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fromBoard }: TaskI): JSX.Element => {
     const cls = [styles.Card, styles.painted];
 
     const colorsByPriority: { [key: string]: string } = {
@@ -64,14 +64,6 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fro
             end(item, monitor) {
                 const dropResult = monitor.getDropResult() as DropResult;
                 if (item && dropResult) {
-                    const isDropAllowed =
-                        dropResult.allowedDropEffect === 'any' ||
-                        dropResult.allowedDropEffect === dropResult.dropEffect;
-
-                    if (isDropAllowed) {
-                        const isCopyAction = dropResult.dropEffect === 'copy';
-                        const actionName = isCopyAction ? 'copied' : 'moved';
-                    }
                     const moveTaskInfo = {
                         destinationBoard: dropResult.name,
                         fromBoard: fromBoard,

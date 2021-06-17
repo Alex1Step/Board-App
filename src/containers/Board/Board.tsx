@@ -36,7 +36,7 @@ function selectBackgroundColor(isActive: boolean, canDrop: boolean) {
 
 export const BoardContext = React.createContext(1);
 
-const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps) => {
+const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps): JSX.Element => {
     const dispatch = useDispatch();
 
     //prepare to create Task List
