@@ -1,12 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit'
-import redFromSlice from './slice'
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './slice';
 
 const store = configureStore({
     reducer: {
-      reducer: redFromSlice
+        globalReducer: rootReducer,
     },
-  })
+});
 
-export default store
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export default store;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
