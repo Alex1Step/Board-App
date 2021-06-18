@@ -10,10 +10,36 @@ import { initialState } from './initialState';
 //api
 import MyApi from '../API//MyApi';
 
-export const signIn = createAsyncThunk<string, LoginI, { dispatch: AppDispatch }>('board/signIn', async (userData) => {
-    let userInfo = '';
-    const response = await MyApi.signInApi(userData.username, userData.password).then((response) => {
-        if (response && response.email) userInfo = response.email;
+export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
+    let userInfo: GlobalState = {
+        userID: 0,
+        userName: '',
+        boards: [
+            {
+                id: 0,
+                name: 'My first board',
+                tasks: [
+                    {
+                        id: 0,
+                        taskName: 'My first task',
+                        deadlineDate: 'default',
+                        priority: 'default',
+                        assignee: 'default',
+                        description: 'default',
+                        fromBoard: 0,
+                    },
+                ],
+            },
+        ],
+    };
+    const response = await MyApi.signInApi(userData.username, userData.password).then(async (response) => {
+        if (response && response.email) {
+            await MyApi.fetchUserDataFromBaseApi(response.email).then((response) => {
+                if (response) {
+                    userInfo = response;
+                }
+            });
+        }
     });
     return userInfo;
 });
@@ -41,7 +67,6 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
         ],
     };
     const response = await MyApi.signUpApi(userData.username, userData.password).then((response) => {
-        //prepare new clean board for new user
         if (response && response.email) {
             newUser.userName = response.email;
             MyApi.sendToDatabaseApi(newUser);
@@ -116,8 +141,7 @@ const boardsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(signIn.fulfilled, (state, action) => {
-            console.log('from SIGNIN: ' + action.payload);
-            state.userName = action.payload;
+            return action.payload;
         });
         builder.addCase(signUp.fulfilled, (state, action) => {
             return action.payload;
