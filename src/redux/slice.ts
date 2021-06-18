@@ -3,28 +3,59 @@ import firebase from 'firebase';
 //interfaces
 import { AppDispatch, RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
-import { moveTaskI, changeBoardNameI, TaskI, BoardI } from './interfaces';
+import { moveTaskI, changeBoardNameI, TaskI, BoardI, GlobalState } from './interfaces';
 import { LoginI } from '../pages/LogInLayout/LogInLayout';
 //init state
 import { initialState } from './initialState';
+//api
+import MyApi from '../API//MyApi';
 
-export const signIn = createAsyncThunk<string, LoginI, { dispatch: AppDispatch }>(
-    'board/fetchIsSignIn',
-    async (userData) => {
-        let userInfo = '';
-        const response = await firebase
-            .auth()
-            .signInWithEmailAndPassword(userData.username, userData.password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                if (user?.email) userInfo = user.email;
-            })
-            .catch((error) => {
-                console.log(error.message);
-            });
-        return userInfo;
-    },
-);
+export const signIn = createAsyncThunk<string, LoginI, { dispatch: AppDispatch }>('board/signIn', async (userData) => {
+    let userInfo = '';
+    const response = await MyApi.signInApi(userData.username, userData.password).then((response) => {
+        if (response && response.email) userInfo = response.email;
+    });
+    return userInfo;
+});
+
+export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) => {
+    const newUser: GlobalState = {
+        userID: 0,
+        userName: '',
+        boards: [
+            {
+                id: 0,
+                name: 'My first board',
+                tasks: [
+                    {
+                        id: 0,
+                        taskName: 'My first task',
+                        deadlineDate: 'default',
+                        priority: 'default',
+                        assignee: 'default',
+                        description: 'default',
+                        fromBoard: 0,
+                    },
+                ],
+            },
+        ],
+    };
+    const response = await MyApi.signUpApi(userData.username, userData.password).then((response) => {
+        //prepare new clean board for new user
+        if (response && response.email) {
+            newUser.userName = response.email;
+            MyApi.sendToDatabaseApi(newUser);
+        }
+    });
+    return newUser;
+});
+
+export const logOut = createAsyncThunk<void>('board/logOut', async () => {
+    await MyApi.logOutApi().then(() => {
+        console.log('LOGGED OUT');
+    });
+    return;
+});
 
 const boardsSlice = createSlice({
     name: 'board',
@@ -82,57 +113,22 @@ const boardsSlice = createSlice({
             state.boards[destination].tasks.push(relocatebleTask);
             // console.log(current(state));
         },
-        /*ASYNC!!!*/
-        succesLogIn(state, action: PayloadAction<string>) {
-            console.log(action.payload);
-            state = state;
-        },
-        /*ASYNC!!!*/
-        succesCreateNewUser(state, action: PayloadAction<string>) {
-            const newUser = {
-                userID: 0,
-                userName: action.payload,
-                boards: [
-                    {
-                        id: 0,
-                        name: 'My first board',
-                        tasks: [
-                            {
-                                id: 0,
-                                taskName: 'My first task',
-                                deadlineDate: 'default',
-                                priority: 'default',
-                                assignee: 'default',
-                                description: 'default',
-                                fromBoard: 0,
-                            },
-                        ],
-                    },
-                ],
-            };
-            firebase
-                .database()
-                .ref()
-                .update({ [action.payload.substr(0, 5)]: newUser });
-            return newUser;
-        },
     },
     extraReducers: (builder) => {
         builder.addCase(signIn.fulfilled, (state, action) => {
+            console.log('from SIGNIN: ' + action.payload);
             state.userName = action.payload;
+        });
+        builder.addCase(signUp.fulfilled, (state, action) => {
+            return action.payload;
+        });
+        builder.addCase(logOut.fulfilled, (state) => {
+            console.log('from LOGOUT');
+            return initialState;
         });
     },
 });
 
-export const {
-    changeFromInput,
-    boardDeleting,
-    taskDeleting,
-    taskAdd,
-    boardAdd,
-    changeBoardName,
-    moveTask,
-    succesLogIn,
-    succesCreateNewUser,
-} = boardsSlice.actions;
+export const { changeFromInput, boardDeleting, taskDeleting, taskAdd, boardAdd, changeBoardName, moveTask } =
+    boardsSlice.actions;
 export default boardsSlice.reducer;

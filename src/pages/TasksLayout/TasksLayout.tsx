@@ -7,14 +7,14 @@ import { Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../redux/store';
 import { BoardI } from '../../redux/interfaces';
-import { boardAdd } from '../../redux/slice';
+import { boardAdd, logOut } from '../../redux/slice';
 //REACT DND
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
 import styles from './TasksLayout.less';
 import { IfFirebaseAuthed } from '@react-firebase/auth';
 import firebase from 'firebase';
+import store from '../../redux/store';
 
 const TasksLayout: React.FunctionComponent = () => {
     const dispatch = useDispatch();
@@ -29,29 +29,17 @@ const TasksLayout: React.FunctionComponent = () => {
     }
 
     const logOutHandler = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then(() => {
-                console.log('LOGGED OUT');
-            })
-            .catch(() => {
-                console.log('NOT LOGGED OUT');
-            });
+        dispatch(logOut());
     };
 
     return (
         <DndProvider backend={HTML5Backend}>
             <header>
-                <IfFirebaseAuthed>
-                    {() => {
-                        return (
-                            <Button type="primary" danger onClick={logOutHandler}>
-                                Logout
-                            </Button>
-                        );
-                    }}
-                </IfFirebaseAuthed>
+                {user !== '' ? (
+                    <Button type="primary" danger onClick={logOutHandler}>
+                        Logout
+                    </Button>
+                ) : null}
             </header>
             <section className={styles.TasksLayout}>
                 <h1>{user}</h1>
