@@ -4,7 +4,7 @@ import AuthForm from '../../components/custom/AuthForm/AuthForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../../redux/slice';
 import firebase from 'firebase';
-import { RootState } from '../../redux/store';
+import store, { RootState } from '../../redux/store';
 import { Redirect } from 'react-router';
 
 interface LoginI {

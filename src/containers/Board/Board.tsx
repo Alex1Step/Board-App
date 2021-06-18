@@ -25,22 +25,23 @@ export const BoardContext = React.createContext(1);
 
 const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): JSX.Element => {
     const cls = [styles.Board];
-
     const dispatch = useDispatch();
 
     //prepare to create Task List
-    const arrTasks = tasks.map((t, i) => (
-        <Card
-            key={i}
-            id={t.id}
-            taskName={t.taskName}
-            deadlineDate={t.deadlineDate}
-            priority={t.priority}
-            assignee={t.assignee}
-            description={t.description}
-            fromBoard={t.fromBoard}
-        />
-    ));
+    const arrTasks = tasks
+        ? tasks.map((t, i) => (
+              <Card
+                  key={i}
+                  id={t.id}
+                  taskName={t.taskName}
+                  deadlineDate={t.deadlineDate}
+                  priority={t.priority}
+                  assignee={t.assignee}
+                  description={t.description}
+                  fromBoard={t.fromBoard}
+              />
+          ))
+        : null;
 
     //handler for deleting this board
     function handleDeleteBoard() {

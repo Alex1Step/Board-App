@@ -1,7 +1,7 @@
 import { createSlice, current, PayloadAction, createAsyncThunk, unwrapResult } from '@reduxjs/toolkit';
 import firebase from 'firebase';
 //interfaces
-import { AppDispatch, RootState } from './store';
+import store, { AppDispatch, RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
 import { moveTaskI, changeBoardNameI, TaskI, BoardI, GlobalState } from './interfaces';
 import { LoginI } from '../pages/LogInLayout/LogInLayout';
@@ -75,12 +75,16 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
     return newUser;
 });
 
-export const logOut = createAsyncThunk<void>('board/logOut', async () => {
-    await MyApi.logOutApi().then(() => {
-        console.log('LOGGED OUT');
-    });
-    return;
-});
+export const logOut = createAsyncThunk<void, string, { state: RootState }>(
+    'board/logOut',
+    async (user: string, thunkApi) => {
+        await MyApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        await MyApi.logOutApi().then(() => {
+            console.log('LOGGED OUT');
+        });
+        return;
+    },
+);
 
 const boardsSlice = createSlice({
     name: 'board',
@@ -99,7 +103,7 @@ const boardsSlice = createSlice({
         },
         taskAdd(state, action: PayloadAction<number>) {
             const newTask: TaskI = {
-                id: current(state).boards[action.payload].tasks.length,
+                id: current(state).boards[action.payload].tasks?.length || 0,
                 taskName: 'default',
                 deadlineDate: 'default',
                 priority: 'default',
@@ -108,15 +112,17 @@ const boardsSlice = createSlice({
                 fromBoard: action.payload,
             };
 
-            state.boards[action.payload].tasks.push(newTask);
+            state.boards[action.payload].tasks
+                ? state.boards[action.payload].tasks.push(newTask)
+                : (state.boards[action.payload].tasks = [newTask]);
         },
         boardAdd(state) {
             const newBoard: BoardI = {
-                id: current(state).boards.length,
+                id: current(state).boards?.length || 0,
                 name: 'default',
                 tasks: [],
             };
-            state.boards.push(newBoard);
+            state.boards ? state.boards.push(newBoard) : (state.boards = [newBoard]);
         },
         changeBoardName(state, action: PayloadAction<changeBoardNameI>) {
             state.boards[action.payload.boardID].name = action.payload.newBoardName;
@@ -129,13 +135,17 @@ const boardsSlice = createSlice({
             //change task
             relocatebleTask.fromBoard = destination;
             //find new id for relocateble tsk
-            const newTaskId = state.boards[destination].tasks.reduce((r, v) => (v.id > r ? v.id : r), 0) + 1;
+            const newTaskId = state.boards[destination].tasks
+                ? state.boards[destination].tasks.reduce((r, v) => (v.id > r ? v.id : r), 0) + 1
+                : 0;
             relocatebleTask.id = Number(newTaskId);
             // console.log(relocatebleTask);
             //delete from old board
             delete state.boards[from].tasks[action.payload.taskID];
             //push new task to destination board
-            state.boards[destination].tasks.push(relocatebleTask);
+            state.boards[destination].tasks
+                ? state.boards[destination].tasks.push(relocatebleTask)
+                : (state.boards[destination].tasks = [relocatebleTask]);
             // console.log(current(state));
         },
     },
@@ -147,7 +157,6 @@ const boardsSlice = createSlice({
             return action.payload;
         });
         builder.addCase(logOut.fulfilled, (state) => {
-            console.log('from LOGOUT');
             return initialState;
         });
     },

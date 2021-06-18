@@ -14,14 +14,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import styles from './TasksLayout.less';
 import { IfFirebaseAuthed } from '@react-firebase/auth';
 import firebase from 'firebase';
-import store from '../../redux/store';
+import { useHistory } from 'react-router-dom';
 
 const TasksLayout: React.FunctionComponent = () => {
     const dispatch = useDispatch();
 
     const boards: BoardI[] = useSelector((state: RootState) => state.globalReducer.boards);
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
-    const arrBoards = boards.map((b, i) => <Board key={i} id={b.id} name={b.name} tasks={b.tasks} />);
+    const arrBoards = boards ? boards.map((b, i) => <Board key={i} id={b.id} name={b.name} tasks={b.tasks} />) : null;
 
     //add board - handler
     function addBoard() {
@@ -29,7 +29,12 @@ const TasksLayout: React.FunctionComponent = () => {
     }
 
     const logOutHandler = () => {
-        dispatch(logOut());
+        dispatch(logOut(user));
+    };
+
+    const history = useHistory();
+    const letSignUp = () => {
+        history.push('/register');
     };
 
     return (
@@ -39,7 +44,11 @@ const TasksLayout: React.FunctionComponent = () => {
                     <Button type="primary" danger onClick={logOutHandler}>
                         Logout
                     </Button>
-                ) : null}
+                ) : (
+                    <Button type="primary" danger onClick={letSignUp}>
+                        SignUp
+                    </Button>
+                )}
             </header>
             <section className={styles.TasksLayout}>
                 <h1>{user}</h1>
