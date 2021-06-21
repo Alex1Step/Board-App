@@ -19,7 +19,8 @@ const Pull = (props: IpullProps): JSX.Element => {
             <nav className={cls.join(' ')}>
                 <ul className={styles.linksInNav}>
                     {props.listOfLinks.map((link, index) => {
-                        if (user !== '' && link.to === '/register') return null;
+                        if ((user !== '' && link.to === '/register') || (user === '' && link.to === '/boards'))
+                            return null;
                         return (
                             <li key={index}>
                                 <NavLink to={link.to} exact={link.exact} onClick={props.onClick}>

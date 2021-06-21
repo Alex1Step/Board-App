@@ -3,7 +3,6 @@ import { Button } from 'antd';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useHistory } from 'react-router-dom';
-import { signIn } from '../../redux/slice';
 import styles from './AboutLayout.less';
 
 const AboutLayout: React.FunctionComponent = () => {
@@ -20,22 +19,24 @@ const AboutLayout: React.FunctionComponent = () => {
 
     return (
         <div className={styles.About}>
-            <h1>Welcome aBOARD!</h1>
-            <span>Let&apos;s make you much more efficient!</span>
-            {user !== '' ? (
-                <Button type="primary" danger onClick={letSignIn}>
-                    SignIn
-                </Button>
-            ) : (
-                <>
-                    <Button type="primary" danger onClick={letSignIn}>
+            <div className={styles.wrapper}>
+                <h1>Welcome aBOARD!</h1>
+                <span>Let&apos;s make you much more efficient!</span>
+                {user !== '' ? (
+                    <Button type="primary" onClick={letSignIn}>
                         SignIn
                     </Button>
-                    <Button type="primary" danger onClick={letSignUp}>
-                        SignUp
-                    </Button>
-                </>
-            )}
+                ) : (
+                    <div className={styles.buttonContainer}>
+                        <Button type="primary" onClick={letSignIn}>
+                            SignIn
+                        </Button>
+                        <Button type="primary" onClick={letSignUp}>
+                            SignUp
+                        </Button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

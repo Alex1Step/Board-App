@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 //COMPONENTS
 import InputComponent from '../../base/Input/InputComponent';
 import SelectComponent from '../../base/Select/SelectComponent';
@@ -23,7 +23,9 @@ const ItemTypes = {
 const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fromBoard }: TaskI): JSX.Element => {
     const dispatch = useDispatch();
 
+    const [blink, setBlink] = useState(1);
     const cls = [styles.Card];
+    if (blink && priority === 'default') cls.push(styles.blink);
 
     //change color of cards ordered by priority
     switch (priority) {
@@ -80,7 +82,7 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fro
     return (
         <BoardContext.Consumer>
             {(value) => (
-                <div ref={drag} className={cls.join(' ')}>
+                <div ref={drag} className={cls.join(' ')} onClick={() => setBlink(0)}>
                     <InputComponent
                         type={'text'}
                         label={'Task:'}

@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './RegLayout.less';
 import AuthForm from '../../components/custom/AuthForm/AuthForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../../redux/slice';
-import firebase from 'firebase';
-import store, { RootState } from '../../redux/store';
+import { RootState } from '../../redux/store';
 import { Redirect } from 'react-router';
+import SignInUpform from '../../containers/SignInUpform/SignInUpform';
 
 interface LoginI {
     password: string;
@@ -22,8 +22,10 @@ const RegLayout: React.FunctionComponent = () => {
 
     return user === '' ? (
         <section className={styles.RegLayout}>
-            <h1>Let`s register!</h1>
-            <AuthForm handler={onFinish} textOnButton={'Sign Up'} />
+            <SignInUpform>
+                <h1>Let`s register!</h1>
+                <AuthForm handler={onFinish} textOnButton={'Sign Up'} />
+            </SignInUpform>
         </section>
     ) : (
         <Redirect to={'/boards'} />

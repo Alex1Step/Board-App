@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.less';
 import TasksLayout from './pages/TasksLayout/TasksLayout';
@@ -7,8 +7,13 @@ import Pull from './components/custom/Navigation/Pull/Pull';
 import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';
 import AboutLayout from './pages/AboutLayout/AboutLayout';
+import MyApi from './API//MyApi';
+import { onLoadPage, onLeavePage } from './redux/slice';
+import { useDispatch } from 'react-redux';
 
 const App: React.FC = () => {
+    const dispatch = useDispatch();
+
     const [burgerOpen, setBurgerOpen] = useState(false);
 
     const handlerBurger = () => {
@@ -26,6 +31,30 @@ const App: React.FC = () => {
         { to: '/about', text: 'About', exact: true },
     ];
 
+    function beforeUnloadPage() {
+        const user = MyApi.currentUserApi();
+        if (user?.email) dispatch(onLeavePage(user?.email));
+    }
+
+    useComponentWillMount(() => {
+        console.log('before mount');
+        const user = MyApi.currentUserApi();
+        if (user?.email) {
+            dispatch(onLoadPage(user.email));
+        }
+    });
+
+    useEffect(() => {
+        // const user = MyApi.currentUserApi();
+        // if (user?.email) {
+        //     dispatch(onLoadPage(user.email));
+        // }
+        window.addEventListener('beforeunload', beforeUnloadPage);
+        return () => {
+            window.removeEventListener('beforeunload', beforeUnloadPage);
+        };
+    });
+
     return (
         <div className="App">
             <Burger isOpen={burgerOpen} onClick={handlerBurger} />
@@ -38,6 +67,13 @@ const App: React.FC = () => {
             </Switch>
         </div>
     );
+};
+
+const useComponentWillMount = (func: () => void) => {
+    const willMount = useRef(true);
+    if (willMount.current) {
+        func();
+    }
 };
 
 export default App;

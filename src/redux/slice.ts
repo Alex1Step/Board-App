@@ -1,7 +1,6 @@
-import { createSlice, current, PayloadAction, createAsyncThunk, unwrapResult } from '@reduxjs/toolkit';
-import firebase from 'firebase';
+import { createSlice, current, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 //interfaces
-import store, { AppDispatch, RootState } from './store';
+import { RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
 import { moveTaskI, changeBoardNameI, TaskI, BoardI, GlobalState } from './interfaces';
 import { LoginI } from '../pages/LogInLayout/LogInLayout';
@@ -9,6 +8,44 @@ import { LoginI } from '../pages/LogInLayout/LogInLayout';
 import { initialState } from './initialState';
 //api
 import MyApi from '../API//MyApi';
+
+export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
+    'board/pageUnload',
+    async (user: string, thunkApi) => {
+        await MyApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        return;
+    },
+);
+
+export const onLoadPage = createAsyncThunk('board/pageLoad', async (email: string) => {
+    let userInfo: GlobalState = {
+        userID: 0,
+        userName: '',
+        boards: [
+            {
+                id: 0,
+                name: 'My first board',
+                tasks: [
+                    {
+                        id: 0,
+                        taskName: 'My first task',
+                        deadlineDate: 'default',
+                        priority: 'default',
+                        assignee: 'default',
+                        description: 'default',
+                        fromBoard: 0,
+                    },
+                ],
+            },
+        ],
+    };
+    await MyApi.fetchUserDataFromBaseApi(email).then((response) => {
+        if (response) {
+            userInfo = response;
+        }
+    });
+    return userInfo;
+});
 
 export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
     let userInfo: GlobalState = {
@@ -32,7 +69,7 @@ export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) 
             },
         ],
     };
-    const response = await MyApi.signInApi(userData.username, userData.password).then(async (response) => {
+    await MyApi.signInApi(userData.username, userData.password).then(async (response) => {
         if (response && response.email) {
             await MyApi.fetchUserDataFromBaseApi(response.email).then((response) => {
                 if (response) {
@@ -66,7 +103,7 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
             },
         ],
     };
-    const response = await MyApi.signUpApi(userData.username, userData.password).then((response) => {
+    await MyApi.signUpApi(userData.username, userData.password).then((response) => {
         if (response && response.email) {
             newUser.userName = response.email;
             MyApi.sendToDatabaseApi(newUser);
@@ -156,8 +193,14 @@ const boardsSlice = createSlice({
         builder.addCase(signUp.fulfilled, (state, action) => {
             return action.payload;
         });
-        builder.addCase(logOut.fulfilled, (state) => {
+        builder.addCase(logOut.fulfilled, () => {
             return initialState;
+        });
+        builder.addCase(onLoadPage.fulfilled, (state, action) => {
+            return action.payload;
+        });
+        builder.addCase(onLeavePage.fulfilled, (state) => {
+            return state;
         });
     },
 });

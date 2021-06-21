@@ -5,6 +5,7 @@
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 7px;
+  background: white;
   border: 1px solid rgb(216, 209, 209);
   border-radius: 10px;
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
@@ -26,4 +27,18 @@
 }
 .low {
   background: linear-gradient(225deg, rgb(0, 238, 196), rgb(15, 255, 0) 100%);
+}
+
+.blink {
+  background: rgba(34, 60, 80, 0.2);
+  animation-name: blink;
+  animation-timing-function: linear;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.4;
+  }
 }
