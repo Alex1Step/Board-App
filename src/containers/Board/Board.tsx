@@ -29,18 +29,22 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
 
     //prepare to create Task List
     const arrTasks = tasks
-        ? tasks.map((t, i) => (
-              <Card
-                  key={i}
-                  id={t.id}
-                  taskName={t.taskName}
-                  deadlineDate={t.deadlineDate}
-                  priority={t.priority}
-                  assignee={t.assignee}
-                  description={t.description}
-                  fromBoard={t.fromBoard}
-              />
-          ))
+        ? tasks.map((t, i) => {
+              if (t && t.priority !== 'invalid')
+                  return (
+                      <Card
+                          key={i}
+                          id={t.id}
+                          taskName={t.taskName}
+                          deadlineDate={t.deadlineDate}
+                          priority={t.priority}
+                          assignee={t.assignee}
+                          description={t.description}
+                          fromBoard={t.fromBoard}
+                      />
+                  );
+              else return null;
+          })
         : null;
 
     //handler for deleting this board

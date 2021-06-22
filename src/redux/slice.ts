@@ -17,35 +17,42 @@ export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
     },
 );
 
-export const onLoadPage = createAsyncThunk('board/pageLoad', async (email: string) => {
-    let userInfo: GlobalState = {
-        userID: 0,
-        userName: '',
-        boards: [
-            {
-                id: 0,
-                name: 'My first board',
-                tasks: [
-                    {
-                        id: 0,
-                        taskName: 'My first task',
-                        deadlineDate: 'default',
-                        priority: 'default',
-                        assignee: 'default',
-                        description: 'default',
-                        fromBoard: 0,
-                    },
-                ],
-            },
-        ],
-    };
-    await MyApi.fetchUserDataFromBaseApi(email).then((response) => {
-        if (response) {
-            userInfo = response;
+export const onLoadPage = createAsyncThunk(
+    'board/pageLoad',
+    async (setData: React.Dispatch<React.SetStateAction<boolean>>) => {
+        let userInfo: GlobalState = {
+            userID: 0,
+            userName: '',
+            boards: [
+                {
+                    id: 0,
+                    name: 'My first board',
+                    tasks: [
+                        {
+                            id: 0,
+                            taskName: 'New Task',
+                            deadlineDate: 'default',
+                            priority: 'Low',
+                            assignee: 'anybody',
+                            description: 'to do',
+                            fromBoard: 0,
+                        },
+                    ],
+                },
+            ],
+        };
+        const email = await MyApi.currentUserApi()?.email;
+        if (email) {
+            await MyApi.fetchUserDataFromBaseApi(email).then((response) => {
+                if (response) {
+                    userInfo = response;
+                    setData(true);
+                }
+            });
         }
-    });
-    return userInfo;
-});
+        return userInfo;
+    },
+);
 
 export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
     let userInfo: GlobalState = {
@@ -58,11 +65,11 @@ export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) 
                 tasks: [
                     {
                         id: 0,
-                        taskName: 'My first task',
+                        taskName: 'New Task',
                         deadlineDate: 'default',
-                        priority: 'default',
-                        assignee: 'default',
-                        description: 'default',
+                        priority: 'Low',
+                        assignee: 'anybody',
+                        description: 'to do',
                         fromBoard: 0,
                     },
                 ],
@@ -92,11 +99,11 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
                 tasks: [
                     {
                         id: 0,
-                        taskName: 'My first task',
+                        taskName: 'New Task',
                         deadlineDate: 'default',
-                        priority: 'default',
-                        assignee: 'default',
-                        description: 'default',
+                        priority: 'Low',
+                        assignee: 'anybody',
+                        description: 'to do',
                         fromBoard: 0,
                     },
                 ],
@@ -116,9 +123,7 @@ export const logOut = createAsyncThunk<void, string, { state: RootState }>(
     'board/logOut',
     async (user: string, thunkApi) => {
         await MyApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
-        await MyApi.logOutApi().then(() => {
-            console.log('LOGGED OUT');
-        });
+        await MyApi.logOutApi();
         return;
     },
 );
@@ -141,11 +146,11 @@ const boardsSlice = createSlice({
         taskAdd(state, action: PayloadAction<number>) {
             const newTask: TaskI = {
                 id: current(state).boards[action.payload].tasks?.length || 0,
-                taskName: 'default',
+                taskName: 'New Task',
                 deadlineDate: 'default',
-                priority: 'default',
-                assignee: 'default',
-                description: 'default',
+                priority: 'none',
+                assignee: 'anybody',
+                description: 'to do',
                 fromBoard: action.payload,
             };
 
@@ -157,7 +162,17 @@ const boardsSlice = createSlice({
             const newBoard: BoardI = {
                 id: current(state).boards?.length || 0,
                 name: 'default',
-                tasks: [],
+                tasks: [
+                    {
+                        id: 0,
+                        taskName: 'New Task',
+                        deadlineDate: 'default',
+                        priority: 'Low',
+                        assignee: 'anybody',
+                        description: 'to do',
+                        fromBoard: current(state).boards?.length || 0,
+                    },
+                ],
             };
             state.boards ? state.boards.push(newBoard) : (state.boards = [newBoard]);
         },
@@ -168,23 +183,31 @@ const boardsSlice = createSlice({
             const destination = Number(action.payload.destinationBoard);
             const from = Number(action.payload.fromBoard);
             //remember task
-            const relocatebleTask = Object.assign({}, state.boards[from].tasks[action.payload.taskID]);
+            const relocatebleTask = JSON.parse(JSON.stringify(state.boards[from].tasks[action.payload.taskID]));
             //change task
             relocatebleTask.fromBoard = destination;
             //find new id for relocateble tsk
             const newTaskId = state.boards[destination].tasks
-                ? state.boards[destination].tasks.reduce((r, v) => (v.id > r ? v.id : r), 0) + 1
+                ? state.boards[destination].tasks.reduce((r, v) => (v && v.id > r ? v.id : r), 0) + 1
                 : 0;
             relocatebleTask.id = Number(newTaskId);
-            // console.log(relocatebleTask);
-            //delete from old board
-            delete state.boards[from].tasks[action.payload.taskID];
-            console.log(relocatebleTask);
+            const tempState = JSON.parse(JSON.stringify(current(state)));
+            // //delete from old board
+            const clearTask = {
+                id: action.payload.taskID,
+                taskName: '',
+                deadlineDate: '',
+                priority: 'invalid',
+                assignee: '',
+                description: '',
+                fromBoard: from,
+            };
+            tempState.boards[from].tasks.splice(action.payload.taskID, 1, clearTask);
             //push new task to destination board
-            state.boards[destination].tasks
-                ? state.boards[destination].tasks.push(relocatebleTask)
-                : (state.boards[destination].tasks = [relocatebleTask]);
-            // console.log(current(state));
+            tempState.boards[destination].tasks
+                ? tempState.boards[destination].tasks.push(relocatebleTask)
+                : (tempState.boards[destination].tasks = [relocatebleTask]);
+            return tempState;
         },
     },
     extraReducers: (builder) => {

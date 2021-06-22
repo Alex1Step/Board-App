@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useHistory } from 'react-router-dom';
 import styles from './AboutLayout.less';
+import { logOut } from '../../redux/slice';
 
 const AboutLayout: React.FunctionComponent = () => {
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
@@ -16,6 +17,11 @@ const AboutLayout: React.FunctionComponent = () => {
     const letSignIn = () => {
         history.push('/login');
     };
+    const dispatch = useDispatch();
+    const logOutHandler = () => {
+        dispatch(logOut(user));
+        setTimeout(() => history.push('/login'), 1000);
+    };
 
     return (
         <div className={styles.About}>
@@ -23,8 +29,8 @@ const AboutLayout: React.FunctionComponent = () => {
                 <h1>Welcome aBOARD!</h1>
                 <span>Let&apos;s make you much more efficient!</span>
                 {user !== '' ? (
-                    <Button type="primary" onClick={letSignIn}>
-                        SignIn
+                    <Button className={styles.singleButton} type="primary" onClick={logOutHandler}>
+                        SignIn to another account
                     </Button>
                 ) : (
                     <div className={styles.buttonContainer}>

@@ -25,7 +25,7 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fro
 
     const [blink, setBlink] = useState(1);
     const cls = [styles.Card];
-    if (blink && priority === 'default') cls.push(styles.blink);
+    if (blink && priority === 'none') cls.push(styles.blink);
 
     //change color of cards ordered by priority
     switch (priority) {
@@ -79,10 +79,28 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fro
         [taskName],
     );
 
+    const forCompare = {
+        taskName: 'New Task',
+        deadlineDate: 'default',
+        assignee: 'anybody',
+        description: 'to do',
+    };
+
     return (
         <BoardContext.Consumer>
             {(value) => (
-                <div ref={drag} className={cls.join(' ')} onClick={() => setBlink(0)}>
+                <div
+                    ref={
+                        taskName === forCompare.taskName ||
+                        deadlineDate === forCompare.deadlineDate ||
+                        assignee === forCompare.assignee ||
+                        description === forCompare.description
+                            ? null
+                            : drag
+                    }
+                    className={cls.join(' ')}
+                    onClick={() => setBlink(0)}
+                >
                     <InputComponent
                         type={'text'}
                         label={'Task:'}

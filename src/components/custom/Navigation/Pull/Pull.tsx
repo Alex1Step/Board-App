@@ -19,7 +19,11 @@ const Pull = (props: IpullProps): JSX.Element => {
             <nav className={cls.join(' ')}>
                 <ul className={styles.linksInNav}>
                     {props.listOfLinks.map((link, index) => {
-                        if ((user !== '' && link.to === '/register') || (user === '' && link.to === '/boards'))
+                        if (
+                            (user !== '' && link.to === '/register') ||
+                            (user === '' && link.to === '/boards') ||
+                            (user !== '' && link.to === '/login')
+                        )
                             return null;
                         return (
                             <li key={index}>

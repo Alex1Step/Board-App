@@ -8,6 +8,6 @@ export function signInApi(user: string, password: string): Promise<void | fireba
             if (user) return user;
         })
         .catch((error) => {
-            console.log(error.message);
+            alert(error);
         });
 }

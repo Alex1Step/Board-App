@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.less';
 import TasksLayout from './pages/TasksLayout/TasksLayout';
@@ -8,11 +8,12 @@ import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';
 import AboutLayout from './pages/AboutLayout/AboutLayout';
 import MyApi from './API//MyApi';
-import { onLoadPage, onLeavePage } from './redux/slice';
+import { onLeavePage, onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
+    const [data, setData] = useState(false);
 
     const [burgerOpen, setBurgerOpen] = useState(false);
 
@@ -25,10 +26,10 @@ const App: React.FC = () => {
     };
 
     const links = [
+        { to: '/about', text: 'About', exact: true },
         { to: '/boards', text: 'Boards', exact: true },
         { to: '/login', text: 'Log In', exact: true },
         { to: '/register', text: 'Register', exact: true },
-        { to: '/about', text: 'About', exact: true },
     ];
 
     function beforeUnloadPage() {
@@ -36,24 +37,13 @@ const App: React.FC = () => {
         if (user?.email) dispatch(onLeavePage(user?.email));
     }
 
-    useComponentWillMount(() => {
-        console.log('before mount');
-        const user = MyApi.currentUserApi();
-        if (user?.email) {
-            dispatch(onLoadPage(user.email));
-        }
-    });
-
     useEffect(() => {
-        // const user = MyApi.currentUserApi();
-        // if (user?.email) {
-        //     dispatch(onLoadPage(user.email));
-        // }
+        dispatch(onLoadPage(setData));
         window.addEventListener('beforeunload', beforeUnloadPage);
         return () => {
             window.removeEventListener('beforeunload', beforeUnloadPage);
         };
-    });
+    }, []);
 
     return (
         <div className="App">
@@ -67,13 +57,6 @@ const App: React.FC = () => {
             </Switch>
         </div>
     );
-};
-
-const useComponentWillMount = (func: () => void) => {
-    const willMount = useRef(true);
-    if (willMount.current) {
-        func();
-    }
 };
 
 export default App;
