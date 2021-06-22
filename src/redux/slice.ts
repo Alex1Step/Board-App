@@ -179,6 +179,7 @@ const boardsSlice = createSlice({
             // console.log(relocatebleTask);
             //delete from old board
             delete state.boards[from].tasks[action.payload.taskID];
+            console.log(relocatebleTask);
             //push new task to destination board
             state.boards[destination].tasks
                 ? state.boards[destination].tasks.push(relocatebleTask)
