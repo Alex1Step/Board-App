@@ -1,6 +1,9 @@
 import React from 'react';
+//styles
 import styles from './Modal.less';
+//interfaces
 import { ImodalProps } from './interfaces';
+//components
 import { Button } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 

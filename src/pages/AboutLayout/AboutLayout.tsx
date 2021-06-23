@@ -1,15 +1,20 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+//components
 import { Button } from 'antd';
+//redux
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { useHistory } from 'react-router-dom';
+//styles
 import styles from './AboutLayout.less';
+//interfaces
 import { logOut } from '../../redux/slice';
 
 const AboutLayout: React.FunctionComponent = () => {
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
     const history = useHistory();
+
     const letSignUp = () => {
         history.push('/register');
     };
@@ -17,7 +22,9 @@ const AboutLayout: React.FunctionComponent = () => {
     const letSignIn = () => {
         history.push('/login');
     };
+
     const dispatch = useDispatch();
+
     const logOutHandler = () => {
         dispatch(logOut(user));
         setTimeout(() => history.push('/login'), 1000);

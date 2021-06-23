@@ -1,16 +1,16 @@
 import React from 'react';
+//component
 import AuthForm from '../../components/custom/AuthForm/AuthForm';
+import SignInUpform from '../../containers/SignInUpform/SignInUpform';
+//styles
 import styles from './LogInLayout.less';
+//redux
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../../redux/slice';
 import { Redirect } from 'react-router-dom';
-import SignInUpform from '../../containers/SignInUpform/SignInUpform';
 import { RootState } from '../../redux/store';
-
-export interface LoginI {
-    password: string;
-    username: string;
-}
+//interfaces
+import { LoginI } from './interfaces';
 
 const LogInLayout: React.FunctionComponent = () => {
     const dispatch = useDispatch();

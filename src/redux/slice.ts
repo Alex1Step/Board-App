@@ -3,7 +3,7 @@ import { createSlice, current, PayloadAction, createAsyncThunk } from '@reduxjs/
 import { RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
 import { moveTaskI, changeBoardNameI, TaskI, BoardI, GlobalState } from './interfaces';
-import { LoginI } from '../pages/LogInLayout/LogInLayout';
+import { LoginI } from '../pages/LogInLayout/interfaces';
 //init state
 import { initialState } from './initialState';
 //api
@@ -49,6 +49,10 @@ export const onLoadPage = createAsyncThunk(
                     setData(true);
                 }
             });
+        } else {
+            setTimeout(() => {
+                setData(true);
+            }, 500);
         }
         return userInfo;
     },

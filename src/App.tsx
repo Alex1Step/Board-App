@@ -10,9 +10,11 @@ import AboutLayout from './pages/AboutLayout/AboutLayout';
 import MyApi from './API//MyApi';
 import { onLeavePage, onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
+import Preloader from './components/custom/Preloader/Preloader';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
+
     const [data, setData] = useState(false);
 
     const [burgerOpen, setBurgerOpen] = useState(false);
@@ -43,9 +45,9 @@ const App: React.FC = () => {
         return () => {
             window.removeEventListener('beforeunload', beforeUnloadPage);
         };
-    }, []);
+    });
 
-    return (
+    return data ? (
         <div className="App">
             <Burger isOpen={burgerOpen} onClick={handlerBurger} />
             <Pull isOpen={burgerOpen} onClick={handlerBurgerClose} listOfLinks={links} />
@@ -56,6 +58,8 @@ const App: React.FC = () => {
                 <Route path="/" component={AboutLayout} />
             </Switch>
         </div>
+    ) : (
+        <Preloader />
     );
 };
 

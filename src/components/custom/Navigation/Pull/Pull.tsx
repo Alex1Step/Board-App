@@ -1,13 +1,18 @@
 import React from 'react';
+//styles
 import styles from './Pull.less';
+//components
 import Blackout from '../Blackout/Blackout';
 import { NavLink } from 'react-router-dom';
+//interfaces
 import { IpullProps } from './interfaces';
+//redux
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 
 const Pull = (props: IpullProps): JSX.Element => {
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
+
     const cls = [styles.Pull];
 
     if (!props.isOpen) {

@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import InputComponent from '../../base/Input/InputComponent';
 import SelectComponent from '../../base/Select/SelectComponent';
 import ButtonComponent from '../../base/Button/ButtonComponent';
-//TYPES
+//interfaces
 import { TaskI } from '../../../redux/interfaces';
 import { IchangeValue } from './interfaces';
+//context
 import { BoardContext } from '../../../containers/Board/Board';
 //REDUX
 import { useDispatch } from 'react-redux';
@@ -15,7 +16,6 @@ import * as styles from './Card.less';
 //ReactDND
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { IdropResult } from './interfaces';
-
 const ItemTypes = {
     BOX: 'box',
 };

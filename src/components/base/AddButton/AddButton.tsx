@@ -1,6 +1,9 @@
 import React from 'react';
+//components
 import { Button } from 'antd';
+//styles
 import styles from './AddButton.less';
+//interfaces
 import { IaddButtonProps } from './interfaces';
 
 const AddButton = (props: IaddButtonProps): JSX.Element => {
