@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 //styles
 import styles from './Modal.less';
 //interfaces
@@ -16,10 +16,10 @@ const Modal = ({ visible = false, title = '', onClose, children }: ImodalProps):
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         document.addEventListener('keydown', onKeydown);
         return () => document.removeEventListener('keydown', onKeydown);
-    });
+    }, []);
 
     if (!visible) return null;
 

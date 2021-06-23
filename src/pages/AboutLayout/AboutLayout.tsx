@@ -27,7 +27,8 @@ const AboutLayout: React.FunctionComponent = () => {
 
     const logOutHandler = () => {
         dispatch(logOut(user));
-        setTimeout(() => history.push('/login'), 1000);
+        // setTimeout(() => history.push('/login'), 1000);
+        history.push('./about');
     };
 
     return (

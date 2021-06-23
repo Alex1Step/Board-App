@@ -1,6 +1,8 @@
 import React from 'react';
 //components
 import { Form, Input, Button } from 'antd';
+//styles
+import styles from './AuthForm.less';
 //interfaces
 import { Iprops } from './interfaces';
 
@@ -15,9 +17,15 @@ const tailLayout = {
 
 const AuthForm = (props: Iprops): JSX.Element => {
     return (
-        <Form {...layout} name="basic" initialValues={{ remember: true }} onFinish={props.handler}>
+        <Form
+            className={styles.AuthForm}
+            {...layout}
+            name="basic"
+            initialValues={{ remember: true }}
+            onFinish={props.handler}
+        >
             <Form.Item
-                label="Username"
+                label="Mail"
                 name="username"
                 rules={[{ required: true, message: 'Please input your username!' }]}
             >

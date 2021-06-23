@@ -1,7 +1,7 @@
-import { signInApi } from './SignInApi/SignInApi';
-import { signUpApi } from './SignUpApi/SignUpApi';
-import { logOutApi } from './LogOutApi/LogOutApi';
-import { sendToDatabaseApi } from './SendToDatabaseApi/sendToDatabaseApi';
+import { signInApi } from './signInApi/signInApi';
+import { signUpApi } from './signUpApi/signUpApi';
+import { logOutApi } from './logOutApi/logOutApi';
+import { sendToDatabaseApi } from './sendToDatabaseApi/sendToDatabaseApi';
 import { fetchUserDataFromBaseApi } from './fetchUserDataFromBaseApi/fetchUserDataFromBaseApi';
 import { currentUserApi } from './currentUserApi/currentUserApi';
 

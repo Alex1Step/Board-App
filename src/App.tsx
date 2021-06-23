@@ -7,10 +7,11 @@ import Pull from './components/custom/Navigation/Pull/Pull';
 import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';
 import AboutLayout from './pages/AboutLayout/AboutLayout';
-import MyApi from './API//MyApi';
+import MyApi from './api/indexApi';
 import { onLeavePage, onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
 import Preloader from './components/custom/Preloader/Preloader';
+import store from './redux/store';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const App: React.FC = () => {
     ];
 
     function beforeUnloadPage() {
+        localStorage.setItem('user', store.getState().globalReducer.userName.replace(/[\s.,%]/g, ''));
         const user = MyApi.currentUserApi();
         if (user?.email) dispatch(onLeavePage(user?.email));
     }
@@ -45,7 +47,7 @@ const App: React.FC = () => {
         return () => {
             window.removeEventListener('beforeunload', beforeUnloadPage);
         };
-    });
+    }, []);
 
     return data ? (
         <div className="App">

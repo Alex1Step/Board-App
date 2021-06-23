@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 //components
 import Card from '../../components/custom/Card/Card';
 import ButtonComponent from '../../components/base/Button/ButtonComponent';
@@ -17,7 +17,7 @@ import styles from './Board.less';
 import { useDrop } from 'react-dnd';
 import { IdustbinProps } from './interfaces';
 //lib
-import classNames from 'classnames/bind';
+import cn from 'classnames';
 
 const ItemTypes = {
     BOX: 'box',
@@ -27,26 +27,6 @@ export const BoardContext = React.createContext(1);
 
 const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): JSX.Element => {
     const dispatch = useDispatch();
-
-    //prepare to create Task List
-    const arrTasks = tasks
-        ? tasks.map((t, i) => {
-              if (t && t.priority !== 'invalid')
-                  return (
-                      <Card
-                          key={i}
-                          id={t.id}
-                          taskName={t.taskName}
-                          deadlineDate={t.deadlineDate}
-                          priority={t.priority}
-                          assignee={t.assignee}
-                          description={t.description}
-                          fromBoard={t.fromBoard}
-                      />
-                  );
-              else return null;
-          })
-        : null;
 
     //handler for deleting this board
     function handleDeleteBoard() {
@@ -68,7 +48,7 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
 
     //MODAL window
     const [isModal, setModal] = React.useState(false);
-    const onClose = () => setModal(false);
+    const onClose = useCallback(() => setModal(false), []);
 
     //ReactDND for handle active board
     const [{ canDrop, isOver }, drop] = useDrop(
@@ -87,16 +67,15 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
     );
     const isActive = canDrop && isOver;
 
-    //add style classes
-    const classes = classNames.bind(styles);
-    const className = classes({
-        Board: true,
-        active: isActive,
-        noactive: !isActive && canDrop,
-    });
-
     return (
-        <div className={className} ref={drop}>
+        <div
+            className={cn({
+                [styles.Board]: true,
+                [styles.active]: isActive,
+                [styles.noactive]: !isActive && canDrop,
+            })}
+            ref={drop}
+        >
             <span className={styles.boardname} onClick={() => setModal(true)}>
                 {name}
             </span>
@@ -116,7 +95,25 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
                 <ButtonComponent onClick={handleDeleteBoard} message={'Delete this board'} />
             </div>
             <Divider />
-            <BoardContext.Provider value={id}>{arrTasks}</BoardContext.Provider>
+            <BoardContext.Provider value={id}>
+                {tasks &&
+                    tasks.map((t, i) => {
+                        if (t && t.priority !== 'invalid') {
+                            return (
+                                <Card
+                                    key={i}
+                                    id={t.id}
+                                    taskName={t.taskName}
+                                    deadlineDate={t.deadlineDate}
+                                    priority={t.priority}
+                                    assignee={t.assignee}
+                                    description={t.description}
+                                    fromBoard={t.fromBoard}
+                                />
+                            );
+                        }
+                    })}
+            </BoardContext.Provider>
         </div>
     );
 };

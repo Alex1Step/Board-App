@@ -7,7 +7,7 @@ import { LoginI } from '../pages/LogInLayout/interfaces';
 //init state
 import { initialState } from './initialState';
 //api
-import MyApi from '../API//MyApi';
+import MyApi from '../api/indexApi';
 
 export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
     'board/pageUnload',
@@ -41,18 +41,17 @@ export const onLoadPage = createAsyncThunk(
                 },
             ],
         };
-        const email = await MyApi.currentUserApi()?.email;
-        if (email) {
-            await MyApi.fetchUserDataFromBaseApi(email).then((response) => {
+        // const email = await MyApi.currentUserApi()?.email;
+        const user = localStorage.getItem('user');
+        if (user) {
+            await MyApi.fetchUserDataFromBaseApi(user).then((response) => {
                 if (response) {
                     userInfo = response;
                     setData(true);
                 }
             });
         } else {
-            setTimeout(() => {
-                setData(true);
-            }, 500);
+            setData(true);
         }
         return userInfo;
     },

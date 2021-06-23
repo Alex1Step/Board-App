@@ -39,24 +39,27 @@ const TasksLayout: React.FunctionComponent = () => {
 
     const logOutHandler = () => {
         setData(false);
+        localStorage.removeItem('user');
         dispatch(logOut(user));
         setTimeout(() => history.push('/about'), 1000);
     };
 
     return data ? (
         <DndProvider backend={HTML5Backend}>
-            <>
+            <div className={styles.wrapper}>
                 <header>
                     <Button type="primary" danger onClick={logOutHandler}>
                         Logout
                     </Button>
                 </header>
                 <section className={styles.TasksLayout}>
-                    <h1>{user}</h1>
+                    <div className={styles.container}>
+                        <h1>{user}</h1>
+                    </div>
                     <AddButton onClick={addBoard} text={'Add new board'} type={'Board'} />
                     <section className={styles.boardsContainer}>{arrBoards}</section>
                 </section>
-            </>
+            </div>
         </DndProvider>
     ) : (
         <Preloader />

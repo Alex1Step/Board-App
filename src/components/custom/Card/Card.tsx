@@ -12,7 +12,8 @@ import { BoardContext } from '../../../containers/Board/Board';
 import { useDispatch } from 'react-redux';
 import { changeFromInput, taskDeleting, moveTask } from '../../../redux/slice';
 //STYLES
-import * as styles from './Card.less';
+import styles from './Card.less';
+import cn from 'classnames';
 //ReactDND
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { IdropResult } from './interfaces';
@@ -20,25 +21,10 @@ const ItemTypes = {
     BOX: 'box',
 };
 
-const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fromBoard }: TaskI): JSX.Element => {
+const Card = (props: TaskI): JSX.Element => {
+    const { id, taskName, deadlineDate, priority, assignee, description, fromBoard } = props;
     const dispatch = useDispatch();
-
     const [blink, setBlink] = useState(1);
-    const cls = [styles.Card];
-    if (blink && priority === 'none') cls.push(styles.blink);
-
-    //change color of cards ordered by priority
-    switch (priority) {
-        case 'High':
-            cls.push(styles.high);
-            break;
-        case 'Medium':
-            cls.push(styles.medium);
-            break;
-        case 'Low':
-            cls.push(styles.low);
-            break;
-    }
 
     //handler for listening changes in inputs
     function handleChange(
@@ -98,7 +84,11 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fro
                             ? null
                             : drag
                     }
-                    className={cls.join(' ')}
+                    className={cn({
+                        [styles.card]: true,
+                        [styles[`${priority.toLowerCase()}`]]: true,
+                        [styles.blink]: blink && priority === 'none',
+                    })}
                     onClick={() => setBlink(0)}
                 >
                     <InputComponent
