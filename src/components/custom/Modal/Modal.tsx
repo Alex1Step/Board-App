@@ -1,6 +1,11 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
+//styles
 import styles from './Modal.less';
+//interfaces
 import { ImodalProps } from './interfaces';
+//components
+import { Button } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
 
 const Modal = ({ visible = false, title = '', onClose, children }: ImodalProps): JSX.Element | null => {
     const onKeydown = ({ key }: KeyboardEvent) => {
@@ -19,13 +24,11 @@ const Modal = ({ visible = false, title = '', onClose, children }: ImodalProps):
     if (!visible) return null;
 
     return (
-        <div className={styles.modal} onClick={onClose}>
+        <div className={styles.modal}>
             <div className={styles.modalDialog} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
                     <h3 className={styles.modalTitle}>{title}</h3>
-                    <span className={styles.modalClose} onClick={onClose}>
-                        &times;
-                    </span>
+                    <Button type="primary" shape="circle" icon={<CheckOutlined />} onClick={onClose} />
                 </div>
                 <div className={styles.modalBody}>{children}</div>
             </div>

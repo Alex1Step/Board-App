@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 //COMPONENTS
 import InputComponent from '../../base/Input/InputComponent';
 import SelectComponent from '../../base/Select/SelectComponent';
 import ButtonComponent from '../../base/Button/ButtonComponent';
-//TYPES
+//interfaces
 import { TaskI } from '../../../redux/interfaces';
 import { IchangeValue } from './interfaces';
+//context
 import { BoardContext } from '../../../containers/Board/Board';
 //REDUX
 import { useDispatch } from 'react-redux';
@@ -15,7 +16,6 @@ import * as styles from './Card.less';
 //ReactDND
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { IdropResult } from './interfaces';
-
 const ItemTypes = {
     BOX: 'box',
 };
@@ -23,7 +23,9 @@ const ItemTypes = {
 const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fromBoard }: TaskI): JSX.Element => {
     const dispatch = useDispatch();
 
+    const [blink, setBlink] = useState(1);
     const cls = [styles.Card];
+    if (blink && priority === 'none') cls.push(styles.blink);
 
     //change color of cards ordered by priority
     switch (priority) {
@@ -77,10 +79,28 @@ const Card = ({ id, taskName, deadlineDate, priority, assignee, description, fro
         [taskName],
     );
 
+    const forCompare = {
+        taskName: 'New Task',
+        deadlineDate: 'default',
+        assignee: 'anybody',
+        description: 'to do',
+    };
+
     return (
         <BoardContext.Consumer>
             {(value) => (
-                <div ref={drag} className={cls.join(' ')}>
+                <div
+                    ref={
+                        taskName === forCompare.taskName ||
+                        deadlineDate === forCompare.deadlineDate ||
+                        assignee === forCompare.assignee ||
+                        description === forCompare.description
+                            ? null
+                            : drag
+                    }
+                    className={cls.join(' ')}
+                    onClick={() => setBlink(0)}
+                >
                     <InputComponent
                         type={'text'}
                         label={'Task:'}

@@ -16,6 +16,8 @@ import styles from './Board.less';
 //reactDND
 import { useDrop } from 'react-dnd';
 import { IdustbinProps } from './interfaces';
+//lib
+import classNames from 'classnames/bind';
 
 const ItemTypes = {
     BOX: 'box',
@@ -24,23 +26,27 @@ const ItemTypes = {
 export const BoardContext = React.createContext(1);
 
 const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): JSX.Element => {
-    const cls = [styles.Board];
-
     const dispatch = useDispatch();
 
     //prepare to create Task List
-    const arrTasks = tasks.map((t, i) => (
-        <Card
-            key={i}
-            id={t.id}
-            taskName={t.taskName}
-            deadlineDate={t.deadlineDate}
-            priority={t.priority}
-            assignee={t.assignee}
-            description={t.description}
-            fromBoard={t.fromBoard}
-        />
-    ));
+    const arrTasks = tasks
+        ? tasks.map((t, i) => {
+              if (t && t.priority !== 'invalid')
+                  return (
+                      <Card
+                          key={i}
+                          id={t.id}
+                          taskName={t.taskName}
+                          deadlineDate={t.deadlineDate}
+                          priority={t.priority}
+                          assignee={t.assignee}
+                          description={t.description}
+                          fromBoard={t.fromBoard}
+                      />
+                  );
+              else return null;
+          })
+        : null;
 
     //handler for deleting this board
     function handleDeleteBoard() {
@@ -80,19 +86,17 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
         [allowedDropEffect],
     );
     const isActive = canDrop && isOver;
-    const backgroundColor = selectBackgroundColor(isActive, canDrop);
 
-    //ReactDND support function
-    function selectBackgroundColor(isActive: boolean, canDrop: boolean) {
-        if (isActive) {
-            cls.push(styles.active);
-        } else if (canDrop) {
-            cls.push(styles.noactive);
-        }
-    }
+    //add style classes
+    const classes = classNames.bind(styles);
+    const className = classes({
+        Board: true,
+        active: isActive,
+        noactive: !isActive && canDrop,
+    });
 
     return (
-        <div className={cls.join(' ')} ref={drop}>
+        <div className={className} ref={drop}>
             <span className={styles.boardname} onClick={() => setModal(true)}>
                 {name}
             </span>

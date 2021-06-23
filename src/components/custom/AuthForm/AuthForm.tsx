@@ -1,5 +1,7 @@
 import React from 'react';
+//components
 import { Form, Input, Button } from 'antd';
+//interfaces
 import { Iprops } from './interfaces';
 
 const layout = {

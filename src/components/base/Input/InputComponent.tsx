@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+//components
 import { Input } from 'antd';
+//styles
 import styles from './InputComponent.less';
+//interfaces
 import { IinputProps } from './interfaces';
 
 const InputComponent = (props: IinputProps): JSX.Element => {

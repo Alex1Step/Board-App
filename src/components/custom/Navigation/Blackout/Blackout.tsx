@@ -1,5 +1,7 @@
 import React from 'react';
+//styles
 import styles from './Blackout.less';
+//interfaces
 import { Iblackout } from './interfaces';
 
 const Blackout = (props: Iblackout): JSX.Element => {

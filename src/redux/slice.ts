@@ -1,28 +1,134 @@
-import { createSlice, current, PayloadAction, createAsyncThunk, unwrapResult } from '@reduxjs/toolkit';
-import firebase from 'firebase';
+import { createSlice, current, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 //interfaces
-import { AppDispatch, RootState } from './store';
+import { RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
-import { moveTaskI, changeBoardNameI, TaskI, BoardI } from './interfaces';
-import { LoginI } from '../pages/LogInLayout/LogInLayout';
+import { moveTaskI, changeBoardNameI, TaskI, BoardI, GlobalState } from './interfaces';
+import { LoginI } from '../pages/LogInLayout/interfaces';
 //init state
 import { initialState } from './initialState';
+//api
+import MyApi from '../API//MyApi';
 
-export const signIn = createAsyncThunk<string, LoginI, { dispatch: AppDispatch }>(
-    'board/fetchIsSignIn',
-    async (userData) => {
-        let userInfo = '';
-        await firebase
-            .auth()
-            .signInWithEmailAndPassword(userData.username, userData.password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                if (user?.email) userInfo = user.email;
-            })
-            .catch((error) => {
-                console.log(error.message);
+export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
+    'board/pageUnload',
+    async (user: string, thunkApi) => {
+        await MyApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        return;
+    },
+);
+
+export const onLoadPage = createAsyncThunk(
+    'board/pageLoad',
+    async (setData: React.Dispatch<React.SetStateAction<boolean>>) => {
+        let userInfo: GlobalState = {
+            userID: 0,
+            userName: '',
+            boards: [
+                {
+                    id: 0,
+                    name: 'My first board',
+                    tasks: [
+                        {
+                            id: 0,
+                            taskName: 'New Task',
+                            deadlineDate: 'default',
+                            priority: 'Low',
+                            assignee: 'anybody',
+                            description: 'to do',
+                            fromBoard: 0,
+                        },
+                    ],
+                },
+            ],
+        };
+        const email = await MyApi.currentUserApi()?.email;
+        if (email) {
+            await MyApi.fetchUserDataFromBaseApi(email).then((response) => {
+                if (response) {
+                    userInfo = response;
+                    setData(true);
+                }
             });
+        } else {
+            setTimeout(() => {
+                setData(true);
+            }, 500);
+        }
         return userInfo;
+    },
+);
+
+export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
+    let userInfo: GlobalState = {
+        userID: 0,
+        userName: '',
+        boards: [
+            {
+                id: 0,
+                name: 'My first board',
+                tasks: [
+                    {
+                        id: 0,
+                        taskName: 'New Task',
+                        deadlineDate: 'default',
+                        priority: 'Low',
+                        assignee: 'anybody',
+                        description: 'to do',
+                        fromBoard: 0,
+                    },
+                ],
+            },
+        ],
+    };
+    await MyApi.signInApi(userData.username, userData.password).then(async (response) => {
+        if (response && response.email) {
+            await MyApi.fetchUserDataFromBaseApi(response.email).then((response) => {
+                if (response) {
+                    userInfo = response;
+                }
+            });
+        }
+    });
+    return userInfo;
+});
+
+export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) => {
+    const newUser: GlobalState = {
+        userID: 0,
+        userName: '',
+        boards: [
+            {
+                id: 0,
+                name: 'My first board',
+                tasks: [
+                    {
+                        id: 0,
+                        taskName: 'New Task',
+                        deadlineDate: 'default',
+                        priority: 'Low',
+                        assignee: 'anybody',
+                        description: 'to do',
+                        fromBoard: 0,
+                    },
+                ],
+            },
+        ],
+    };
+    await MyApi.signUpApi(userData.username, userData.password).then((response) => {
+        if (response && response.email) {
+            newUser.userName = response.email;
+            MyApi.sendToDatabaseApi(newUser);
+        }
+    });
+    return newUser;
+});
+
+export const logOut = createAsyncThunk<void, string, { state: RootState }>(
+    'board/logOut',
+    async (user: string, thunkApi) => {
+        await MyApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        await MyApi.logOutApi();
+        return;
     },
 );
 
@@ -43,24 +149,36 @@ const boardsSlice = createSlice({
         },
         taskAdd(state, action: PayloadAction<number>) {
             const newTask: TaskI = {
-                id: current(state).boards[action.payload].tasks.length,
-                taskName: 'default',
+                id: current(state).boards[action.payload].tasks?.length || 0,
+                taskName: 'New Task',
                 deadlineDate: 'default',
-                priority: 'default',
-                assignee: 'default',
-                description: 'default',
+                priority: 'none',
+                assignee: 'anybody',
+                description: 'to do',
                 fromBoard: action.payload,
             };
 
-            state.boards[action.payload].tasks.push(newTask);
+            state.boards[action.payload].tasks
+                ? state.boards[action.payload].tasks.push(newTask)
+                : (state.boards[action.payload].tasks = [newTask]);
         },
         boardAdd(state) {
             const newBoard: BoardI = {
-                id: current(state).boards.length,
+                id: current(state).boards?.length || 0,
                 name: 'default',
-                tasks: [],
+                tasks: [
+                    {
+                        id: 0,
+                        taskName: 'New Task',
+                        deadlineDate: 'default',
+                        priority: 'Low',
+                        assignee: 'anybody',
+                        description: 'to do',
+                        fromBoard: current(state).boards?.length || 0,
+                    },
+                ],
             };
-            state.boards.push(newBoard);
+            state.boards ? state.boards.push(newBoard) : (state.boards = [newBoard]);
         },
         changeBoardName(state, action: PayloadAction<changeBoardNameI>) {
             state.boards[action.payload.boardID].name = action.payload.newBoardName;
@@ -69,71 +187,52 @@ const boardsSlice = createSlice({
             const destination = Number(action.payload.destinationBoard);
             const from = Number(action.payload.fromBoard);
             //remember task
-            const relocatebleTask = Object.assign({}, state.boards[from].tasks[action.payload.taskID]);
+            const relocatebleTask = JSON.parse(JSON.stringify(state.boards[from].tasks[action.payload.taskID]));
             //change task
             relocatebleTask.fromBoard = destination;
             //find new id for relocateble tsk
-            const newTaskId = state.boards[destination].tasks.reduce((r, v) => (v.id > r ? v.id : r), 0) + 1;
+            const newTaskId = state.boards[destination].tasks
+                ? state.boards[destination].tasks.reduce((r, v) => (v && v.id > r ? v.id : r), 0) + 1
+                : 0;
             relocatebleTask.id = Number(newTaskId);
-            // console.log(relocatebleTask);
-            //delete from old board
-            delete state.boards[from].tasks[action.payload.taskID];
-            //push new task to destination board
-            state.boards[destination].tasks.push(relocatebleTask);
-            // console.log(current(state));
-        },
-        /*ASYNC!!!*/
-        succesLogIn(state, action: PayloadAction<string>) {
-            console.log(action.payload);
-            state = state;
-        },
-        /*ASYNC!!!*/
-        succesCreateNewUser(state, action: PayloadAction<string>) {
-            const newUser = {
-                userID: 0,
-                userName: action.payload,
-                boards: [
-                    {
-                        id: 0,
-                        name: 'My first board',
-                        tasks: [
-                            {
-                                id: 0,
-                                taskName: 'My first task',
-                                deadlineDate: 'default',
-                                priority: 'default',
-                                assignee: 'default',
-                                description: 'default',
-                                fromBoard: 0,
-                            },
-                        ],
-                    },
-                ],
+            const tempState = JSON.parse(JSON.stringify(current(state)));
+            // //delete from old board
+            const clearTask = {
+                id: action.payload.taskID,
+                taskName: '',
+                deadlineDate: '',
+                priority: 'invalid',
+                assignee: '',
+                description: '',
+                fromBoard: from,
             };
-            firebase
-                .database()
-                .ref()
-                .update({ [action.payload.substr(0, 5)]: newUser });
-            return newUser;
+            tempState.boards[from].tasks.splice(action.payload.taskID, 1, clearTask);
+            //push new task to destination board
+            tempState.boards[destination].tasks
+                ? tempState.boards[destination].tasks.push(relocatebleTask)
+                : (tempState.boards[destination].tasks = [relocatebleTask]);
+            return tempState;
         },
     },
     extraReducers: (builder) => {
         builder.addCase(signIn.fulfilled, (state, action) => {
-            console.log(action.payload);
-            state.userName = action.payload;
+            return action.payload;
+        });
+        builder.addCase(signUp.fulfilled, (state, action) => {
+            return action.payload;
+        });
+        builder.addCase(logOut.fulfilled, () => {
+            return initialState;
+        });
+        builder.addCase(onLoadPage.fulfilled, (state, action) => {
+            return action.payload;
+        });
+        builder.addCase(onLeavePage.fulfilled, (state) => {
+            return state;
         });
     },
 });
 
-export const {
-    changeFromInput,
-    boardDeleting,
-    taskDeleting,
-    taskAdd,
-    boardAdd,
-    changeBoardName,
-    moveTask,
-    succesLogIn,
-    succesCreateNewUser,
-} = boardsSlice.actions;
+export const { changeFromInput, boardDeleting, taskDeleting, taskAdd, boardAdd, changeBoardName, moveTask } =
+    boardsSlice.actions;
 export default boardsSlice.reducer;

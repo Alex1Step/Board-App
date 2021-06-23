@@ -1,6 +1,9 @@
 import React from 'react';
+//styles
 import styles from './Burger.less';
+//components
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
+//interfaces
 import { IburgerProps } from './interfaces';
 
 const Burger = (props: IburgerProps): JSX.Element => {

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+//styles
 import styles from './Select.less';
+//interfaces
 import { IselectProps } from './interfaces';
 
 const SelectComponent = (props: IselectProps): JSX.Element => {
@@ -8,6 +10,7 @@ const SelectComponent = (props: IselectProps): JSX.Element => {
     const inputType: string = props.type || 'text';
     const htmlFor = `${inputType}-${Math.random()}`;
     let optionsForSelect: Array<React.ReactNode> = [];
+
     if (inputType === 'select') {
         const options = ['High', 'Medium', 'Low'];
         optionsForSelect = options.map((opt, i) => (
