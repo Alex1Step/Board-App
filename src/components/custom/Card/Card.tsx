@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
-//COMPONENTS
 import InputComponent from '../../base/Input/InputComponent';
 import SelectComponent from '../../base/Select/SelectComponent';
 import ButtonComponent from '../../base/Button/ButtonComponent';
-//interfaces
 import { TaskI } from '../../../redux/interfaces';
 import { IchangeValue } from './interfaces';
-//context
 import { BoardContext } from '../../../containers/Board/Board';
-//REDUX
 import { useDispatch } from 'react-redux';
 import { changeFromInput, taskDeleting, moveTask } from '../../../redux/slice';
-//STYLES
 import styles from './Card.less';
 import cn from 'classnames';
-//ReactDND
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { IdropResult } from './interfaces';
 const ItemTypes = {
@@ -109,6 +103,7 @@ const Card = (props: TaskI): JSX.Element => {
                     />
                     <SelectComponent
                         type={'select'}
+                        options={['High', 'Medium', 'Low']}
                         label={'Priority:'}
                         value={priority}
                         onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>

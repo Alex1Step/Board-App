@@ -1,44 +1,43 @@
 import React, { useState } from 'react';
-//components
 import { Input } from 'antd';
-//styles
 import styles from './InputComponent.less';
-//interfaces
 import { IinputProps } from './interfaces';
+import cn from 'classnames';
 
 const InputComponent = (props: IinputProps): JSX.Element => {
+    const { type, label, value, onChange, withoutSubstitution } = props;
+
     const [hideShow, setHideShow] = useState(1);
 
-    const inputType: string = props.type || 'text';
+    const inputType: string = type || 'text';
     const htmlFor = `${inputType}-${Math.random()}`;
 
-    let clsInput = [styles.inputHide];
-    let clsP = [styles.textShow];
-    if (hideShow === 0) {
-        clsInput = [styles.inputShow];
-        clsP = [styles.textHide];
-    }
-
-    return props.withoutSubstitution ? (
-        <Input type={inputType} id={htmlFor} value={props.value} onChange={props.onChange} autoFocus={true} />
+    return withoutSubstitution ? (
+        <Input type={inputType} id={htmlFor} value={value} onChange={onChange} autoFocus={true} />
     ) : (
         <div className={styles.inputContainer}>
-            <label htmlFor={htmlFor}>{props.label}</label>
+            <label htmlFor={htmlFor}>{label}</label>
             <span
-                className={clsP.join(' ')}
+                className={cn({
+                    [styles.textShow]: hideShow === 1,
+                    [styles.textHide]: hideShow === 0,
+                })}
                 onClick={() => {
                     setHideShow(0);
                 }}
             >
-                {props.value}
+                {value}
             </span>
             <Input
                 ref={(ref) => ref?.focus()}
-                className={clsInput.join(' ')}
+                className={cn({
+                    [styles.inputHide]: hideShow === 1,
+                    [styles.inputShow]: hideShow === 0,
+                })}
                 type={inputType}
                 id={htmlFor}
-                value={props.value}
-                onChange={props.onChange}
+                value={value}
+                onChange={onChange}
                 onBlur={() => setHideShow(1)}
             />
         </div>

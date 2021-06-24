@@ -1,47 +1,44 @@
 import React, { useState } from 'react';
-//styles
 import styles from './Select.less';
-//interfaces
 import { IselectProps } from './interfaces';
+import cn from 'classnames';
 
 const SelectComponent = (props: IselectProps): JSX.Element => {
+    const { type, options, label, value, onChange } = props;
+
     const [hideShow, setHideShow] = useState(1);
 
-    const inputType: string = props.type || 'text';
+    const inputType: string = type || 'text';
     const htmlFor = `${inputType}-${Math.random()}`;
-    let optionsForSelect: Array<React.ReactNode> = [];
-
-    if (inputType === 'select') {
-        const options = ['High', 'Medium', 'Low'];
-        optionsForSelect = options.map((opt, i) => (
-            <option key={i} value={opt}>
-                {opt}
-            </option>
-        ));
-    }
-
-    let clsSelect = [styles.selectHide];
-    let clsP = [styles.textShow];
-    if (hideShow === 0) {
-        clsSelect = [styles.selectShow];
-        clsP = [styles.textHide];
-    }
 
     return (
         <div className={styles.selectContainer}>
-            <label htmlFor={htmlFor}>{props.label}</label>
-            <span className={clsP.join(' ')} onClick={() => setHideShow(0)}>
-                {props.value}
+            <label htmlFor={htmlFor}>{label}</label>
+            <span
+                className={cn({
+                    [styles.textShow]: hideShow === 1,
+                    [styles.textHide]: hideShow === 0,
+                })}
+                onClick={() => setHideShow(0)}
+            >
+                {value}
             </span>
             <select
                 ref={(ref) => ref?.focus()}
                 id={htmlFor}
-                value={props.value}
-                className={clsSelect.join(' ')}
-                onChange={props.onChange}
+                value={value}
+                className={cn({
+                    [styles.selectHide]: hideShow === 1,
+                    [styles.selectShow]: hideShow === 0,
+                })}
+                onChange={onChange}
                 onBlur={() => setHideShow(1)}
             >
-                {optionsForSelect}
+                {options.map((option, index) => (
+                    <option key={index} value={option}>
+                        {option}
+                    </option>
+                ))}
             </select>
         </div>
     );
