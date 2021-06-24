@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import './App.less';
+import styles from './App.less';
 import TasksLayout from './pages/TasksLayout/TasksLayout';
 import Burger from './components/custom/Navigation/Burger/Burger';
 import Pull from './components/custom/Navigation/Pull/Pull';
@@ -12,6 +12,8 @@ import { onLeavePage, onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
 import Preloader from './components/custom/Preloader/Preloader';
 import store from './redux/store';
+import i18n from './i18n';
+import { Button } from 'antd';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -20,13 +22,9 @@ const App: React.FC = () => {
 
     const [burgerOpen, setBurgerOpen] = useState(false);
 
-    const handlerBurger = () => {
-        setBurgerOpen(!burgerOpen);
-    };
+    const handlerBurger = () => setBurgerOpen(!burgerOpen);
 
-    const handlerBurgerClose = () => {
-        setBurgerOpen(false);
-    };
+    const handlerBurgerClose = useCallback(() => setBurgerOpen(false), []);
 
     const links = [
         { to: '/about', text: 'About', exact: true },
@@ -49,6 +47,10 @@ const App: React.FC = () => {
         };
     }, []);
 
+    const changeLanguage = (language: string | undefined) => {
+        i18n.changeLanguage(language);
+    };
+
     return data ? (
         <div className="App">
             <Burger isOpen={burgerOpen} onClick={handlerBurger} />
@@ -59,6 +61,14 @@ const App: React.FC = () => {
                 <Route path="/register" component={RegLayout} />
                 <Route path="/" component={AboutLayout} />
             </Switch>
+            <div className={styles.languageButtons}>
+                <Button type="primary" className={styles.langBtn} ghost onClick={() => changeLanguage('en')}>
+                    EN
+                </Button>
+                <Button type="primary" className={styles.langBtn} ghost onClick={() => changeLanguage('ru')}>
+                    RU
+                </Button>
+            </div>
         </div>
     ) : (
         <Preloader />

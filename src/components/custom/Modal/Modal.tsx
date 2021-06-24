@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
-//styles
 import styles from './Modal.less';
-//interfaces
 import { ImodalProps } from './interfaces';
-//components
 import { Button } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
-const Modal = ({ visible = false, title = '', onClose, children }: ImodalProps): JSX.Element | null => {
+const Modal = (props: ImodalProps): JSX.Element | null => {
+    const { visible = false, title = '', onClose, children } = props;
+
     const onKeydown = ({ key }: KeyboardEvent) => {
         switch (key) {
             case 'Enter':
+                onClose();
+                break;
+            case 'Escape':
                 onClose();
                 break;
         }
@@ -21,9 +23,7 @@ const Modal = ({ visible = false, title = '', onClose, children }: ImodalProps):
         return () => document.removeEventListener('keydown', onKeydown);
     }, []);
 
-    if (!visible) return null;
-
-    return (
+    return !visible ? null : (
         <div className={styles.modal}>
             <div className={styles.modalDialog} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>

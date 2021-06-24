@@ -11,6 +11,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import styles from './TasksLayout.less';
 import { BoardI } from '../../redux/interfaces';
+import { useTranslation } from 'react-i18next';
 
 const TasksLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -32,19 +33,21 @@ const TasksLayout: React.FC = () => {
         history.push('/about');
     };
 
+    const { t, i18n } = useTranslation();
+
     return data ? (
         <DndProvider backend={HTML5Backend}>
             <div className={styles.wrapper}>
                 <header>
                     <Button type="primary" danger onClick={logOutHandler}>
-                        Logout
+                        {t('description.Logout')}
                     </Button>
                 </header>
                 <section className={styles.tasksLayout}>
                     <div className={styles.container}>
                         <h1>{user}</h1>
                     </div>
-                    <AddButton onClick={addBoard} text={'Add new board'} type={'Board'} />
+                    <AddButton onClick={addBoard} text={t('description.AddBoard')} type={'Board'} />
                     <section className={styles.boardsContainer}>
                         {boards
                             ? boards.map((b, i) => {

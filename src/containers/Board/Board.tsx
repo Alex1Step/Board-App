@@ -17,8 +17,6 @@ const ItemTypes = {
     box: 'box',
 };
 
-export const BoardContext = React.createContext(1);
-
 const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): JSX.Element => {
     const dispatch = useDispatch();
 
@@ -90,25 +88,23 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
                 <ButtonComponent onClick={deleteBoard} message={'Delete this board'} />
             </div>
             <Divider />
-            <BoardContext.Provider value={id}>
-                {tasks &&
-                    tasks.map((task, index) => {
-                        if (task && task.priority !== 'invalid') {
-                            return (
-                                <Card
-                                    key={index}
-                                    id={task.id}
-                                    taskName={task.taskName}
-                                    deadlineDate={task.deadlineDate}
-                                    priority={task.priority}
-                                    assignee={task.assignee}
-                                    description={task.description}
-                                    fromBoard={task.fromBoard}
-                                />
-                            );
-                        }
-                    })}
-            </BoardContext.Provider>
+            {tasks &&
+                tasks.map((task, index) => {
+                    if (task && task.priority !== 'invalid') {
+                        return (
+                            <Card
+                                key={index}
+                                id={task.id}
+                                taskName={task.taskName}
+                                deadlineDate={task.deadlineDate}
+                                priority={task.priority}
+                                assignee={task.assignee}
+                                description={task.description}
+                                fromBoard={task.fromBoard}
+                            />
+                        );
+                    }
+                })}
         </div>
     );
 };

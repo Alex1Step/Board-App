@@ -1,0 +1,7 @@
+{
+    "title": "Internationalizing with i18next",
+    "description": {
+      "Logout": "Logout",
+      "AddBoard": "Add new board"
+    }
+  }

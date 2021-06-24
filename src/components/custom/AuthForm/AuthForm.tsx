@@ -1,9 +1,6 @@
 import React from 'react';
-//components
 import { Form, Input, Button } from 'antd';
-//styles
 import styles from './AuthForm.less';
-//interfaces
 import { Iprops } from './interfaces';
 
 const layout = {
@@ -15,14 +12,14 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-const AuthForm = (props: Iprops): JSX.Element => {
+const AuthForm = ({ handler, textOnButton }: Iprops): JSX.Element => {
     return (
         <Form
-            className={styles.AuthForm}
+            className={styles.authForm}
             {...layout}
             name="basic"
             initialValues={{ remember: true }}
-            onFinish={props.handler}
+            onFinish={handler}
         >
             <Form.Item
                 label="Mail"
@@ -42,7 +39,7 @@ const AuthForm = (props: Iprops): JSX.Element => {
 
             <Form.Item {...tailLayout}>
                 <Button type="primary" htmlType="submit">
-                    {props.textOnButton}
+                    {textOnButton}
                 </Button>
             </Form.Item>
         </Form>

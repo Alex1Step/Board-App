@@ -11,6 +11,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { FirebaseAuthProvider } from '@react-firebase/auth';
 import { FirebaseDatabaseProvider } from '@react-firebase/database';
+import './i18n';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAgTJyexl3AhXyoRfnB6LSyv0ZBoaP3Nm8',

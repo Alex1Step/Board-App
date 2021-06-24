@@ -6,15 +6,15 @@ export const initialState = {
     boards: [
         {
             id: 0,
-            name: 'My First Board',
+            name: 'My first board',
             tasks: [
                 {
                     id: 0,
-                    taskName: 'My First Task',
-                    deadlineDate: '11.01.2011',
+                    taskName: 'New Task',
+                    deadlineDate: 'default',
                     priority: 'Low',
-                    assignee: 'Name',
-                    description: 'To Do',
+                    assignee: 'anybody',
+                    description: 'to do',
                     fromBoard: 0,
                 },
             ],
