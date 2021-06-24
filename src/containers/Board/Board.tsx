@@ -1,26 +1,20 @@
 import React, { useCallback } from 'react';
-//components
 import Card from '../../components/custom/Card/Card';
 import ButtonComponent from '../../components/base/Button/ButtonComponent';
 import AddButton from '../../components/base/AddButton/AddButton';
 import Modal from '../../components/custom/Modal/Modal';
 import InputComponent from '../../components/base/Input/InputComponent';
 import { Divider } from 'antd';
-//interfaces
 import type { BoardI } from '../../redux/interfaces';
-//redux
 import { useDispatch } from 'react-redux';
 import { boardDeleting, taskAdd, changeBoardName } from '../../redux/slice';
-//styles
 import styles from './Board.less';
-//reactDND
-import { useDrop } from 'react-dnd';
+import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { IdustbinProps } from './interfaces';
-//lib
 import cn from 'classnames';
 
 const ItemTypes = {
-    BOX: 'box',
+    box: 'box',
 };
 
 export const BoardContext = React.createContext(1);
@@ -28,37 +22,38 @@ export const BoardContext = React.createContext(1);
 const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): JSX.Element => {
     const dispatch = useDispatch();
 
-    //handler for deleting this board
-    function handleDeleteBoard() {
+    //Delete this board
+    const deleteBoard = () => {
         dispatch(boardDeleting(id));
-    }
+    };
 
-    //handler for ADD new task to board
-    function addNewTask() {
+    //Add new task to board this board
+    const addNewTask = () => {
         dispatch(taskAdd(id));
-    }
-    //handler for rename board
-    function handlerChangeBoardName(event: { target: HTMLInputElement | HTMLSelectElement }) {
-        const chBName = {
-            boardID: id,
-            newBoardName: event.target.value,
-        };
-        dispatch(changeBoardName(chBName));
-    }
+    };
+    //Rename this board
+    const changeBoardNameHandler = (event: { target: HTMLInputElement | HTMLSelectElement }) => {
+        dispatch(
+            changeBoardName({
+                boardID: id,
+                newBoardName: event.target.value,
+            }),
+        );
+    };
 
-    //MODAL window
+    //show or hide modal window
     const [isModal, setModal] = React.useState(false);
     const onClose = useCallback(() => setModal(false), []);
 
     //ReactDND for handle active board
     const [{ canDrop, isOver }, drop] = useDrop(
         () => ({
-            accept: ItemTypes.BOX,
+            accept: ItemTypes.box,
             drop: () => ({
                 name: id,
                 allowedDropEffect,
             }),
-            collect: (monitor: any) => ({
+            collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
                 isOver: monitor.isOver(),
                 canDrop: monitor.canDrop(),
             }),
@@ -70,7 +65,7 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
     return (
         <div
             className={cn({
-                [styles.Board]: true,
+                [styles.board]: true,
                 [styles.active]: isActive,
                 [styles.noactive]: !isActive && canDrop,
             })}
@@ -85,30 +80,30 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
                     label={''}
                     value={name}
                     onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>
-                        handlerChangeBoardName(event)
+                        changeBoardNameHandler(event)
                     }
                     withoutSubstitution={true}
                 />
             </Modal>
             <div className={styles.boardButtonContainer}>
                 <AddButton text={'Add new task'} type={'Task'} onClick={addNewTask} />
-                <ButtonComponent onClick={handleDeleteBoard} message={'Delete this board'} />
+                <ButtonComponent onClick={deleteBoard} message={'Delete this board'} />
             </div>
             <Divider />
             <BoardContext.Provider value={id}>
                 {tasks &&
-                    tasks.map((t, i) => {
-                        if (t && t.priority !== 'invalid') {
+                    tasks.map((task, index) => {
+                        if (task && task.priority !== 'invalid') {
                             return (
                                 <Card
-                                    key={i}
-                                    id={t.id}
-                                    taskName={t.taskName}
-                                    deadlineDate={t.deadlineDate}
-                                    priority={t.priority}
-                                    assignee={t.assignee}
-                                    description={t.description}
-                                    fromBoard={t.fromBoard}
+                                    key={index}
+                                    id={task.id}
+                                    taskName={task.taskName}
+                                    deadlineDate={task.deadlineDate}
+                                    priority={task.priority}
+                                    assignee={task.assignee}
+                                    description={task.description}
+                                    fromBoard={task.fromBoard}
                                 />
                             );
                         }
