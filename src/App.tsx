@@ -7,7 +7,7 @@ import Pull from './components/custom/Navigation/Pull/Pull';
 import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';
 import AboutLayout from './pages/AboutLayout/AboutLayout';
-import MyApi from './api/indexApi';
+import indexApi from './api/indexApi';
 import { onLeavePage, onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
 import Preloader from './components/custom/Preloader/Preloader';
@@ -35,11 +35,11 @@ const App: React.FC = () => {
         { to: '/register', text: 'Register', exact: true },
     ];
 
-    function beforeUnloadPage() {
+    const beforeUnloadPage = () => {
         localStorage.setItem('user', store.getState().globalReducer.userName.replace(/[\s.,%]/g, ''));
-        const user = MyApi.currentUserApi();
+        const user = indexApi.currentUserApi();
         if (user?.email) dispatch(onLeavePage(user?.email));
-    }
+    };
 
     useEffect(() => {
         dispatch(onLoadPage(setData));

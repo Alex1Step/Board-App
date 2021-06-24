@@ -1,19 +1,16 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-//components
 import { Button } from 'antd';
-//redux
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-//styles
 import styles from './AboutLayout.less';
-//interfaces
 import { logOut } from '../../redux/slice';
 
-const AboutLayout: React.FunctionComponent = () => {
-    const user: string = useSelector((state: RootState) => state.globalReducer.userName);
-
+const AboutLayout: React.FC = () => {
+    const dispatch = useDispatch();
     const history = useHistory();
+
+    const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
     const letSignUp = () => {
         history.push('/register');
@@ -23,16 +20,13 @@ const AboutLayout: React.FunctionComponent = () => {
         history.push('/login');
     };
 
-    const dispatch = useDispatch();
-
     const logOutHandler = () => {
         dispatch(logOut(user));
-        // setTimeout(() => history.push('/login'), 1000);
         history.push('./about');
     };
 
     return (
-        <div className={styles.About}>
+        <div className={styles.about}>
             <div className={styles.wrapper}>
                 <h1>Welcome aBOARD!</h1>
                 <span>Let&apos;s make you much more efficient!</span>

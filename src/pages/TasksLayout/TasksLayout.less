@@ -6,42 +6,39 @@
   height: fit-content;
   max-width: 100vw;
   width: 100vw;
-}
-
-header {
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px;
-}
-.TasksLayout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  .container {
+  header {
     display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+  .tasksLayout {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 40px;
-    margin-bottom: 10px;
-    background-image: url(../../images/userNameBCKGRND.png);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    h1 {
-      color: white;
-      margin: 0;
+    justify-content: flex-start;
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      margin-bottom: 10px;
+      background-image: url(../../images/userNameBCKGRND.png);
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      h1 {
+        color: white;
+        margin: 0;
+      }
     }
-  }
-  .boardsContainer {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: inherit;
-  }
-  .logOutButton {
-  }
-  button {
-    margin-bottom: 20px;
+    .boardsContainer {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: inherit;
+    }
+    button {
+      margin-bottom: 20px;
+    }
   }
 }

@@ -5,7 +5,7 @@ import { sendToDatabaseApi } from './sendToDatabaseApi/sendToDatabaseApi';
 import { fetchUserDataFromBaseApi } from './fetchUserDataFromBaseApi/fetchUserDataFromBaseApi';
 import { currentUserApi } from './currentUserApi/currentUserApi';
 
-const MyApi = {
+const indexApi = {
     signInApi,
     signUpApi,
     logOutApi,
@@ -14,4 +14,4 @@ const MyApi = {
     currentUserApi,
 };
 
-export default MyApi;
+export default indexApi;
