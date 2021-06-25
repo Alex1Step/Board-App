@@ -3,33 +3,11 @@ import { RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
 import { moveTaskI, changeBoardNameI, TaskI, BoardI, GlobalState } from './interfaces';
 import { LoginI } from '../pages/LogInLayout/interfaces';
-// import { initialState } from './initialState';
+import { initialState } from './initialState';
 import indexApi from '../api/indexApi';
 import { deleteTask } from '../helper/deleteTask';
 import { deleteBoard } from '../helper/deleteBoard';
-
-// eslint-disable-next-line prefer-const
-let initialState = {
-    userID: 0,
-    userName: '',
-    boards: [
-        {
-            id: 0,
-            name: 'My first board',
-            tasks: [
-                {
-                    id: 0,
-                    taskName: 'New Task',
-                    deadlineDate: 'default',
-                    priority: 'Low',
-                    assignee: 'anybody',
-                    description: 'to do',
-                    fromBoard: 0,
-                },
-            ],
-        },
-    ],
-} as GlobalState;
+import _ from 'lodash';
 
 export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
     'board/pageUnload',
@@ -99,11 +77,11 @@ const boardsSlice = createSlice({
             state.boards[boardID].tasks[taskID][inputID] = payLoad;
         },
         boardDeleting(state, action: PayloadAction<number>) {
-            return deleteBoard({ ...current(state) }, action.payload);
+            return deleteBoard(_.cloneDeep(current(state)), action.payload);
         },
         taskDeleting(state, action: PayloadAction<{ boardID: number; taskID: number }>) {
             const { boardID, taskID } = action.payload;
-            return deleteTask({ ...current(state) }, boardID, taskID);
+            return deleteTask(_.cloneDeep(current(state)), boardID, taskID);
         },
         taskAdd(state, action: PayloadAction<number>) {
             const newTask: TaskI = { ...initialState.boards[0].tasks[0] };
@@ -116,7 +94,7 @@ const boardsSlice = createSlice({
                 : (state.boards[action.payload].tasks = [newTask]);
         },
         boardAdd(state) {
-            const newBoard: BoardI = { ...initialState.boards[0] };
+            const newBoard: BoardI = _.cloneDeep(initialState.boards[0]);
             newBoard.id = current(state).boards?.length || 0;
             newBoard.name = 'default';
             newBoard.tasks[0].fromBoard = current(state).boards?.length || 0;
@@ -141,11 +119,12 @@ const boardsSlice = createSlice({
                       0,
                   ) + 1
                 : 0;
-            const tempState = { ...current(state) };
+            const tempState = _.cloneDeep(current(state));
             //push new task to destination board
             tempState.boards[destination].tasks
                 ? tempState.boards[destination].tasks.push(relocatebleTask)
                 : (tempState.boards[destination].tasks = [relocatebleTask]);
+            //return state without deleted task
             return deleteTask(tempState, from, taskID);
         },
     },
