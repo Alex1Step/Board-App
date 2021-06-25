@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import 'antd/dist/antd.css';
@@ -7,11 +7,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './redux/store';
-//firebase
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { FirebaseAuthProvider } from '@react-firebase/auth';
 import { FirebaseDatabaseProvider } from '@react-firebase/database';
+import './i18n';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAgTJyexl3AhXyoRfnB6LSyv0ZBoaP3Nm8',

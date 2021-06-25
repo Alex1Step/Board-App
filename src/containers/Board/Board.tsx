@@ -1,89 +1,58 @@
-import React from 'react';
-//components
-import Card from '../../components/Card/Card';
-import ButtonComponent from '../../components/UI/Button/ButtonComponent';
-import AddButton from '../../components/UI/AddButton/AddButton';
-import Modal from '../../components/Modal/Modal';
-import InputComponent from '../../components/UI/Input/InputComponent';
+import React, { useCallback } from 'react';
+import Card from '../../components/custom/Card/Card';
+import ButtonComponent from '../../components/base/Button/ButtonComponent';
+import AddButton from '../../components/base/AddButton/AddButton';
+import Modal from '../../components/custom/Modal/Modal';
+import InputComponent from '../../components/base/Input/InputComponent';
 import { Divider } from 'antd';
-//interfaces
-import type { BoardI } from '../../redux/slice';
-//redux
+import type { BoardI } from '../../redux/interfaces';
 import { useDispatch } from 'react-redux';
 import { boardDeleting, taskAdd, changeBoardName } from '../../redux/slice';
-//styles
 import styles from './Board.less';
+import { DropTargetMonitor, useDrop } from 'react-dnd';
+import { IdustbinProps } from './interfaces';
+import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 
-//DND START
-import { useDrop } from 'react-dnd';
-
-export const ItemTypes = {
-    BOX: 'box',
+const ItemTypes = {
+    box: 'box',
 };
 
-export interface DustbinProps {
-    allowedDropEffect: string;
-}
-
-function selectBackgroundColor(isActive: boolean, canDrop: boolean) {
-    if (isActive) {
-        return 'rgb(58, 212, 55)';
-    } else if (canDrop) {
-        return 'white';
-    }
-}
-//DND END
-
-export const BoardContext = React.createContext(1);
-
-const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps): JSX.Element => {
+const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): JSX.Element => {
     const dispatch = useDispatch();
 
-    //prepare to create Task List
-    const arrTasks = tasks.map((t, i) => (
-        <Card
-            key={i}
-            id={t.id}
-            taskName={t.taskName}
-            deadlineDate={t.deadlineDate}
-            priority={t.priority}
-            assignee={t.assignee}
-            description={t.description}
-            fromBoard={t.fromBoard}
-        />
-    ));
-
-    //handler for deleting this board
-    function handleDeleteBoard() {
+    //Delete this board
+    const deleteBoard = () => {
         dispatch(boardDeleting(id));
-    }
+    };
 
-    //handler for ADD new task to board
-    function addNewTask() {
+    //Add new task to board this board
+    const addNewTask = () => {
         dispatch(taskAdd(id));
-    }
+    };
+    //Rename this board
+    const changeBoardNameHandler = (event: { target: HTMLInputElement | HTMLSelectElement }) => {
+        dispatch(
+            changeBoardName({
+                boardID: id,
+                newBoardName: event.target.value,
+            }),
+        );
+    };
 
-    function handlerChangeBoardName(event: { target: HTMLInputElement | HTMLSelectElement }) {
-        const chBName = {
-            boardID: id,
-            newBoardName: event.target.value,
-        };
-        dispatch(changeBoardName(chBName));
-    }
-
-    //MODAL
+    //show or hide modal window
     const [isModal, setModal] = React.useState(false);
-    const onClose = () => setModal(false);
+    const onClose = useCallback(() => setModal(false), []);
 
-    //DND START
+    //ReactDND for handle active board
     const [{ canDrop, isOver }, drop] = useDrop(
         () => ({
-            accept: ItemTypes.BOX,
+            accept: ItemTypes.box,
             drop: () => ({
                 name: id,
                 allowedDropEffect,
             }),
-            collect: (monitor: any) => ({
+            collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
                 isOver: monitor.isOver(),
                 canDrop: monitor.canDrop(),
             }),
@@ -91,33 +60,51 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: DustbinProps)
         [allowedDropEffect],
     );
     const isActive = canDrop && isOver;
-    const backgroundColor = selectBackgroundColor(isActive, canDrop);
-    //DND END
 
-    const cls = [styles.Board];
+    const { t } = useTranslation();
 
     return (
-        <div className={cls.join(' ')} ref={drop} style={{ backgroundColor }}>
+        <div
+            className={cn({
+                [styles.board]: true,
+                [styles.active]: isActive,
+                [styles.noactive]: !isActive && canDrop,
+            })}
+            ref={drop}
+        >
             <span className={styles.boardname} onClick={() => setModal(true)}>
                 {name}
             </span>
-            <Modal visible={isModal} title="Change BOARD name" onClose={onClose}>
+            <Modal visible={isModal} title={t('description.changeBoardName')} onClose={onClose}>
                 <InputComponent
                     type={'text'}
                     label={''}
                     value={name}
                     onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>
-                        handlerChangeBoardName(event)
+                        changeBoardNameHandler(event)
                     }
                     withoutSubstitution={true}
                 />
             </Modal>
             <div className={styles.boardButtonContainer}>
-                <AddButton text={'Add new task'} type={'Task'} onClick={addNewTask} />
-                <ButtonComponent onClick={handleDeleteBoard} message={'Delete this board'} />
+                <AddButton text={t('description.addTask')} type={'Task'} onClick={addNewTask} />
+                <ButtonComponent onClick={deleteBoard} message={t('description.deleteBoard')} />
             </div>
             <Divider />
-            <BoardContext.Provider value={id}>{arrTasks}</BoardContext.Provider>
+            {tasks
+                ? tasks.map((task, index) => (
+                      <Card
+                          key={index}
+                          id={task.id}
+                          taskName={task.taskName}
+                          deadlineDate={task.deadlineDate}
+                          priority={task.priority}
+                          assignee={task.assignee}
+                          description={task.description}
+                          fromBoard={task.fromBoard}
+                      />
+                  ))
+                : null}
         </div>
     );
 };

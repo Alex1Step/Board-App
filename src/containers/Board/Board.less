@@ -1,8 +1,9 @@
-.Board {
+.board {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   width: 300px;
+  max-width: 300px;
   margin: 10px;
   padding: 15px;
   background-color: rgb(185, 221, 255);
@@ -20,4 +21,12 @@
     display: flex;
     justify-content: space-between;
   }
+}
+
+.active {
+  background-color: rgb(58, 212, 55);
+}
+
+.noactive {
+  background-color: white;
 }

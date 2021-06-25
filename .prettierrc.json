@@ -13,6 +13,20 @@
           "parser": "less",
           "tabWidth": 2
         }
+      },
+      {
+        "files": ["*.ts"],
+        "options": {
+          "parser": "typescript",
+          "semi":  true,
+          "trailingComma":  "all",
+          "singleQuote":  true,
+          "printWidth":  120,
+          "tabWidth":  4,
+          "bracketSpacing": true,
+          "arrowParens": "always"
+        }
       }
     ]
+    
   }
