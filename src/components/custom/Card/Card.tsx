@@ -9,9 +9,10 @@ import styles from './Card.less';
 import cn from 'classnames';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { IdropResult } from './interfaces';
+import { useTranslation } from 'react-i18next';
 
 const ItemTypes = {
-    BOX: 'box',
+    box: 'box',
 };
 
 const Card = (props: TaskI): JSX.Element => {
@@ -40,7 +41,7 @@ const Card = (props: TaskI): JSX.Element => {
     //ReactDND for work with active cards
     const [, drag] = useDrag(
         () => ({
-            type: ItemTypes.BOX,
+            type: ItemTypes.box,
             item: { taskName },
             end(item, monitor) {
                 const dropResult = monitor.getDropResult() as IdropResult;
@@ -67,6 +68,8 @@ const Card = (props: TaskI): JSX.Element => {
         description: 'to do',
     };
 
+    const { t } = useTranslation();
+
     return (
         <div
             ref={
@@ -86,7 +89,7 @@ const Card = (props: TaskI): JSX.Element => {
         >
             <InputComponent
                 type={'text'}
-                label={'Task:'}
+                label={t('description.task')}
                 value={taskName}
                 onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>
                     handleChange(event, Number(fromBoard), id, 'taskName')
@@ -94,7 +97,7 @@ const Card = (props: TaskI): JSX.Element => {
             />
             <InputComponent
                 type={'date'}
-                label={'Deadline:'}
+                label={t('description.deadline')}
                 value={deadlineDate}
                 onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>
                     handleChange(event, Number(fromBoard), id, 'deadlineDate')
@@ -103,7 +106,8 @@ const Card = (props: TaskI): JSX.Element => {
             <SelectComponent
                 type={'select'}
                 options={['High', 'Medium', 'Low']}
-                label={'Priority:'}
+                labelForOptions={[`${t('description.high')}`, `${t('description.medium')}`, `${t('description.low')}`]}
+                label={t('description.priority')}
                 value={priority}
                 onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>
                     handleChange(event, Number(fromBoard), id, 'priority')
@@ -111,7 +115,7 @@ const Card = (props: TaskI): JSX.Element => {
             />
             <InputComponent
                 type={'text'}
-                label={'Assignee:'}
+                label={t('description.assignee')}
                 value={assignee}
                 onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>
                     handleChange(event, Number(fromBoard), id, 'assignee')
@@ -119,7 +123,7 @@ const Card = (props: TaskI): JSX.Element => {
             />
             <InputComponent
                 type={'text'}
-                label={'Description:'}
+                label={t('description.description')}
                 value={description}
                 onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>
                     handleChange(event, Number(fromBoard), id, 'description')
@@ -135,7 +139,7 @@ const Card = (props: TaskI): JSX.Element => {
                             }),
                         );
                     }}
-                    message={'Delete this task'}
+                    message={t('description.deleteTask')}
                 />
             </div>
         </div>

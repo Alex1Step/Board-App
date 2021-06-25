@@ -14,6 +14,7 @@ import Preloader from './components/custom/Preloader/Preloader';
 import store from './redux/store';
 import i18n from './i18n';
 import { Button } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -22,15 +23,17 @@ const App: React.FC = () => {
 
     const [burgerOpen, setBurgerOpen] = useState(false);
 
-    const handlerBurger = () => setBurgerOpen(!burgerOpen);
+    const handlerBurger = useCallback(() => setBurgerOpen(!burgerOpen), [burgerOpen]);
 
     const handlerBurgerClose = useCallback(() => setBurgerOpen(false), []);
 
+    const { t } = useTranslation();
+
     const links = [
-        { to: '/about', text: 'About', exact: true },
-        { to: '/boards', text: 'Boards', exact: true },
-        { to: '/login', text: 'Log In', exact: true },
-        { to: '/register', text: 'Register', exact: true },
+        { to: '/about', text: `${t('description.aboutLink')}`, exact: true },
+        { to: '/boards', text: `${t('description.boardsLink')}`, exact: true },
+        { to: '/login', text: `${t('description.loginLink')}`, exact: true },
+        { to: '/register', text: `${t('description.registerLink')}`, exact: true },
     ];
 
     const beforeUnloadPage = () => {
@@ -52,7 +55,7 @@ const App: React.FC = () => {
     };
 
     return data ? (
-        <div className="App">
+        <>
             <Burger isOpen={burgerOpen} onClick={handlerBurger} />
             <Pull isOpen={burgerOpen} onClick={handlerBurgerClose} listOfLinks={links} />
             <Switch>
@@ -69,7 +72,7 @@ const App: React.FC = () => {
                     RU
                 </Button>
             </div>
-        </div>
+        </>
     ) : (
         <Preloader />
     );

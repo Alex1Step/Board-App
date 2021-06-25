@@ -1,7 +1,32 @@
 {
     "title": "Internationalizing with i18next",
     "description": {
-      "Logout": "Logout",
-      "AddBoard": "Add new board"
+      "logout": "Logout",
+      "addBoard": "Add new board",
+      "deleteBoard": "Delete this board",
+      "deleteTask": "Delete this task",
+      "changeBoardName": "Change board name",
+      "addTask": "Add new task",
+      "signUp": "Sign Up",
+      "signIn": "Sign In",
+      "register": "Let`s register!",
+      "welcome": "Welcome back!",
+      "mail": "Mail",
+      "password": "Password",
+      "greet": "Welcome aBOARD!",
+      "motto": "Let&apos;s make you much more efficient!",
+      "anotherAcc": "SignIn to another account",
+      "aboutLink": "About",
+      "boardsLink": "Boards",
+      "loginLink": "Log In",
+      "registerLink": "Register",
+      "task": "Task:",
+      "deadline": "Deadline:",
+      "priority": "Priority:",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "assignee": "Assignee:",
+      "description": "Description:"
     }
   }

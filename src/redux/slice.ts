@@ -1,12 +1,9 @@
 import { createSlice, current, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-//interfaces
 import { RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
 import { moveTaskI, changeBoardNameI, TaskI, BoardI, GlobalState } from './interfaces';
 import { LoginI } from '../pages/LogInLayout/interfaces';
-//init state
 import { initialState } from './initialState';
-//api
 import indexApi from '../api/indexApi';
 
 export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
@@ -73,9 +70,8 @@ const boardsSlice = createSlice({
     initialState,
     reducers: {
         changeFromInput(state, action: PayloadAction<IchangeValue>) {
-            state.boards[Number(action.payload.boardID)].tasks[Number(action.payload.taskID)][
-                action.payload.inputID.toString()
-            ] = action.payload.payLoad;
+            state.boards[action.payload.boardID].tasks[action.payload.taskID][action.payload.inputID] =
+                action.payload.payLoad;
         },
         boardDeleting(state, action: PayloadAction<number>) {
             delete state.boards[action.payload];
@@ -85,7 +81,6 @@ const boardsSlice = createSlice({
         },
         taskAdd(state, action: PayloadAction<number>) {
             const newTask: TaskI = JSON.parse(JSON.stringify(initialState.boards[0].tasks[0]));
-            console.log(newTask.id);
             newTask.id = current(state).boards[action.payload].tasks?.length || 0;
             newTask.priority = 'none';
             newTask.fromBoard = action.payload;
@@ -116,8 +111,9 @@ const boardsSlice = createSlice({
             const newTaskId = state.boards[destination].tasks
                 ? state.boards[destination].tasks.reduce((r, v) => (v && v.id > r ? v.id : r), 0) + 1
                 : 0;
-            relocatebleTask.id = Number(newTaskId);
+            relocatebleTask.id = newTaskId;
             const tempState = JSON.parse(JSON.stringify(current(state)));
+            const test = { ...current(state) };
             //delete from old board
             const clearTask = {
                 id: action.payload.taskID,

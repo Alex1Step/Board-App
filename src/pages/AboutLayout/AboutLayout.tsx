@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import styles from './AboutLayout.less';
 import { logOut } from '../../redux/slice';
+import { useTranslation } from 'react-i18next';
 
 const AboutLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -25,22 +26,24 @@ const AboutLayout: React.FC = () => {
         history.push('./about');
     };
 
+    const { t } = useTranslation();
+
     return (
         <div className={styles.about}>
             <div className={styles.wrapper}>
-                <h1>Welcome aBOARD!</h1>
-                <span>Let&apos;s make you much more efficient!</span>
+                <h1>{t('description.greet')}</h1>
+                <span>{t('description.motto')}</span>
                 {user !== '' ? (
                     <Button className={styles.singleButton} type="primary" onClick={logOutHandler}>
-                        SignIn to another account
+                        {t('description.anotherAcc')}
                     </Button>
                 ) : (
                     <div className={styles.buttonContainer}>
                         <Button type="primary" onClick={letSignIn}>
-                            SignIn
+                            {t('description.signIn')}
                         </Button>
                         <Button type="primary" onClick={letSignUp}>
-                            SignUp
+                            {t('description.signUp')}
                         </Button>
                     </div>
                 )}

@@ -4,7 +4,7 @@ import { IselectProps } from './interfaces';
 import cn from 'classnames';
 
 const SelectComponent = (props: IselectProps): JSX.Element => {
-    const { type, options, label, value, onChange } = props;
+    const { type, options, labelForOptions, label, value, onChange } = props;
 
     const [hideShow, setHideShow] = useState(1);
 
@@ -21,7 +21,7 @@ const SelectComponent = (props: IselectProps): JSX.Element => {
                 })}
                 onClick={() => setHideShow(0)}
             >
-                {value}
+                {labelForOptions[options.findIndex((elem) => elem === value)]}
             </span>
             <select
                 ref={(ref) => ref?.focus()}
@@ -36,7 +36,7 @@ const SelectComponent = (props: IselectProps): JSX.Element => {
             >
                 {options.map((option, index) => (
                     <option key={index} value={option}>
-                        {option}
+                        {labelForOptions[index]}
                     </option>
                 ))}
             </select>

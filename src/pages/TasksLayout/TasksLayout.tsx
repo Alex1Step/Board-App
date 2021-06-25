@@ -33,21 +33,21 @@ const TasksLayout: React.FC = () => {
         history.push('/about');
     };
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     return data ? (
         <DndProvider backend={HTML5Backend}>
             <div className={styles.wrapper}>
                 <header>
                     <Button type="primary" danger onClick={logOutHandler}>
-                        {t('description.Logout')}
+                        {t('description.logout')}
                     </Button>
                 </header>
                 <section className={styles.tasksLayout}>
                     <div className={styles.container}>
                         <h1>{user}</h1>
                     </div>
-                    <AddButton onClick={addBoard} text={t('description.AddBoard')} type={'Board'} />
+                    <AddButton onClick={addBoard} text={t('description.addBoard')} type={'Board'} />
                     <section className={styles.boardsContainer}>
                         {boards
                             ? boards.map((b, i) => {

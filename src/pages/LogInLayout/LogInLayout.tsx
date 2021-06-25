@@ -7,6 +7,7 @@ import { signIn } from '../../redux/slice';
 import { Redirect } from 'react-router-dom';
 import { RootState } from '../../redux/store';
 import { LoginI } from './interfaces';
+import { useTranslation } from 'react-i18next';
 
 const LogInLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -17,11 +18,13 @@ const LogInLayout: React.FC = () => {
         dispatch(signIn(values));
     };
 
+    const { t } = useTranslation();
+
     return user === '' ? (
         <section className={styles.logInLayout}>
             <SignInUpform>
-                <h1>Welcome back!</h1>
-                <AuthForm handler={onFinish} textOnButton={'Sign In'} />
+                <h1>{t('description.welcome')}</h1>
+                <AuthForm handler={onFinish} textOnButton={t('description.signIn')} />
             </SignInUpform>
         </section>
     ) : (

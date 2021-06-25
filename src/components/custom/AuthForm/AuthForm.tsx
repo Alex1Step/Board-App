@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import styles from './AuthForm.less';
 import { Iprops } from './interfaces';
+import { useTranslation } from 'react-i18next';
 
 const layout = {
     labelCol: { span: 8 },
@@ -13,6 +14,8 @@ const tailLayout = {
 };
 
 const AuthForm = ({ handler, textOnButton }: Iprops): JSX.Element => {
+    const { t } = useTranslation();
+
     return (
         <Form
             className={styles.authForm}
@@ -22,7 +25,7 @@ const AuthForm = ({ handler, textOnButton }: Iprops): JSX.Element => {
             onFinish={handler}
         >
             <Form.Item
-                label="Mail"
+                label={t('description.mail')}
                 name="username"
                 rules={[{ required: true, message: 'Please input your username!' }]}
             >
@@ -30,7 +33,7 @@ const AuthForm = ({ handler, textOnButton }: Iprops): JSX.Element => {
             </Form.Item>
 
             <Form.Item
-                label="Password"
+                label={t('description.password')}
                 name="password"
                 rules={[{ required: true, message: 'Please input your password!' }]}
             >

@@ -12,6 +12,7 @@ import styles from './Board.less';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { IdustbinProps } from './interfaces';
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 const ItemTypes = {
     box: 'box',
@@ -60,6 +61,8 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
     );
     const isActive = canDrop && isOver;
 
+    const { t } = useTranslation();
+
     return (
         <div
             className={cn({
@@ -72,7 +75,7 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
             <span className={styles.boardname} onClick={() => setModal(true)}>
                 {name}
             </span>
-            <Modal visible={isModal} title="Change BOARD name" onClose={onClose}>
+            <Modal visible={isModal} title={t('description.changeBoardName')} onClose={onClose}>
                 <InputComponent
                     type={'text'}
                     label={''}
@@ -84,8 +87,8 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
                 />
             </Modal>
             <div className={styles.boardButtonContainer}>
-                <AddButton text={'Add new task'} type={'Task'} onClick={addNewTask} />
-                <ButtonComponent onClick={deleteBoard} message={'Delete this board'} />
+                <AddButton text={t('description.addTask')} type={'Task'} onClick={addNewTask} />
+                <ButtonComponent onClick={deleteBoard} message={t('description.deleteBoard')} />
             </div>
             <Divider />
             {tasks &&
