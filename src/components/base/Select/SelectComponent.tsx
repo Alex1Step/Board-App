@@ -21,7 +21,7 @@ const SelectComponent = (props: IselectProps): JSX.Element => {
                 })}
                 onClick={() => setHideShow(0)}
             >
-                {labelForOptions[options.findIndex((elem) => elem === value)]}
+                {value !== 'none' ? labelForOptions[options.findIndex((elem) => elem === value)] : 'none'}
             </span>
             <select
                 ref={(ref) => ref?.focus()}

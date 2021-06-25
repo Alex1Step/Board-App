@@ -91,23 +91,20 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
                 <ButtonComponent onClick={deleteBoard} message={t('description.deleteBoard')} />
             </div>
             <Divider />
-            {tasks &&
-                tasks.map((task, index) => {
-                    if (task && task.priority !== 'invalid') {
-                        return (
-                            <Card
-                                key={index}
-                                id={task.id}
-                                taskName={task.taskName}
-                                deadlineDate={task.deadlineDate}
-                                priority={task.priority}
-                                assignee={task.assignee}
-                                description={task.description}
-                                fromBoard={task.fromBoard}
-                            />
-                        );
-                    }
-                })}
+            {tasks
+                ? tasks.map((task, index) => (
+                      <Card
+                          key={index}
+                          id={task.id}
+                          taskName={task.taskName}
+                          deadlineDate={task.deadlineDate}
+                          priority={task.priority}
+                          assignee={task.assignee}
+                          description={task.description}
+                          fromBoard={task.fromBoard}
+                      />
+                  ))
+                : null}
         </div>
     );
 };

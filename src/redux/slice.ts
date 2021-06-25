@@ -3,8 +3,33 @@ import { RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
 import { moveTaskI, changeBoardNameI, TaskI, BoardI, GlobalState } from './interfaces';
 import { LoginI } from '../pages/LogInLayout/interfaces';
-import { initialState } from './initialState';
+// import { initialState } from './initialState';
 import indexApi from '../api/indexApi';
+import { deleteTask } from '../helper/deleteTask';
+import { deleteBoard } from '../helper/deleteBoard';
+
+// eslint-disable-next-line prefer-const
+let initialState = {
+    userID: 0,
+    userName: '',
+    boards: [
+        {
+            id: 0,
+            name: 'My first board',
+            tasks: [
+                {
+                    id: 0,
+                    taskName: 'New Task',
+                    deadlineDate: 'default',
+                    priority: 'Low',
+                    assignee: 'anybody',
+                    description: 'to do',
+                    fromBoard: 0,
+                },
+            ],
+        },
+    ],
+} as GlobalState;
 
 export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
     'board/pageUnload',
@@ -47,7 +72,7 @@ export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) 
 });
 
 export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) => {
-    const newUser: GlobalState = JSON.parse(JSON.stringify(initialState));
+    const newUser: GlobalState = { ...initialState };
     newUser.userName = userData.username;
     await indexApi.signUpApi(userData.username, userData.password).then((response) => {
         if (response && response.email) {
@@ -70,17 +95,18 @@ const boardsSlice = createSlice({
     initialState,
     reducers: {
         changeFromInput(state, action: PayloadAction<IchangeValue>) {
-            state.boards[action.payload.boardID].tasks[action.payload.taskID][action.payload.inputID] =
-                action.payload.payLoad;
+            const { boardID, taskID, inputID, payLoad } = action.payload;
+            state.boards[boardID].tasks[taskID][inputID] = payLoad;
         },
         boardDeleting(state, action: PayloadAction<number>) {
-            delete state.boards[action.payload];
+            return deleteBoard({ ...current(state) }, action.payload);
         },
         taskDeleting(state, action: PayloadAction<{ boardID: number; taskID: number }>) {
-            delete state.boards[action.payload.boardID].tasks[action.payload.taskID];
+            const { boardID, taskID } = action.payload;
+            return deleteTask({ ...current(state) }, boardID, taskID);
         },
         taskAdd(state, action: PayloadAction<number>) {
-            const newTask: TaskI = JSON.parse(JSON.stringify(initialState.boards[0].tasks[0]));
+            const newTask: TaskI = { ...initialState.boards[0].tasks[0] };
             newTask.id = current(state).boards[action.payload].tasks?.length || 0;
             newTask.priority = 'none';
             newTask.fromBoard = action.payload;
@@ -90,7 +116,7 @@ const boardsSlice = createSlice({
                 : (state.boards[action.payload].tasks = [newTask]);
         },
         boardAdd(state) {
-            const newBoard: BoardI = JSON.parse(JSON.stringify(initialState.boards[0]));
+            const newBoard: BoardI = { ...initialState.boards[0] };
             newBoard.id = current(state).boards?.length || 0;
             newBoard.name = 'default';
             newBoard.tasks[0].fromBoard = current(state).boards?.length || 0;
@@ -101,35 +127,26 @@ const boardsSlice = createSlice({
             state.boards[action.payload.boardID].name = action.payload.newBoardName;
         },
         moveTask(state, action: PayloadAction<moveTaskI>) {
-            const destination = Number(action.payload.destinationBoard);
-            const from = Number(action.payload.fromBoard);
+            const { destinationBoard, fromBoard, taskID } = action.payload;
+            const destination = Number(destinationBoard);
+            const from = Number(fromBoard);
             //remember task
-            const relocatebleTask = JSON.parse(JSON.stringify(state.boards[from].tasks[action.payload.taskID]));
+            const relocatebleTask = { ...state.boards[from].tasks[taskID] };
             //change task
             relocatebleTask.fromBoard = destination;
-            //find new id for relocateble tsk
-            const newTaskId = state.boards[destination].tasks
-                ? state.boards[destination].tasks.reduce((r, v) => (v && v.id > r ? v.id : r), 0) + 1
+            //new id for relocateble task
+            relocatebleTask.id = state.boards[destination].tasks
+                ? state.boards[destination].tasks.reduce(
+                      (accum, value) => (value && value.id > accum ? value.id : accum),
+                      0,
+                  ) + 1
                 : 0;
-            relocatebleTask.id = newTaskId;
-            const tempState = JSON.parse(JSON.stringify(current(state)));
-            const test = { ...current(state) };
-            //delete from old board
-            const clearTask = {
-                id: action.payload.taskID,
-                taskName: '',
-                deadlineDate: '',
-                priority: 'invalid',
-                assignee: '',
-                description: '',
-                fromBoard: from,
-            };
-            tempState.boards[from].tasks.splice(action.payload.taskID, 1, clearTask);
+            const tempState = { ...current(state) };
             //push new task to destination board
             tempState.boards[destination].tasks
                 ? tempState.boards[destination].tasks.push(relocatebleTask)
                 : (tempState.boards[destination].tasks = [relocatebleTask]);
-            return tempState;
+            return deleteTask(tempState, from, taskID);
         },
     },
     extraReducers: (builder) => {
