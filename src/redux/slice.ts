@@ -107,25 +107,21 @@ const boardsSlice = createSlice({
         moveTask(state, action: PayloadAction<moveTaskI>) {
             const { destinationBoard, fromBoard, taskID } = action.payload;
             const destination = Number(destinationBoard);
-            const from = Number(fromBoard);
+            const from = fromBoard;
             //remember task
             const relocatebleTask = { ...state.boards[from].tasks[taskID] };
             //change task
             relocatebleTask.fromBoard = destination;
             //new id for relocateble task
-            relocatebleTask.id = state.boards[destination].tasks
-                ? state.boards[destination].tasks.reduce(
-                      (accum, value) => (value && value.id > accum ? value.id : accum),
-                      0,
-                  ) + 1
-                : 0;
+            relocatebleTask.id = state.boards[destination].tasks ? state.boards[destination].tasks.length : 0;
             const tempState = _.cloneDeep(current(state));
             //push new task to destination board
             tempState.boards[destination].tasks
                 ? tempState.boards[destination].tasks.push(relocatebleTask)
                 : (tempState.boards[destination].tasks = [relocatebleTask]);
             //return state without deleted task
-            return deleteTask(tempState, from, taskID);
+            const temp = deleteTask(tempState, from, taskID);
+            return temp;
         },
     },
     extraReducers: (builder) => {

@@ -1,6 +1,6 @@
 export interface moveTaskI {
     destinationBoard: string;
-    fromBoard: string | number;
+    fromBoard: number;
     taskID: number;
 }
 
@@ -17,7 +17,7 @@ export interface TaskI {
     priority: string;
     assignee: string;
     description: string;
-    fromBoard: string | number;
+    fromBoard: number;
 }
 
 export interface BoardI {
