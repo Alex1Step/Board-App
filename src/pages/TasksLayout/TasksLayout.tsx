@@ -39,7 +39,7 @@ const TasksLayout: React.FC = () => {
         <DndProvider backend={HTML5Backend}>
             <div className={styles.wrapper}>
                 <header>
-                    <Button type="primary" danger onClick={logOutHandler}>
+                    <Button className={styles.logoutBtn} type="primary" danger onClick={logOutHandler}>
                         {t('description.logout')}
                     </Button>
                 </header>
@@ -47,7 +47,12 @@ const TasksLayout: React.FC = () => {
                     <div className={styles.container}>
                         <h1>{user}</h1>
                     </div>
-                    <AddButton onClick={addBoard} text={t('description.addBoard')} type={'Board'} />
+                    <AddButton
+                        className={'addBoard'}
+                        onClick={addBoard}
+                        text={t('description.addBoard')}
+                        type={'Board'}
+                    />
                     <section className={styles.boardsContainer}>
                         {boards
                             ? boards.map((b, i) => {

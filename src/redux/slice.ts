@@ -7,7 +7,7 @@ import { initialState } from './initialState';
 import indexApi from '../api/indexApi';
 import { deleteTask } from '../helper/deleteTask';
 import { deleteBoard } from '../helper/deleteBoard';
-import _ from 'lodash';
+import deepCopy from '../helper/deepCopy';
 
 export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
     'board/pageUnload',
@@ -61,7 +61,7 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
 });
 
 export const logOut = createAsyncThunk<void, string, { state: RootState }>(
-    'board/logOut',
+    'board/logOut/fullfiled',
     async (user: string, thunkApi) => {
         await indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
         await indexApi.logOutApi();
@@ -77,11 +77,11 @@ const boardsSlice = createSlice({
             state.boards[boardID].tasks[taskID][inputID] = payLoad;
         },
         boardDeleting(state, action: PayloadAction<number>) {
-            return deleteBoard(_.cloneDeep(current(state)), action.payload);
+            return deleteBoard(deepCopy(current(state)), action.payload);
         },
         taskDeleting(state, action: PayloadAction<{ boardID: number; taskID: number }>) {
             const { boardID, taskID } = action.payload;
-            return deleteTask(_.cloneDeep(current(state)), boardID, taskID);
+            return deleteTask(deepCopy(current(state)), boardID, taskID);
         },
         taskAdd(state, action: PayloadAction<number>) {
             const newTask: TaskI = { ...initialState.boards[0].tasks[0] };
@@ -94,7 +94,7 @@ const boardsSlice = createSlice({
                 : (state.boards[action.payload].tasks = [newTask]);
         },
         boardAdd(state) {
-            const newBoard: BoardI = _.cloneDeep(initialState.boards[0]);
+            const newBoard: BoardI = deepCopy(initialState.boards[0]);
             newBoard.id = current(state).boards?.length || 0;
             newBoard.name = 'default';
             newBoard.tasks[0].fromBoard = current(state).boards?.length || 0;
@@ -112,7 +112,7 @@ const boardsSlice = createSlice({
             const relocatebleTask = { ...state.boards[from].tasks[taskID] };
             relocatebleTask.fromBoard = destination;
             relocatebleTask.id = state.boards[destination].tasks ? state.boards[destination].tasks.length : 0;
-            const tempState = _.cloneDeep(current(state));
+            const tempState = deepCopy(current(state));
 
             tempState.boards[destination].tasks
                 ? tempState.boards[destination].tasks.push(relocatebleTask)
@@ -129,7 +129,11 @@ const boardsSlice = createSlice({
             return action.payload;
         });
         builder.addCase(logOut.fulfilled, () => {
+            console.log('I`m fullfiled');
             return initialState;
+        });
+        builder.addCase(logOut.pending, () => {
+            console.log('I`m pending');
         });
         builder.addCase(onLoadPage.fulfilled, (state, action) => {
             return action.payload;

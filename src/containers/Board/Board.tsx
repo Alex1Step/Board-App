@@ -87,7 +87,7 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
                 />
             </Modal>
             <div className={styles.boardButtonContainer}>
-                <AddButton text={t('description.addTask')} type={'Task'} onClick={addNewTask} />
+                <AddButton className={'addCard'} text={t('description.addTask')} type={'Task'} onClick={addNewTask} />
                 <ButtonComponent onClick={deleteBoard} message={t('description.deleteBoard')} />
             </div>
             <Divider />
