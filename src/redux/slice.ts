@@ -12,7 +12,7 @@ import deepCopy from '../helper/deepCopy';
 export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
     'board/pageUnload',
     async (user: string, thunkApi) => {
-        await indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
     },
 );
 
@@ -22,37 +22,26 @@ export const onLoadPage = createAsyncThunk(
         let userInfo: GlobalState = initialState;
         const user = localStorage.getItem('user');
         if (user) {
-            await indexApi.fetchUserDataFromBaseApi(user).then((response) => {
-                if (response) {
-                    userInfo = response;
-                    setData(true);
-                }
-            });
-        } else {
-            setData(true);
+            userInfo = await indexApi.fetchUserDataFromBaseApi(user);
         }
+        setData(true);
         return userInfo;
     },
 );
 
 export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
     let userInfo: GlobalState = initialState;
-    await indexApi.signInApi(userData.username, userData.password).then(async (response) => {
-        if (response && response.email) {
-            await indexApi.fetchUserDataFromBaseApi(response.email).then((response) => {
-                if (response) {
-                    userInfo = response;
-                }
-            });
-        }
-    });
+    const response = await indexApi.signInApi(userData.username, userData.password);
+    if (response && response.email) {
+        userInfo = await indexApi.fetchUserDataFromBaseApi(response.email);
+    }
     return userInfo;
 });
 
 export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) => {
     const newUser: GlobalState = { ...initialState };
     newUser.userName = userData.username;
-    await indexApi.signUpApi(userData.username, userData.password).then((response) => {
+    indexApi.signUpApi(userData.username, userData.password).then((response) => {
         if (response && response.email) {
             indexApi.sendToDatabaseApi(newUser);
         }
@@ -63,8 +52,8 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
 export const logOut = createAsyncThunk<void, string, { state: RootState }>(
     'board/logOut/fullfiled',
     async (user: string, thunkApi) => {
-        await indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
-        await indexApi.logOutApi();
+        indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        indexApi.logOutApi();
     },
 );
 
@@ -129,11 +118,7 @@ const boardsSlice = createSlice({
             return action.payload;
         });
         builder.addCase(logOut.fulfilled, () => {
-            console.log('I`m fullfiled');
             return initialState;
-        });
-        builder.addCase(logOut.pending, () => {
-            console.log('I`m pending');
         });
         builder.addCase(onLoadPage.fulfilled, (state, action) => {
             return action.payload;
