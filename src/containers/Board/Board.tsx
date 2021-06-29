@@ -31,7 +31,12 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
         dispatch(taskAdd(id));
     };
     //Rename this board
-    const changeBoardNameHandler = (event: { target: HTMLInputElement | HTMLSelectElement }) => {
+    const changeBoardNameHandler = (
+        event:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.ChangeEvent<HTMLSelectElement>
+            | React.ChangeEvent<HTMLTextAreaElement>,
+    ) => {
         dispatch(
             changeBoardName({
                 boardID: id,
@@ -80,9 +85,7 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
                     type={'text'}
                     label={''}
                     value={name}
-                    onChange={(event: { target: HTMLInputElement | HTMLSelectElement }) =>
-                        changeBoardNameHandler(event)
-                    }
+                    onChange={(event) => changeBoardNameHandler(event)}
                     withoutSubstitution={true}
                 />
             </Modal>

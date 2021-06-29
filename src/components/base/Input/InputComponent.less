@@ -1,33 +1,39 @@
 .inputContainer {
   display: flex;
   justify-content: flex-start;
+  
+  &.wrapLabel {
+    flex-direction: column;
+  }
+
   label {
     text-decoration: underline;
   }
+
   input,
   span {
     margin-left: 5px;
   }
+
   span:hover {
     cursor: pointer;
   }
+
   .inputHide {
     display: none;
   }
 
   .inputShow {
     display: block;
+    margin-bottom: 7px;
   }
 
   .textShow {
     display: block;
+    word-wrap: break-word !important;
   }
 
   .textHide {
     display: none;
-  }
-
-  span {
-    word-wrap: break-word;
   }
 }

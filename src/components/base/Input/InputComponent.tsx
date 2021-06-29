@@ -3,9 +3,12 @@ import { Input } from 'antd';
 import styles from './InputComponent.less';
 import { IinputProps } from './interfaces';
 import cn from 'classnames';
+import { toUpper } from 'lodash';
+
+const { TextArea } = Input;
 
 const InputComponent = (props: IinputProps): JSX.Element => {
-    const { type, label, value, onChange, withoutSubstitution } = props;
+    const { withWrap, type, label, value, onChange, withoutSubstitution } = props;
 
     const [hideShow, setHideShow] = useState(1);
 
@@ -15,7 +18,7 @@ const InputComponent = (props: IinputProps): JSX.Element => {
     return withoutSubstitution ? (
         <Input type={inputType} id={htmlFor} value={value} onChange={onChange} autoFocus={true} />
     ) : (
-        <div className={styles.inputContainer}>
+        <div className={cn({ [styles.inputContainer]: toUpper, [styles.wrapLabel]: withWrap })}>
             <label htmlFor={htmlFor}>{label}</label>
             <span
                 className={cn({
@@ -28,18 +31,34 @@ const InputComponent = (props: IinputProps): JSX.Element => {
             >
                 {value}
             </span>
-            <Input
-                ref={(ref) => ref?.focus()}
-                className={cn({
-                    [styles.inputHide]: hideShow === 1,
-                    [styles.inputShow]: hideShow === 0,
-                })}
-                type={inputType}
-                id={htmlFor}
-                value={value}
-                onChange={onChange}
-                onBlur={() => setHideShow(1)}
-            />
+            {inputType === 'textarea' ? (
+                <TextArea
+                    rows={3}
+                    ref={(ref) => ref?.focus()}
+                    className={cn({
+                        [styles.inputHide]: hideShow === 1,
+                        [styles.inputShow]: hideShow === 0,
+                    })}
+                    // type={inputType}
+                    id={htmlFor}
+                    value={value}
+                    onChange={onChange}
+                    onBlur={() => setHideShow(1)}
+                />
+            ) : (
+                <Input
+                    ref={(ref) => ref?.focus()}
+                    className={cn({
+                        [styles.inputHide]: hideShow === 1,
+                        [styles.inputShow]: hideShow === 0,
+                    })}
+                    type={inputType}
+                    id={htmlFor}
+                    value={value}
+                    onChange={onChange}
+                    onBlur={() => setHideShow(1)}
+                />
+            )}
         </div>
     );
 };

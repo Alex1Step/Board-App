@@ -28,6 +28,7 @@
     "low": "Low",
     "assignee": "Assignee:",
     "description": "Description:",
-    "attention": "Attention!"
+    "attention": "Attention!",
+    "edittask": "Edit Task"
   }
 }

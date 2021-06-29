@@ -4,5 +4,5 @@ export interface IselectProps {
     labelForOptions: string[];
     label: string;
     value: string;
-    onChange: (event: { target: HTMLInputElement | HTMLSelectElement }) => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
 }
