@@ -103,6 +103,16 @@ const Card = (props: TaskI): JSX.Element => {
                     handleChange(event, Number(fromBoard), id, 'deadlineDate')
                 }
             />
+            {new Date(deadlineDate) < new Date() ? (
+                <span
+                    className={cn({
+                        [styles.attention]: true,
+                        [styles.blink]: true,
+                    })}
+                >
+                    {t('description.attention')}
+                </span>
+            ) : null}
             <SelectComponent
                 type={'select'}
                 options={['High', 'Medium', 'Low']}
