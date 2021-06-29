@@ -83,7 +83,7 @@ const Card = (props: TaskI): JSX.Element => {
             <Modal visible={isModal} title={t('description.edittask')} onClose={onClose}>
                 <div
                     className={cn({
-                        [styles.card]: true,
+                        [styles.cardOnModal]: true,
                     })}
                 >
                     <InputComponent
@@ -155,53 +155,31 @@ const Card = (props: TaskI): JSX.Element => {
                     setModal(true);
                 }}
             >
-                <InputComponent
-                    type={'text'}
-                    label={t('description.task')}
-                    value={taskName}
-                    onChange={(event) => handleChange(event, Number(fromBoard), id, 'taskName')}
-                />
-                <InputComponent
-                    type={'date'}
-                    label={t('description.deadline')}
-                    value={deadlineDate}
-                    onChange={(event) => handleChange(event, Number(fromBoard), id, 'deadlineDate')}
-                />
-                {new Date(deadlineDate) < new Date() ? (
-                    <span
-                        className={cn({
-                            [styles.attention]: true,
-                            [styles.blink]: true,
-                        })}
-                    >
-                        {t('description.attention')}
-                    </span>
-                ) : null}
-                <SelectComponent
-                    type={'select'}
-                    options={['High', 'Medium', 'Low']}
-                    labelForOptions={[
-                        `${t('description.high')}`,
-                        `${t('description.medium')}`,
-                        `${t('description.low')}`,
-                    ]}
-                    label={t('description.priority')}
-                    value={priority}
-                    onChange={(event) => handleChange(event, Number(fromBoard), id, 'priority')}
-                />
-                <InputComponent
-                    type={'text'}
-                    label={t('description.assignee')}
-                    value={assignee}
-                    onChange={(event) => handleChange(event, Number(fromBoard), id, 'assignee')}
-                />
-                <InputComponent
-                    withWrap={true}
-                    type={'textarea'}
-                    label={t('description.description')}
-                    value={description}
-                    onChange={(event) => handleChange(event, Number(fromBoard), id, 'description')}
-                />
+                <span className={styles.infoLine}>
+                    {t('description.task')} {taskName}
+                </span>
+                <span className={styles.infoLine}>
+                    {t('description.deadline')} {deadlineDate}
+                    {new Date(deadlineDate) < new Date() ? (
+                        <span
+                            className={cn({
+                                [styles.attention]: true,
+                                [styles.blink]: true,
+                            })}
+                        >
+                            {t('description.attention')}
+                        </span>
+                    ) : null}
+                </span>
+                <span className={styles.infoLine}>
+                    {t('description.priority')} {priority}
+                </span>
+                <span className={styles.infoLine}>
+                    {t('description.assignee')} {assignee}
+                </span>
+                <span className={styles.infoLine}>
+                    {t('description.description')} {description}
+                </span>
                 <div className={styles.cardButtonContainer}>
                     <ButtonComponent
                         onClick={() => {

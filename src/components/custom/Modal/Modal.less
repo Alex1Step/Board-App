@@ -10,8 +10,7 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.7);
-  animation-name: appear;
-  animation-duration: 300ms;
+
   .modalDialog {
     width: 100%;
     max-width: 360px;
@@ -22,6 +21,8 @@
     text-align: left;
     display: flex;
     flex-direction: column;
+    animation-name: appear;
+    animation-duration: 300ms;
     .modalHeader {
       display: flex;
       align-items: center;
@@ -47,12 +48,22 @@
 }
 
 @keyframes appear {
-  from {
+  0% {
     transform: scale(0);
-    opacity: 0;
   }
-  to {
+  20% {
+    transform: scale(0.4);
+  }
+  40% {
+    transform: scale(0.7);
+  }
+  60% {
     transform: scale(1);
-    opacity: 1;
+  }
+  80% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
