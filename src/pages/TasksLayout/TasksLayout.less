@@ -35,11 +35,14 @@
       }
     }
     .boardsContainer {
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row;
-      flex-wrap: wrap;
-      width: inherit;
+      // display: flex;
+      // justify-content: space-between;
+      // flex-direction: row;
+      // flex-wrap: wrap;
+      // width: inherit;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: start;
     }
     button {
       margin-bottom: 20px;
