@@ -149,8 +149,7 @@ const Card = (props: TaskI): JSX.Element => {
                     [styles[`${priority.toLowerCase()}`]]: true,
                     [styles.blink]: blink && priority === 'none',
                 })}
-                onClick={(event) => {
-                    event.stopPropagation();
+                onClick={() => {
                     setBlink(0);
                     setModal(true);
                 }}

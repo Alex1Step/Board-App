@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import styles from './App.less';
 import TasksLayout from './pages/TasksLayout/TasksLayout';
 import Burger from './components/custom/Navigation/Burger/Burger';
@@ -58,6 +58,7 @@ const App: React.FC = () => {
         <>
             <Burger isOpen={burgerOpen} onClick={handlerBurger} />
             <Pull isOpen={burgerOpen} onClick={handlerBurgerClose} listOfLinks={links} />
+
             <Switch>
                 <Route path="/boards" component={TasksLayout} />
                 <Route path="/login" component={LogInLayout} />
