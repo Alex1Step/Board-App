@@ -12,6 +12,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import styles from './TasksLayout.less';
 import { BoardI } from '../../redux/interfaces';
 import { useTranslation } from 'react-i18next';
+import store from '../../redux/store';
 
 const TasksLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -21,6 +22,10 @@ const TasksLayout: React.FC = () => {
 
     const boards: BoardI[] = useSelector((state: RootState) => state.globalReducer.boards);
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
+
+    console.log(Array.isArray(store.getState().globalReducer.boards), Array.isArray(boards));
+
+    console.log(store.getState().globalReducer.boards === boards);
 
     const addBoard = () => {
         dispatch(boardAdd());

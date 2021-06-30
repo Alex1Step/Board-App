@@ -28,12 +28,16 @@ export const onLoadPage = createAsyncThunk(
         return userInfo;
     },
 );
-
-export const createNewProject = createAsyncThunk('board/createNewProject', async (projectTitle: string) => {
-    const newProject: BoardI[] = { ...initialState.boards };
-    indexApi.sendToDatabaseApi(newProject, projectTitle);
-    return newProject;
-});
+//done
+export const createNewProject = createAsyncThunk(
+    'board/createNewProject',
+    async (prop: { projectTitle: string; redir: () => void }) => {
+        const newProject: BoardI[] = { ...initialState.boards };
+        const response = await indexApi.sendToDatabaseApi(newProject, prop.projectTitle);
+        prop.redir();
+        return newProject;
+    },
+);
 //done
 export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
     let listOfProjects: { [key: string]: string } = {};
@@ -64,13 +68,16 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
 export const loadBoard = createAsyncThunk('board/loadBoard', async (project: string) => {
     let thisBoards: BoardI[] = deepCopy(initialState.boards);
     thisBoards = await indexApi.fetchUserDataFromBaseApi(project);
-    return thisBoards;
+    return { thisBoards, project };
 });
-
+//done
 export const logOut = createAsyncThunk<void, string, { state: RootState }>(
     'board/logOut/fullfiled',
     async (user: string, thunkApi) => {
-        // indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        indexApi.sendToDatabaseApi(
+            thunkApi.getState().globalReducer.boards,
+            thunkApi.getState().globalReducer.currentProject,
+        );
         indexApi.logOutApi();
     },
 );
@@ -152,7 +159,8 @@ const boardsSlice = createSlice({
             state.boards = action.payload;
         });
         builder.addCase(loadBoard.fulfilled, (state, action) => {
-            state.boards = action.payload;
+            state.boards = action.payload.thisBoards;
+            state.currentProject = action.payload.project;
         });
     },
 });

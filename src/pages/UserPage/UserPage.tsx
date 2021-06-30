@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
 import styles from './UserPage.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
@@ -24,9 +24,19 @@ const UserPage = () => {
     const [isModal, setModal] = React.useState(false);
     const onClose = useCallback(() => setModal(false), []);
 
+    const history = useHistory();
+
+    const redirect = (): void => {
+        history.push('/boards');
+    };
+
     const createProjectHandler = () => {
-        dispatch(createNewProject(projectTitle));
-        setModal(false);
+        const prop = {
+            projectTitle: projectTitle,
+            redir: redirect,
+        };
+        dispatch(createNewProject(prop));
+        onClose;
     };
 
     const loadThisBoard = (proj: string) => {
