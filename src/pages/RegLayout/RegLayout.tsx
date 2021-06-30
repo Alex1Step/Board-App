@@ -15,6 +15,7 @@ const RegLayout: React.FC = () => {
 
     //REGISTER handler
     const onFinish = (values: LoginI) => {
+        localStorage.setItem('user', values.username);
         dispatch(signUp(values));
     };
 
@@ -28,7 +29,7 @@ const RegLayout: React.FC = () => {
             </SignInUpform>
         </section>
     ) : (
-        <Redirect to={'/boards'} />
+        <Redirect to={'/user'} />
     );
 };
 

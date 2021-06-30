@@ -4,6 +4,8 @@ import { logOutApi } from './logOutApi/logOutApi';
 import { sendToDatabaseApi } from './sendToDatabaseApi/sendToDatabaseApi';
 import { fetchUserDataFromBaseApi } from './fetchUserDataFromBaseApi/fetchUserDataFromBaseApi';
 import { currentUserApi } from './currentUserApi/currentUserApi';
+import { fetchListOfProjectsApi } from './fetchListOfProjectsApi/fetchListOfProjectsApi';
+import { fetchListOfAdminsApi } from './fetchListOfAdminsApi/fetchListOfAdminsApi';
 
 const indexApi = {
     signInApi,
@@ -12,6 +14,8 @@ const indexApi = {
     sendToDatabaseApi,
     fetchUserDataFromBaseApi,
     currentUserApi,
+    fetchListOfProjectsApi,
+    fetchListOfAdminsApi,
 };
 
 export default indexApi;

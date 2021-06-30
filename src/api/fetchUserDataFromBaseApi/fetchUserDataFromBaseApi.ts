@@ -1,10 +1,10 @@
 import firebase from 'firebase';
-import { GlobalState } from '../../redux/interfaces';
+import { BoardI } from '../../redux/interfaces';
 
-export const fetchUserDataFromBaseApi = (user: string): Promise<GlobalState> => {
+export const fetchUserDataFromBaseApi = (project: string): Promise<BoardI[]> => {
     const dbRef = firebase.database().ref();
     return dbRef
-        .child(user.replace(/[\s.,%]/g, ''))
+        .child('/projects/' + project)
         .get()
         .then((snapshot) => {
             if (snapshot.exists()) {

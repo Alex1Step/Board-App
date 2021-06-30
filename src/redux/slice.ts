@@ -12,47 +12,65 @@ import deepCopy from '../helper/deepCopy';
 export const onLeavePage = createAsyncThunk<void, string, { state: RootState }>(
     'board/pageUnload',
     async (user: string, thunkApi) => {
-        indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        // indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
     },
 );
 
 export const onLoadPage = createAsyncThunk(
     'board/pageLoad',
     async (setData: React.Dispatch<React.SetStateAction<boolean>>) => {
-        let userInfo: GlobalState = initialState;
+        const userInfo: GlobalState = initialState;
         const user = localStorage.getItem('user');
         if (user) {
-            userInfo = await indexApi.fetchUserDataFromBaseApi(user);
+            // userInfo = await indexApi.fetchUserDataFromBaseApi(user);
         }
         setData(true);
         return userInfo;
     },
 );
 
-export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
-    let userInfo: GlobalState = initialState;
-    const response = await indexApi.signInApi(userData.username, userData.password);
-    if (response && response.email) {
-        userInfo = await indexApi.fetchUserDataFromBaseApi(response.email);
-    }
-    return userInfo;
+export const createNewProject = createAsyncThunk('board/createNewProject', async (projectTitle: string) => {
+    const newProject: BoardI[] = { ...initialState.boards };
+    indexApi.sendToDatabaseApi(newProject, projectTitle);
+    return newProject;
 });
-
+//done
+export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
+    let listOfProjects: { [key: string]: string } = {};
+    let isAdmin = false;
+    const userName = userData.username;
+    const response = await indexApi.signInApi(userData.username, userData.password);
+    if (response) {
+        listOfProjects = await indexApi.fetchListOfProjectsApi();
+        const admins = await indexApi.fetchListOfAdminsApi();
+        if (userData.username.replace(/[\s.,%]/g, '') in admins) isAdmin = true;
+    }
+    return { listOfProjects, isAdmin, userName };
+});
+//done
 export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) => {
-    const newUser: GlobalState = { ...initialState };
-    newUser.userName = userData.username;
-    indexApi.signUpApi(userData.username, userData.password).then((response) => {
-        if (response && response.email) {
-            indexApi.sendToDatabaseApi(newUser);
-        }
-    });
-    return newUser;
+    let listOfProjects: { [key: string]: string } = {};
+    let isAdmin = false;
+    const userName = userData.username;
+    const response = await indexApi.signUpApi(userData.username, userData.password);
+    if (response) {
+        listOfProjects = await indexApi.fetchListOfProjectsApi();
+        const admins = await indexApi.fetchListOfAdminsApi();
+        if (userData.username.replace(/[\s.,%]/g, '') in admins) isAdmin = true;
+    }
+    return { listOfProjects, isAdmin, userName };
+});
+//done
+export const loadBoard = createAsyncThunk('board/loadBoard', async (project: string) => {
+    let thisBoards: BoardI[] = deepCopy(initialState.boards);
+    thisBoards = await indexApi.fetchUserDataFromBaseApi(project);
+    return thisBoards;
 });
 
 export const logOut = createAsyncThunk<void, string, { state: RootState }>(
     'board/logOut/fullfiled',
     async (user: string, thunkApi) => {
-        indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
+        // indexApi.sendToDatabaseApi(thunkApi.getState().globalReducer);
         indexApi.logOutApi();
     },
 );
@@ -112,10 +130,14 @@ const boardsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(signIn.fulfilled, (state, action) => {
-            return action.payload;
+            state.listOfProjects = action.payload.listOfProjects;
+            state.isAdmin = action.payload.isAdmin;
+            state.userName = action.payload.userName;
         });
         builder.addCase(signUp.fulfilled, (state, action) => {
-            return action.payload;
+            state.listOfProjects = action.payload.listOfProjects;
+            state.isAdmin = action.payload.isAdmin;
+            state.userName = action.payload.userName;
         });
         builder.addCase(logOut.fulfilled, () => {
             return initialState;
@@ -125,6 +147,12 @@ const boardsSlice = createSlice({
         });
         builder.addCase(onLeavePage.fulfilled, (state) => {
             return state;
+        });
+        builder.addCase(createNewProject.fulfilled, (state, action) => {
+            state.boards = action.payload;
+        });
+        builder.addCase(loadBoard.fulfilled, (state, action) => {
+            state.boards = action.payload;
         });
     },
 });

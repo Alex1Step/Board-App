@@ -15,6 +15,7 @@ import store from './redux/store';
 import i18n from './i18n';
 import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
+import UserPage from './pages/UserPage/UserPage';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const App: React.FC = () => {
         { to: '/boards', text: `${t('description.boardsLink')}`, exact: true },
         { to: '/login', text: `${t('description.loginLink')}`, exact: true },
         { to: '/register', text: `${t('description.registerLink')}`, exact: true },
+        { to: '/user', text: 'USER', exact: true },
     ];
 
     const beforeUnloadPage = () => {
@@ -63,6 +65,7 @@ const App: React.FC = () => {
                 <Route path="/boards" component={TasksLayout} />
                 <Route path="/login" component={LogInLayout} />
                 <Route path="/register" component={RegLayout} />
+                <Route path="/user" component={UserPage} />
                 <Route path="/" component={AboutLayout} />
             </Switch>
             <div className={styles.languageButtons}>

@@ -1,8 +1,8 @@
 import firebase from 'firebase';
-import { GlobalState } from '../../redux/interfaces';
+import { BoardI } from '../../redux/interfaces';
 
-export const sendToDatabaseApi = (data: GlobalState): Promise<void | firebase.User> =>
+export const sendToDatabaseApi = (data: BoardI[], projectTitle: string): Promise<void | firebase.User> =>
     firebase
         .database()
         .ref()
-        .update({ [data.userName.replace(/[\s.,%]/g, '')]: data });
+        .update({ ['/projects/' + projectTitle]: data });

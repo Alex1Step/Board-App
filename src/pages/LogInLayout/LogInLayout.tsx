@@ -15,6 +15,7 @@ const LogInLayout: React.FC = () => {
 
     //LogIn handler
     const onFinish = (values: LoginI) => {
+        localStorage.setItem('user', values.username);
         dispatch(signIn(values));
     };
 
@@ -28,7 +29,7 @@ const LogInLayout: React.FC = () => {
             </SignInUpform>
         </section>
     ) : (
-        <Redirect to={'/boards'} />
+        <Redirect to={'/user'} />
     );
 };
 

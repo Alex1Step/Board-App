@@ -1,0 +1,30 @@
+.userPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: darkgray;
+  .linksToProjects {
+    margin-top: 40px;
+    list-style: none;
+    font-size: 24px;
+    margin: 0px;
+    padding-left: 0px;
+    li {
+      border: 1px solid black;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      padding: 0px 10px 0px 10px;
+      margin: 10px;
+      &:hover {
+        background-color: rgb(30, 210, 165);
+      }
+      a {
+        color: black;
+      }
+    }
+  }
+}
