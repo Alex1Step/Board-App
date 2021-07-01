@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './Select.less';
 import { IselectProps } from './interfaces';
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 const SelectComponent = (props: IselectProps): JSX.Element => {
     const { type, options, labelForOptions, label, value, onChange } = props;
@@ -10,6 +11,8 @@ const SelectComponent = (props: IselectProps): JSX.Element => {
 
     const inputType: string = type || 'text';
     const htmlFor = `${inputType}-${Math.random()}`;
+
+    const { t } = useTranslation();
 
     return (
         <div className={styles.selectContainer}>
@@ -21,7 +24,11 @@ const SelectComponent = (props: IselectProps): JSX.Element => {
                 })}
                 onClick={() => setHideShow(0)}
             >
-                {value !== 'none' ? labelForOptions[options.findIndex((elem) => elem === value)] : 'none'}
+                {label === t('description.priority')
+                    ? value !== 'none'
+                        ? labelForOptions[options.findIndex((elem) => elem === value)]
+                        : 'none'
+                    : value}
             </span>
             <select
                 ref={(ref) => ref?.focus()}

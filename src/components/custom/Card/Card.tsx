@@ -3,7 +3,7 @@ import InputComponent from '../../base/Input/InputComponent';
 import SelectComponent from '../../base/Select/SelectComponent';
 import ButtonComponent from '../../base/Button/ButtonComponent';
 import { TaskI } from '../../../redux/interfaces';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeFromInput, taskDeleting, moveTask } from '../../../redux/slice';
 import styles from './Card.less';
 import cn from 'classnames';
@@ -11,6 +11,7 @@ import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { IdropResult } from './interfaces';
 import { useTranslation } from 'react-i18next';
 import Modal from '../Modal/Modal';
+import { RootState } from '../../../redux/store';
 
 const ItemTypes = {
     box: 'box',
@@ -18,6 +19,10 @@ const ItemTypes = {
 
 const Card = (props: TaskI): JSX.Element => {
     const { id, taskName, deadlineDate, priority, assignee, description, fromBoard } = props;
+
+    const assigneeList: { [key: string]: string } | undefined = useSelector(
+        (state: RootState) => state.globalReducer.assignee,
+    );
 
     const dispatch = useDispatch();
     const [blink, setBlink] = useState(1);
@@ -75,6 +80,10 @@ const Card = (props: TaskI): JSX.Element => {
         assignee: 'anybody',
         description: 'to do',
     };
+    let assigneeArray: Array<string> = [];
+    if (assigneeList) {
+        assigneeArray = Object.values(assigneeList);
+    }
 
     const { t } = useTranslation();
 
@@ -120,12 +129,20 @@ const Card = (props: TaskI): JSX.Element => {
                         value={priority}
                         onChange={(event) => handleChange(event, Number(fromBoard), id, 'priority')}
                     />
-                    <InputComponent
-                        type={'text'}
+                    <SelectComponent
+                        type={'select'}
+                        options={[...assigneeArray]}
+                        labelForOptions={[...assigneeArray]}
                         label={t('description.assignee')}
                         value={assignee}
                         onChange={(event) => handleChange(event, Number(fromBoard), id, 'assignee')}
                     />
+                    {/* <InputComponent
+                        type={'text'}
+                        label={t('description.assignee')}
+                        value={assignee}
+                        onChange={(event) => handleChange(event, Number(fromBoard), id, 'assignee')}
+                    /> */}
                     <InputComponent
                         withWrap={true}
                         type={'textarea'}
