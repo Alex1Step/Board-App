@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Board from '../../containers/Board/Board';
 import AddButton from '../../components/base/AddButton/AddButton';
@@ -6,7 +6,7 @@ import { Button } from 'antd';
 import Preloader from '../../components/custom/Preloader/Preloader';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../redux/store';
-import { boardAdd, logOut } from '../../redux/slice';
+import { boardAdd, logOut, refreshBoardPage } from '../../redux/slice';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import styles from './TasksLayout.less';
@@ -23,10 +23,6 @@ const TasksLayout: React.FC = () => {
     const boards: BoardI[] = useSelector((state: RootState) => state.globalReducer.boards);
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
-    console.log(Array.isArray(store.getState().globalReducer.boards), Array.isArray(boards));
-
-    console.log(store.getState().globalReducer.boards === boards);
-
     const addBoard = () => {
         dispatch(boardAdd());
     };
@@ -38,19 +34,39 @@ const TasksLayout: React.FC = () => {
         history.push('/about');
     };
 
+    const beforeRefreshPage = () => {
+        dispatch(refreshBoardPage(user));
+    };
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', beforeRefreshPage);
+        return () => {
+            window.removeEventListener('beforeunload', beforeRefreshPage);
+        };
+    }, []);
+
     const { t } = useTranslation();
 
     return data ? (
         <DndProvider backend={HTML5Backend}>
             <div className={styles.wrapper}>
                 <header>
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            beforeRefreshPage();
+                            history.push('/user');
+                        }}
+                    >
+                        {'Projects'}
+                    </Button>
                     <Button className={styles.logoutBtn} type="primary" danger onClick={logOutHandler}>
                         {t('description.logout')}
                     </Button>
                 </header>
                 <section className={styles.tasksLayout}>
                     <div className={styles.container}>
-                        <h1>{user}</h1>
+                        <h1>{store.getState().globalReducer.currentProject}</h1>
                     </div>
                     <AddButton
                         className={'addBoard'}

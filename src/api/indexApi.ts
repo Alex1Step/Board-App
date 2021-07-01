@@ -6,6 +6,7 @@ import { fetchUserDataFromBaseApi } from './fetchUserDataFromBaseApi/fetchUserDa
 import { currentUserApi } from './currentUserApi/currentUserApi';
 import { fetchListOfProjectsApi } from './fetchListOfProjectsApi/fetchListOfProjectsApi';
 import { fetchListOfAdminsApi } from './fetchListOfAdminsApi/fetchListOfAdminsApi';
+import { fetchListOfAssigneeApi } from './fetchListOfAssigneeApi/fetchListOfAssigneeApi';
 
 const indexApi = {
     signInApi,
@@ -16,6 +17,7 @@ const indexApi = {
     currentUserApi,
     fetchListOfProjectsApi,
     fetchListOfAdminsApi,
+    fetchListOfAssigneeApi,
 };
 
 export default indexApi;

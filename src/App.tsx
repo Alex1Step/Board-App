@@ -7,8 +7,7 @@ import Pull from './components/custom/Navigation/Pull/Pull';
 import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';
 import AboutLayout from './pages/AboutLayout/AboutLayout';
-import indexApi from './api/indexApi';
-import { onLeavePage, onLoadPage } from './redux/slice';
+import { /*onLeavePage, */ onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
 import Preloader from './components/custom/Preloader/Preloader';
 import store from './redux/store';
@@ -32,16 +31,13 @@ const App: React.FC = () => {
 
     const links = [
         { to: '/about', text: `${t('description.aboutLink')}`, exact: true },
-        { to: '/boards', text: `${t('description.boardsLink')}`, exact: true },
         { to: '/login', text: `${t('description.loginLink')}`, exact: true },
         { to: '/register', text: `${t('description.registerLink')}`, exact: true },
-        { to: '/user', text: 'USER', exact: true },
+        { to: '/user', text: 'Projects', exact: true },
     ];
 
     const beforeUnloadPage = () => {
-        localStorage.setItem('user', store.getState().globalReducer.userName.replace(/[\s.,%]/g, ''));
-        const user = indexApi.currentUserApi();
-        if (user?.email) dispatch(onLeavePage(user?.email));
+        localStorage.setItem('user', store.getState().globalReducer.userName);
     };
 
     useEffect(() => {

@@ -1,30 +1,63 @@
+.wrapper {
+  background-image: url(../../images/projectsBackground.jpg);
+  background-size: cover;
+}
+
 .userPage {
-  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: darkgray;
+  flex-wrap: wrap;
+
+  .adminButtons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    button {
+      margin: 5px;
+    }
+  }
+
+  h1 {
+    display: block;
+    background-image: url(../../images/userNameBCKGRND.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    text-align: center;
+    padding: 40px;
+    color: white;
+  }
   .linksToProjects {
-    margin-top: 40px;
     list-style: none;
     font-size: 24px;
     margin: 0px;
     padding-left: 0px;
-    li {
-      border: 1px solid black;
-      border-radius: 5px;
-      display: flex;
-      justify-content: center;
-      padding: 0px 10px 0px 10px;
-      margin: 10px;
-      &:hover {
-        background-color: rgb(30, 210, 165);
-      }
-      a {
-        color: black;
+    a {
+      color: white;
+      .link {
+        border: 1px solid black;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        padding: 0px 10px 0px 10px;
+        margin: 10px;
+        background-color: rgba(0, 0, 0, 0.4);
+        &:hover {
+          background-color: rgb(30, 210, 165);
+        }
       }
     }
+  }
+}
+
+.onUserPage {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 40px;
+  padding-top: 20px;
+  .logoutBtn {
+    width: 75px;
   }
 }
