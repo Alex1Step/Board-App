@@ -50,7 +50,6 @@ const UserPage: React.FC = () => {
 
     const createProjectHandler = () => {
         store.subscribe(() => {
-            console.log('log');
             setData(false);
         });
         dispatch(createNewProject(projectTitle));
@@ -100,6 +99,9 @@ const UserPage: React.FC = () => {
     return data ? (
         <div className={styles.wrapper}>
             <section className={styles.onUserPage}>
+                <div className={styles.userName}>
+                    <p>{stateForCheckRole.userName}</p>
+                </div>
                 <Button className={styles.logoutBtn} type="primary" danger onClick={logOutHandler}>
                     {t('description.logout')}
                 </Button>
@@ -115,7 +117,7 @@ const UserPage: React.FC = () => {
                                 size="large"
                                 onClick={() => setModal(true)}
                             >
-                                Add project
+                                {t('description.addProject')}
                             </Button>
                             <Button
                                 type="primary"
@@ -124,74 +126,86 @@ const UserPage: React.FC = () => {
                                 size="large"
                                 onClick={() => setModalAssign(true)}
                             >
-                                Add assignee
+                                {t('description.addAssignee')}
                             </Button>
                         </section>
                         <Modal
                             visible={isModal || isModalAssign}
-                            title={isModal ? 'New Project Title' : 'Add new assignee'}
+                            title={isModal ? t('description.newProject') : t('description.newAssignee')}
                             onClose={isModal ? createProjectHandler : onCloseAssign}
                         >
-                            {isModal ? (
-                                <InputComponent
-                                    type={'text'}
-                                    label={''}
-                                    value={projectTitle}
-                                    onChange={(event) => {
-                                        setProjectTitle(event.target.value);
-                                    }}
-                                    withoutSubstitution={true}
-                                />
-                            ) : (
-                                <Form
-                                    {...layout}
-                                    name="nest-messages"
-                                    onFinish={addAssignee}
-                                    validateMessages={validateMessages}
-                                >
-                                    <Form.Item name={['user', 'name']} label="Name" rules={[{ required: true }]}>
-                                        <Input />
-                                    </Form.Item>
-                                    <Form.Item name={['user', 'email']} label="Email" rules={[{ type: 'email' }]}>
-                                        <Input />
-                                    </Form.Item>
-                                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                                        <Button type="primary" htmlType="submit">
-                                            Add
-                                        </Button>
-                                    </Form.Item>
-                                </Form>
-                            )}
+                            <div className={styles.forModal}>
+                                {isModal ? (
+                                    <InputComponent
+                                        type={'text'}
+                                        label={''}
+                                        value={projectTitle}
+                                        onChange={(event) => {
+                                            setProjectTitle(event.target.value);
+                                        }}
+                                        withoutSubstitution={true}
+                                    />
+                                ) : (
+                                    <Form
+                                        {...layout}
+                                        name="nest-messages"
+                                        onFinish={addAssignee}
+                                        validateMessages={validateMessages}
+                                    >
+                                        <Form.Item
+                                            name={['user', 'name']}
+                                            label={t('description.name')}
+                                            rules={[{ required: true }]}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            name={['user', 'email']}
+                                            label={t('description.mail')}
+                                            rules={[{ type: 'email' }]}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                                            <Button type="primary" htmlType="submit">
+                                                {t('description.add')}
+                                            </Button>
+                                        </Form.Item>
+                                    </Form>
+                                )}
+                            </div>
                         </Modal>
                     </>
                 ) : null}
                 <h1>Projects</h1>
                 <ul className={styles.linksToProjects}>
-                    {projectsList
-                        ? Object.keys(projectsList).map((proj, index) => {
-                              if (store.getState().globalReducer.isAdmin) {
-                                  const link = `/boards/${proj}`;
-                                  return (
-                                      <li key={index}>
-                                          <NavLink to={link} onClick={() => loadThisBoard(proj)}>
-                                              <div className={styles.link}>{proj}</div>
-                                          </NavLink>
-                                      </li>
-                                  );
-                              } else {
-                                  if (checkRole(proj)) {
-                                      const link = `/boards/${proj}`;
-                                      return (
-                                          <li key={index}>
-                                              <NavLink to={link} onClick={() => loadThisBoard(proj)}>
-                                                  <div className={styles.link}>{proj}</div>
-                                              </NavLink>
-                                          </li>
-                                      );
-                                  }
-                              }
-                          })
-                        : null}
+                    {projectsList ? (
+                        Object.keys(projectsList).map((proj, index) => {
+                            if (store.getState().globalReducer.isAdmin) {
+                                const link = `/boards/${proj}`;
+                                return (
+                                    <li key={index}>
+                                        <NavLink to={link} onClick={() => loadThisBoard(proj)}>
+                                            <div className={styles.link}>{proj}</div>
+                                        </NavLink>
+                                    </li>
+                                );
+                            } else {
+                                if (checkRole(proj)) {
+                                    const link = `/boards/${proj}`;
+                                    return (
+                                        <li key={index}>
+                                            <NavLink to={link} onClick={() => loadThisBoard(proj)}>
+                                                <div className={styles.link}>{proj}</div>
+                                            </NavLink>
+                                        </li>
+                                    );
+                                }
+                            }
+                        })
+                    ) : (
+                        <h2>{t('description.noProjects')}</h2>
+                    )}
                 </ul>
             </div>
         </div>

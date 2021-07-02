@@ -3,6 +3,9 @@ import styles from './Select.less';
 import { IselectProps } from './interfaces';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 const SelectComponent = (props: IselectProps): JSX.Element => {
     const { type, options, labelForOptions, label, value, onChange } = props;

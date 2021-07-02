@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-export const fetchListOfAdminsApi = () => {
+export const fetchListOfAdminsApi = (): Promise<{ [key: string]: string }> => {
     return firebase
         .database()
         .ref()
