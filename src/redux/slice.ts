@@ -3,11 +3,21 @@ import { RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
 import { moveTaskI, changeBoardNameI, TaskI, BoardI } from './interfaces';
 import { LoginI } from '../pages/LogInLayout/interfaces';
+import { IAssignee } from '../pages/UserPage/interfaces';
 import { initialState } from './initialState';
 import indexApi from '../api/indexApi';
 import { deleteTask } from '../helper/deleteTask';
 import { deleteBoard } from '../helper/deleteBoard';
 import deepCopy from '../helper/deepCopy';
+
+export const addNewAssignee = createAsyncThunk('board/addNewAssignee', async (user: IAssignee) => {
+    const changedAssignee = {
+        email: user.email.replace(/[\s.,%]/g, ''),
+        name: user.name,
+    };
+    indexApi.newAssigneeToDBApi(changedAssignee);
+    return changedAssignee;
+});
 
 export const refreshBoardPage = createAsyncThunk<void, string, { state: RootState }>(
     'board/refreshPage/fullfiled',
@@ -48,15 +58,17 @@ export const createNewProject = createAsyncThunk('board/createNewProject', async
 
 export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
     let listOfProjects: { [key: string]: string } = {};
+    let listOfAssignee: { [key: string]: string } = {};
     let isAdmin = false;
     const userName = userData.username;
     const response = await indexApi.signInApi(userData.username, userData.password);
     if (response) {
         listOfProjects = await indexApi.fetchListOfProjectsApi();
+        listOfAssignee = await indexApi.fetchListOfAssigneeApi();
         const admins = await indexApi.fetchListOfAdminsApi();
         if (userData.username.replace(/[\s.,%]/g, '') in admins) isAdmin = true;
     }
-    return { listOfProjects, isAdmin, userName };
+    return { listOfProjects, isAdmin, userName, listOfAssignee };
 });
 
 export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) => {
@@ -145,6 +157,7 @@ const boardsSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(signIn.fulfilled, (state, action) => {
             state.listOfProjects = action.payload.listOfProjects;
+            state.assignee = action.payload.listOfAssignee;
             state.isAdmin = action.payload.isAdmin;
             state.userName = action.payload.userName;
         });
@@ -167,7 +180,6 @@ const boardsSlice = createSlice({
             tempState.boards = action.payload.newProject;
             tempState.currentProject = action.payload.title;
             tempState.listOfProjects[`${action.payload.title}`] = [];
-            console.log(tempState);
             return tempState;
         });
         builder.addCase(loadBoard.fulfilled, (state, action) => {
@@ -176,6 +188,11 @@ const boardsSlice = createSlice({
         });
         builder.addCase(refreshBoardPage.fulfilled, (state) => {
             return state;
+        });
+        builder.addCase(addNewAssignee.fulfilled, (state, action) => {
+            const tempState = deepCopy(state);
+            tempState.assignee[action.payload.email] = action.payload.name;
+            return tempState;
         });
     },
 });
