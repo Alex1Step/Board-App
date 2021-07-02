@@ -11,6 +11,7 @@ import { addNewAssignee, createNewProject, logOut } from '../../redux/slice';
 import { loadBoard } from '../../redux/slice';
 import { useTranslation } from 'react-i18next';
 import { IAssignee } from './interfaces';
+import { BoardI } from '../../redux/interfaces';
 
 const layout = {
     labelCol: { span: 8 },
@@ -27,7 +28,7 @@ const validateMessages = {
 const UserPage: React.FC = () => {
     const dispatch = useDispatch();
 
-    const projectsList: { [key: string]: string } | undefined = useSelector(
+    const projectsList: { [key: string]: BoardI[] } | undefined = useSelector(
         (state: RootState) => state.globalReducer.listOfProjects,
     );
 
@@ -86,7 +87,7 @@ const UserPage: React.FC = () => {
         let flag = false;
         if (stateForCheckRole.listOfProjects) {
             Object.values(stateForCheckRole.listOfProjects[project]).forEach((board) => {
-                (board as any).tasks.forEach((element: any) => {
+                board.tasks.forEach((element) => {
                     if (element.assignee === currentAssignee) flag = true;
                 });
             });

@@ -33,7 +33,7 @@ export const onLoadPage = createAsyncThunk(
     'board/pageLoad',
     async (setData: React.Dispatch<React.SetStateAction<boolean>>) => {
         const user = localStorage.getItem('user');
-        let listOfProjects: { [key: string]: string } = {};
+        let listOfProjects: { [key: string]: BoardI[] } = {};
         let listOfAssignee: { [key: string]: string } = {};
         let isAdmin = false;
         let userName = '';
@@ -57,7 +57,7 @@ export const createNewProject = createAsyncThunk('board/createNewProject', async
 });
 
 export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
-    let listOfProjects: { [key: string]: string } = {};
+    let listOfProjects: { [key: string]: BoardI[] } = {};
     let listOfAssignee: { [key: string]: string } = {};
     let isAdmin = false;
     const userName = userData.username;
@@ -72,7 +72,7 @@ export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) 
 });
 
 export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) => {
-    let listOfProjects: { [key: string]: string } = {};
+    let listOfProjects: { [key: string]: BoardI[] } = {};
     let isAdmin = false;
     const userName = userData.username;
     const response = await indexApi.signUpApi(userData.username, userData.password);
