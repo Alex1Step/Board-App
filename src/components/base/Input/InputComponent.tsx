@@ -22,8 +22,8 @@ const InputComponent = (props: IinputProps): JSX.Element => {
             <label htmlFor={htmlFor}>{label}</label>
             <span
                 className={cn({
-                    [styles.textShow]: hideShow === 1,
-                    [styles.textHide]: hideShow === 0,
+                    [styles.textShow]: hideShow,
+                    [styles.textHide]: !hideShow,
                 })}
                 onClick={() => {
                     setHideShow(0);
@@ -36,10 +36,9 @@ const InputComponent = (props: IinputProps): JSX.Element => {
                     rows={3}
                     ref={(ref) => ref?.focus()}
                     className={cn({
-                        [styles.inputHide]: hideShow === 1,
-                        [styles.inputShow]: hideShow === 0,
+                        [styles.inputHide]: hideShow,
+                        [styles.inputShow]: !hideShow,
                     })}
-                    // type={inputType}
                     id={htmlFor}
                     value={value}
                     onChange={onChange}

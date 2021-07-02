@@ -12,6 +12,8 @@ import { IdropResult } from './interfaces';
 import { useTranslation } from 'react-i18next';
 import Modal from '../Modal/Modal';
 import { RootState } from '../../../redux/store';
+import { Moment } from 'moment';
+import DateComponent from '../../base/DateComponent/DateComponent';
 
 const ItemTypes = {
     box: 'box',
@@ -85,6 +87,17 @@ const Card = (props: TaskI): JSX.Element => {
         assigneeArray = Object.values(assigneeList);
     }
 
+    const handleDateChange = (value: Moment | null, dateString: string) => {
+        dispatch(
+            changeFromInput({
+                boardID: fromBoard,
+                taskID: id,
+                inputID: 'deadlineDate',
+                payLoad: dateString,
+            }),
+        );
+    };
+
     const { t } = useTranslation();
 
     return (
@@ -101,12 +114,7 @@ const Card = (props: TaskI): JSX.Element => {
                         value={taskName}
                         onChange={(event) => handleChange(event, Number(fromBoard), id, 'taskName')}
                     />
-                    <InputComponent
-                        type={'date'}
-                        label={t('description.deadline')}
-                        value={deadlineDate}
-                        onChange={(event) => handleChange(event, Number(fromBoard), id, 'deadlineDate')}
-                    />
+                    <DateComponent onChange={handleDateChange} value={deadlineDate} label={'Deadline'} />
                     {new Date(deadlineDate) < new Date() ? (
                         <span
                             className={cn({
@@ -137,12 +145,6 @@ const Card = (props: TaskI): JSX.Element => {
                         value={assignee}
                         onChange={(event) => handleChange(event, Number(fromBoard), id, 'assignee')}
                     />
-                    {/* <InputComponent
-                        type={'text'}
-                        label={t('description.assignee')}
-                        value={assignee}
-                        onChange={(event) => handleChange(event, Number(fromBoard), id, 'assignee')}
-                    /> */}
                     <InputComponent
                         withWrap={true}
                         type={'textarea'}

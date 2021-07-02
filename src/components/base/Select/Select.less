@@ -9,13 +9,39 @@
     margin-left: 5px;
   }
 
-  // select {
-  //   background-color: #bfffe8;
-  //   border-radius: 10px;
-  // }
-  // option {
-  //   background-color: #bfffe8;
-  // }
+  .selectContainer {
+    display: block;
+    overflow: hidden;
+    position: relative;
+  }
+
+  select {
+    height: 30px;
+    padding: 2px 10px 2px 2px;
+    min-width: 280px;
+    outline: none;
+    background-color: #bfffe8;
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 2px #ddd8dc;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    .option {
+      background-color: white;
+    }
+  }
+  .selectIcon {
+    position: absolute;
+    right: 0px;
+    top: -5px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    border: 0px;
+  }
 
   span:hover {
     cursor: pointer;
