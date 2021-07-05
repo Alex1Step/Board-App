@@ -83,6 +83,7 @@ const Card = (props: TaskI): JSX.Element => {
         assignee: 'anybody',
         description: 'to do',
     };
+
     let assigneeArray: Array<string> = [];
     if (assigneeList) {
         assigneeArray = Object.values(assigneeList);

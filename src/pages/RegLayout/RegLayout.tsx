@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Redirect } from 'react-router';
 import styles from './RegLayout.less';
 import AuthForm from '../../components/custom/AuthForm/AuthForm';
@@ -14,10 +14,10 @@ const RegLayout: React.FC = () => {
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
     //REGISTER handler
-    const onFinish = (values: LoginI) => {
+    const onFinish = useCallback((values: LoginI) => {
         localStorage.setItem('user', values.username);
         dispatch(signUp(values));
-    };
+    }, []);
 
     const { t } = useTranslation();
 

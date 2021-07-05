@@ -58,7 +58,7 @@ const TasksLayout: React.FC = () => {
                             history.push('/user');
                         }}
                     >
-                        {'Projects'}
+                        {t('description.projects')}
                     </Button>
                     <Button className={styles.logoutBtn} type="primary" danger onClick={logOutHandler}>
                         {t('description.logout')}

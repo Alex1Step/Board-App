@@ -7,7 +7,7 @@ import Pull from './components/custom/Navigation/Pull/Pull';
 import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';
 import AboutLayout from './pages/AboutLayout/AboutLayout';
-import { /*onLeavePage, */ onLoadPage } from './redux/slice';
+import { onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
 import Preloader from './components/custom/Preloader/Preloader';
 import store from './redux/store';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import AuthForm from '../../components/custom/AuthForm/AuthForm';
 import SignInUpform from '../../containers/SignInUpform/SignInUpform';
 import styles from './LogInLayout.less';
@@ -14,10 +14,10 @@ const LogInLayout: React.FC = () => {
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
     //LogIn handler
-    const onFinish = (values: LoginI) => {
+    const onFinish = useCallback((values: LoginI) => {
         localStorage.setItem('user', values.username);
         dispatch(signIn(values));
-    };
+    }, []);
 
     const { t } = useTranslation();
 

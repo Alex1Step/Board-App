@@ -41,7 +41,7 @@ const UserPage: React.FC = () => {
 
     const [projectTitle, setProjectTitle] = useState('');
 
-    //show or hide modal window
+    //show or hide modal windows
     const [isModal, setModal] = React.useState(false);
     const onClose = useCallback(() => setModal(false), []);
     const [isModalAssign, setModalAssign] = React.useState(false);
@@ -182,7 +182,7 @@ const UserPage: React.FC = () => {
                         </Modal>
                     </>
                 ) : null}
-                <h1>Projects</h1>
+                <h1>{t('description.projects')}</h1>
                 <ul className={styles.linksToProjects}>
                     {projectsList ? (
                         Object.keys(projectsList).map((proj, index) => {
