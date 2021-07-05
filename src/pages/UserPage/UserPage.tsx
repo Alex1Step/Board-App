@@ -3,15 +3,16 @@ import { NavLink, Redirect, useHistory } from 'react-router-dom';
 import styles from './UserPage.less';
 import { useDispatch, useSelector } from 'react-redux';
 import store, { RootState } from '../../redux/store';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Modal from '../../components/custom/Modal/Modal';
 import InputComponent from '../../components/base/Input/InputComponent';
-import { addNewAssignee, createNewProject, logOut } from '../../redux/slice';
+import { addNewAssignee, createNewProject, logOut, deleteProject } from '../../redux/slice';
 import { loadBoard } from '../../redux/slice';
 import { useTranslation } from 'react-i18next';
 import { IAssignee } from './interfaces';
 import { BoardI } from '../../redux/interfaces';
+import { CloseOutlined } from '@ant-design/icons';
 
 const layout = {
     labelCol: { span: 8 },
@@ -92,6 +93,10 @@ const UserPage: React.FC = () => {
             });
         }
         return flag;
+    };
+
+    const deleteCurrentProject = (proj: string) => {
+        dispatch(deleteProject(proj));
     };
 
     const { t } = useTranslation();
@@ -184,10 +189,22 @@ const UserPage: React.FC = () => {
                             if (store.getState().globalReducer.isAdmin) {
                                 const link = `/boards/${proj}`;
                                 return (
-                                    <li key={index}>
+                                    <li key={index} className={styles.projectItem}>
                                         <NavLink to={link} onClick={() => loadThisBoard(proj)}>
                                             <div className={styles.link}>{proj}</div>
                                         </NavLink>
+                                        <div className={styles.linkBtn}>
+                                            <Tooltip title="delete">
+                                                <Button
+                                                    type="primary"
+                                                    danger
+                                                    shape="circle"
+                                                    className={styles.deleteProjectButton}
+                                                    icon={<CloseOutlined />}
+                                                    onClick={() => deleteCurrentProject(proj)}
+                                                />
+                                            </Tooltip>
+                                        </div>
                                     </li>
                                 );
                             } else {

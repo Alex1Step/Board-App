@@ -43,6 +43,14 @@
     font-size: 24px;
     margin: 0px;
     padding-left: 0px;
+    .projectItem {
+      position: relative;
+      .linkBtn {
+        position: absolute;
+        right: -22px;
+        top: -3px;
+      }
+    }
     a {
       color: white;
       .link {
@@ -51,10 +59,13 @@
         display: flex;
         justify-content: center;
         padding: 0px 10px 0px 10px;
-        margin: 10px;
+        margin: 20px;
         background-color: rgba(0, 0, 0, 0.4);
         &:hover {
           background-color: rgb(30, 210, 165);
+        }
+        .deleteProjectButton {
+          z-index: 100;
         }
       }
     }

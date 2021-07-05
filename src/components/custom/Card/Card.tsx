@@ -11,9 +11,10 @@ import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { IdropResult } from './interfaces';
 import { useTranslation } from 'react-i18next';
 import Modal from '../Modal/Modal';
-import { RootState } from '../../../redux/store';
+import store, { RootState } from '../../../redux/store';
 import { Moment } from 'moment';
 import DateComponent from '../../base/DateComponent/DateComponent';
+import { Divider } from 'antd';
 
 const ItemTypes = {
     box: 'box',
@@ -98,6 +99,12 @@ const Card = (props: TaskI): JSX.Element => {
         );
     };
 
+    //check role of user
+    const stateForCheckRole = store.getState().globalReducer;
+    const currentUser = stateForCheckRole.userName.replace(/[\s.,%]/g, '');
+    let currentAssignee = '';
+    if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
+
     const { t } = useTranslation();
 
     return (
@@ -114,6 +121,7 @@ const Card = (props: TaskI): JSX.Element => {
                         value={taskName}
                         onChange={(event) => handleChange(event, Number(fromBoard), id, 'taskName')}
                     />
+                    <Divider className={styles.dividerCustom} dashed={true} />
                     <DateComponent onChange={handleDateChange} value={deadlineDate} label={'Deadline'} />
                     {new Date(deadlineDate) < new Date() ? (
                         <span
@@ -125,6 +133,7 @@ const Card = (props: TaskI): JSX.Element => {
                             {t('description.attention')}
                         </span>
                     ) : null}
+                    <Divider className={styles.dividerCustom} dashed={true} />
                     <SelectComponent
                         type={'select'}
                         options={['High', 'Medium', 'Low']}
@@ -137,6 +146,7 @@ const Card = (props: TaskI): JSX.Element => {
                         value={priority}
                         onChange={(event) => handleChange(event, Number(fromBoard), id, 'priority')}
                     />
+                    <Divider className={styles.dividerCustom} dashed={true} />
                     <SelectComponent
                         type={'select'}
                         options={[...assigneeArray]}
@@ -145,6 +155,7 @@ const Card = (props: TaskI): JSX.Element => {
                         value={assignee}
                         onChange={(event) => handleChange(event, Number(fromBoard), id, 'assignee')}
                     />
+                    <Divider className={styles.dividerCustom} dashed={true} />
                     <InputComponent
                         withWrap={true}
                         type={'textarea'}
@@ -170,12 +181,13 @@ const Card = (props: TaskI): JSX.Element => {
                 })}
                 onClick={() => {
                     setBlink(0);
-                    setModal(true);
+                    if (currentAssignee === assignee) setModal(true);
                 }}
             >
                 <span className={styles.infoLine}>
                     {t('description.task')} {taskName}
                 </span>
+                <Divider className={styles.dividerCustom} dashed={true} />
                 <span className={styles.infoLine}>
                     {t('description.deadline')} {deadlineDate}
                     {new Date(deadlineDate) < new Date() ? (
@@ -189,15 +201,19 @@ const Card = (props: TaskI): JSX.Element => {
                         </span>
                     ) : null}
                 </span>
+                <Divider className={styles.dividerCustom} dashed={true} />
                 <span className={styles.infoLine}>
                     {t('description.priority')} {priority}
                 </span>
+                <Divider className={styles.dividerCustom} dashed={true} />
                 <span className={styles.infoLine}>
                     {t('description.assignee')} {assignee}
                 </span>
+                <Divider className={styles.dividerCustom} dashed={true} />
                 <span className={styles.infoLine}>
                     {t('description.description')} {description}
                 </span>
+                <Divider className={styles.dividerCustom} dashed={true} />
                 <div className={styles.cardButtonContainer}>
                     <ButtonComponent
                         onClick={() => {

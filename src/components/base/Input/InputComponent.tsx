@@ -18,7 +18,13 @@ const InputComponent = (props: IinputProps): JSX.Element => {
     return withoutSubstitution ? (
         <Input type={inputType} id={htmlFor} value={value} onChange={onChange} autoFocus={true} />
     ) : (
-        <div className={cn({ [styles.inputContainer]: toUpper, [styles.wrapLabel]: withWrap })}>
+        <div
+            className={cn({
+                [styles.inputContainer]: toUpper,
+                [styles.wrapLabel]: withWrap,
+                [styles.ifTextArea]: inputType === 'textarea',
+            })}
+        >
             <label htmlFor={htmlFor}>{label}</label>
             <span
                 className={cn({

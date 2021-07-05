@@ -17,6 +17,7 @@ const DateComponent = (props: {
         <div className={styles.inputDateContainer}>
             <label>{label}</label>
             <span
+                className={styles.dateSpan}
                 onClick={() => {
                     setHideShow(0);
                 }}
@@ -29,6 +30,8 @@ const DateComponent = (props: {
                     [styles.inputHide]: hideShow,
                     [styles.inputShow]: !hideShow,
                 })}
+                allowClear={false}
+                popupStyle={{ color: 'red', backgroundColor: 'blue' }}
                 onChange={props.onChange}
                 onBlur={() => setHideShow(1)}
             />

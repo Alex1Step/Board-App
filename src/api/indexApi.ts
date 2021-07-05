@@ -8,6 +8,7 @@ import { fetchListOfProjectsApi } from './fetchListOfProjectsApi/fetchListOfProj
 import { fetchListOfAdminsApi } from './fetchListOfAdminsApi/fetchListOfAdminsApi';
 import { fetchListOfAssigneeApi } from './fetchListOfAssigneeApi/fetchListOfAssigneeApi';
 import { newAssigneeToDBApi } from './newAssigneeToDBApi/newAssigneeToDBApi';
+import { deleteProjectFromDBApi } from './deleteProjectFromDBApi/deleteProjectFromDBApi';
 
 const indexApi = {
     signInApi,
@@ -20,6 +21,7 @@ const indexApi = {
     fetchListOfAdminsApi,
     fetchListOfAssigneeApi,
     newAssigneeToDBApi,
+    deleteProjectFromDBApi,
 };
 
 export default indexApi;

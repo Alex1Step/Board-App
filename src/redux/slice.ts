@@ -10,6 +10,11 @@ import { deleteTask } from '../helper/deleteTask';
 import { deleteBoard } from '../helper/deleteBoard';
 import deepCopy from '../helper/deepCopy';
 
+export const deleteProject = createAsyncThunk('board/deleteProject', async (project: string) => {
+    indexApi.deleteProjectFromDBApi(project);
+    return project;
+});
+
 export const addNewAssignee = createAsyncThunk('board/addNewAssignee', async (user: IAssignee) => {
     const changedAssignee = {
         email: user.email.replace(/[\s.,%]/g, ''),
@@ -192,6 +197,11 @@ const boardsSlice = createSlice({
         builder.addCase(addNewAssignee.fulfilled, (state, action) => {
             const tempState = deepCopy(state);
             tempState.assignee[action.payload.email] = action.payload.name;
+            return tempState;
+        });
+        builder.addCase(deleteProject.fulfilled, (state, action) => {
+            const tempState = deepCopy(state);
+            delete tempState.listOfProjects[action.payload];
             return tempState;
         });
     },
