@@ -3,6 +3,7 @@ import styles from './Date.less';
 import cn from 'classnames';
 import { DatePicker } from 'antd';
 import { Moment } from 'moment';
+import moment from 'moment';
 
 const DateComponent = (props: {
     value: string;
@@ -30,8 +31,12 @@ const DateComponent = (props: {
                     [styles.inputHide]: hideShow,
                     [styles.inputShow]: !hideShow,
                 })}
+                defaultValue={moment(new Date(), 'DD MMM, YYYY')}
+                defaultPickerValue={moment(new Date(), 'DD MMM, YYYY')}
                 allowClear={false}
-                popupStyle={{ color: 'red', backgroundColor: 'blue' }}
+                autoFocus={true}
+                showToday={false}
+                dropdownClassName={styles['ant-picker-dropdown-placement-bottomRight']}
                 onChange={props.onChange}
                 onBlur={() => setHideShow(1)}
             />

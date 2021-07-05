@@ -104,6 +104,7 @@ const Card = (props: TaskI): JSX.Element => {
     const currentUser = stateForCheckRole.userName.replace(/[\s.,%]/g, '');
     let currentAssignee = '';
     if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
+    const isAdmin = stateForCheckRole.isAdmin;
 
     const { t } = useTranslation();
 
@@ -181,7 +182,7 @@ const Card = (props: TaskI): JSX.Element => {
                 })}
                 onClick={() => {
                     setBlink(0);
-                    if (currentAssignee === assignee) setModal(true);
+                    if (currentAssignee === assignee || isAdmin) setModal(true);
                 }}
             >
                 <span className={styles.infoLine}>

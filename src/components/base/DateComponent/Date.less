@@ -12,7 +12,7 @@ label {
 .datePicker {
   background-color: #bfffe8;
   border-radius: 5px;
-  width: 200px;
+  width: 125px;
   margin: 0px;
   padding-right: 15px;
   margin-left: 5px;
@@ -40,9 +40,18 @@ label {
 
 .inputShow {
   display: block;
-  margin-bottom: 7px;
 }
 
-.popUp {
-  background-color: red;
+:global .ant-picker-panel-container {
+  background-color: #bfffe8;
+  border-radius: 5px;
+}
+
+:global .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  background-color: aqua;
+  z-index: -1;
+}
+
+:global .ant-picker-cell-inner {
+  color: black;
 }
