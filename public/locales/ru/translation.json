@@ -38,6 +38,7 @@
     "newProject": "Название проекта",
     "noProjects": "Вы не отмечены как исполнитель ни в одном из проектов.",
     "projects": "Проекты",
-    "deleteProject": "Удалить проект "
+    "deleteProject": "Удалить",
+    "editProject": "Открыть"
   }
 }

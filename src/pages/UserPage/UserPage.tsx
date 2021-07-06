@@ -1,18 +1,16 @@
 import React, { useCallback, useState } from 'react';
-import { NavLink, Redirect, useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import styles from './UserPage.less';
 import { useDispatch, useSelector } from 'react-redux';
 import store, { RootState } from '../../redux/store';
-import { Form, Input, Button, Tooltip } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Modal from '../../components/custom/Modal/Modal';
 import InputComponent from '../../components/base/Input/InputComponent';
-import { addNewAssignee, createNewProject, logOut, deleteProject } from '../../redux/slice';
-import { loadBoard } from '../../redux/slice';
+import ListOfProjects from '../../components/custom/ListOfPojects/ListOfProjects';
+import { addNewAssignee, createNewProject, logOut } from '../../redux/slice';
 import { useTranslation } from 'react-i18next';
 import { IAssignee } from './interfaces';
-import { BoardI } from '../../redux/interfaces';
-import { CloseOutlined } from '@ant-design/icons';
 
 const layout = {
     labelCol: { span: 8 },
@@ -28,10 +26,6 @@ const validateMessages = {
 
 const UserPage: React.FC = () => {
     const dispatch = useDispatch();
-
-    const projectsList: { [key: string]: BoardI[] } | undefined = useSelector(
-        (state: RootState) => state.globalReducer.listOfProjects,
-    );
 
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
@@ -67,36 +61,10 @@ const UserPage: React.FC = () => {
         onCloseAssign();
     };
 
-    const loadThisBoard = (proj: string) => {
-        dispatch(loadBoard(proj));
-    };
-
     const logOutHandler = () => {
         localStorage.removeItem('user');
         dispatch(logOut(user));
         history.push('/about');
-    };
-
-    //check role of user
-    const stateForCheckRole = store.getState().globalReducer;
-    const currentUser = stateForCheckRole.userName.replace(/[\s.,%]/g, '');
-    let currentAssignee = '';
-    if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
-
-    const checkRole = (project: string): boolean => {
-        let flag = false;
-        if (stateForCheckRole.listOfProjects) {
-            Object.values(stateForCheckRole.listOfProjects[project]).forEach((board) => {
-                board.tasks.forEach((element) => {
-                    if (element.assignee === currentAssignee) flag = true;
-                });
-            });
-        }
-        return flag;
-    };
-
-    const deleteCurrentProject = (proj: string) => {
-        dispatch(deleteProject(proj));
     };
 
     const { t } = useTranslation();
@@ -105,7 +73,7 @@ const UserPage: React.FC = () => {
         <div className={styles.wrapper}>
             <section className={styles.onUserPage}>
                 <div className={styles.userName}>
-                    <p>{stateForCheckRole.userName}</p>
+                    <p>{store.getState().globalReducer.userName}</p>
                 </div>
                 <Button className={styles.logoutBtn} type="primary" danger onClick={logOutHandler}>
                     {t('description.logout')}
@@ -182,48 +150,7 @@ const UserPage: React.FC = () => {
                         </Modal>
                     </>
                 ) : null}
-                <h1>{t('description.projects')}</h1>
-                <ul className={styles.linksToProjects}>
-                    {projectsList ? (
-                        Object.keys(projectsList).map((proj, index) => {
-                            if (store.getState().globalReducer.isAdmin) {
-                                const link = `/boards/${proj}`;
-                                return (
-                                    <li key={index} className={styles.projectItem}>
-                                        <NavLink to={link} onClick={() => loadThisBoard(proj)}>
-                                            <div className={styles.link}>{proj}</div>
-                                        </NavLink>
-                                        <div className={styles.linkBtn}>
-                                            <Tooltip title={t('description.deleteProject') + proj}>
-                                                <Button
-                                                    type="primary"
-                                                    danger
-                                                    shape="circle"
-                                                    className={styles.deleteProjectButton}
-                                                    icon={<CloseOutlined />}
-                                                    onClick={() => deleteCurrentProject(proj)}
-                                                />
-                                            </Tooltip>
-                                        </div>
-                                    </li>
-                                );
-                            } else {
-                                if (checkRole(proj)) {
-                                    const link = `/boards/${proj}`;
-                                    return (
-                                        <li key={index}>
-                                            <NavLink to={link} onClick={() => loadThisBoard(proj)}>
-                                                <div className={styles.link}>{proj}</div>
-                                            </NavLink>
-                                        </li>
-                                    );
-                                }
-                            }
-                        })
-                    ) : (
-                        <h2>{t('description.noProjects')}</h2>
-                    )}
-                </ul>
+                <ListOfProjects />
             </div>
         </div>
     ) : (
