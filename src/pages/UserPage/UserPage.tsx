@@ -194,7 +194,7 @@ const UserPage: React.FC = () => {
                                             <div className={styles.link}>{proj}</div>
                                         </NavLink>
                                         <div className={styles.linkBtn}>
-                                            <Tooltip title="delete">
+                                            <Tooltip title={t('description.deleteProject') + proj}>
                                                 <Button
                                                     type="primary"
                                                     danger

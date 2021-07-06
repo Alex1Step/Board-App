@@ -37,6 +37,7 @@
     "newAssignee": "Add new assignee",
     "newProject": "New Project Title",
     "noProjects": "You are not marked as an assignee in any of the projects.",
-    "projects": "Projects"
+    "projects": "Projects",
+    "deleteProject": "Delete project "
   }
 }
