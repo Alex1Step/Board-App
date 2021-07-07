@@ -1,7 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import InputComponent from '../../base/Input/InputComponent';
-import SelectComponent from '../../base/Select/SelectComponent';
-import ButtonComponent from '../../base/Button/ButtonComponent';
 import { TaskI } from '../../../redux/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeFromInput, taskDeleting, moveTask } from '../../../redux/slice';
@@ -13,8 +10,9 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../Modal/Modal';
 import store, { RootState } from '../../../redux/store';
 import { Moment } from 'moment';
-import DateComponent from '../../base/DateComponent/DateComponent';
-import { Divider } from 'antd';
+
+import CardForm from './CardForm/CardForm';
+import CardView from './CardView/CardView';
 
 const ItemTypes = {
     box: 'box',
@@ -28,7 +26,33 @@ const Card = (props: TaskI): JSX.Element => {
     );
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
+
     const [blink, setBlink] = useState(1);
+
+    //show or hide modal window
+    const [isModal, setModal] = React.useState(false);
+    const onClose = useCallback(() => setModal(false), []);
+
+    const forCompare = {
+        taskName: 'New Task',
+        deadlineDate: 'default',
+        assignee: 'anybody',
+        description: 'to do',
+    };
+
+    let assigneeArray: Array<string> = [];
+    if (assigneeList) {
+        assigneeArray = Object.values(assigneeList);
+    }
+
+    //check role of user
+    const stateForCheckRole = store.getState().globalReducer;
+    const currentUser = stateForCheckRole.userName.replace(/[\s.,%]/g, '');
+    let currentAssignee = '';
+    if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
+    const isAdmin = stateForCheckRole.isAdmin;
 
     //handler for listening changes in inputs
     const handleChange = (
@@ -50,9 +74,14 @@ const Card = (props: TaskI): JSX.Element => {
         );
     };
 
-    //show or hide modal window
-    const [isModal, setModal] = React.useState(false);
-    const onClose = useCallback(() => setModal(false), []);
+    const deleteTask = () => {
+        dispatch(
+            taskDeleting({
+                boardID: Number(fromBoard),
+                taskID: id,
+            }),
+        );
+    };
 
     //ReactDND for work with active cards
     const [, drag] = useDrag(
@@ -77,18 +106,6 @@ const Card = (props: TaskI): JSX.Element => {
         [taskName],
     );
 
-    const forCompare = {
-        taskName: 'New Task',
-        deadlineDate: 'default',
-        assignee: 'anybody',
-        description: 'to do',
-    };
-
-    let assigneeArray: Array<string> = [];
-    if (assigneeList) {
-        assigneeArray = Object.values(assigneeList);
-    }
-
     const handleDateChange = (value: Moment | null, dateString: string) => {
         dispatch(
             changeFromInput({
@@ -100,72 +117,15 @@ const Card = (props: TaskI): JSX.Element => {
         );
     };
 
-    //check role of user
-    const stateForCheckRole = store.getState().globalReducer;
-    const currentUser = stateForCheckRole.userName.replace(/[\s.,%]/g, '');
-    let currentAssignee = '';
-    if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
-    const isAdmin = stateForCheckRole.isAdmin;
-
-    const { t } = useTranslation();
-
     return (
         <>
             <Modal visible={isModal} title={t('description.edittask')} onClose={onClose}>
-                <div
-                    className={cn({
-                        [styles.cardOnModal]: true,
-                    })}
-                >
-                    <InputComponent
-                        type={'text'}
-                        label={t('description.task')}
-                        value={taskName}
-                        onChange={(event) => handleChange(event, Number(fromBoard), id, 'taskName')}
-                    />
-                    <Divider className={styles.dividerCustom} dashed={true} />
-                    <DateComponent onChange={handleDateChange} value={deadlineDate} label={'Deadline'} />
-                    {new Date(deadlineDate) < new Date() ? (
-                        <span
-                            className={cn({
-                                [styles.attention]: true,
-                                [styles.blink]: true,
-                            })}
-                        >
-                            {t('description.attention')}
-                        </span>
-                    ) : null}
-                    <Divider className={styles.dividerCustom} dashed={true} />
-                    <SelectComponent
-                        type={'select'}
-                        options={['High', 'Medium', 'Low']}
-                        labelForOptions={[
-                            `${t('description.high')}`,
-                            `${t('description.medium')}`,
-                            `${t('description.low')}`,
-                        ]}
-                        label={t('description.priority')}
-                        value={priority}
-                        onChange={(event) => handleChange(event, Number(fromBoard), id, 'priority')}
-                    />
-                    <Divider className={styles.dividerCustom} dashed={true} />
-                    <SelectComponent
-                        type={'select'}
-                        options={[...assigneeArray]}
-                        labelForOptions={[...assigneeArray]}
-                        label={t('description.assignee')}
-                        value={assignee}
-                        onChange={(event) => handleChange(event, Number(fromBoard), id, 'assignee')}
-                    />
-                    <Divider className={styles.dividerCustom} dashed={true} />
-                    <InputComponent
-                        withWrap={true}
-                        type={'textarea'}
-                        label={t('description.description')}
-                        value={description}
-                        onChange={(event) => handleChange(event, Number(fromBoard), id, 'description')}
-                    />
-                </div>
+                <CardForm
+                    taskInfo={{ ...props }}
+                    assigneeArray={assigneeArray}
+                    changeFunc={handleChange}
+                    changeDateFunc={handleDateChange}
+                />
             </Modal>
             <div
                 ref={
@@ -186,49 +146,7 @@ const Card = (props: TaskI): JSX.Element => {
                     if (currentAssignee === assignee || isAdmin) setModal(true);
                 }}
             >
-                <span className={styles.infoLine}>
-                    {t('description.task')} {taskName}
-                </span>
-                <Divider className={styles.dividerCustom} dashed={true} />
-                <span className={styles.infoLine}>
-                    {t('description.deadline')} {deadlineDate}
-                    {new Date(deadlineDate) < new Date() ? (
-                        <span
-                            className={cn({
-                                [styles.attention]: true,
-                                [styles.blink]: true,
-                            })}
-                        >
-                            {t('description.attention')}
-                        </span>
-                    ) : null}
-                </span>
-                <Divider className={styles.dividerCustom} dashed={true} />
-                <span className={styles.infoLine}>
-                    {t('description.priority')} {priority}
-                </span>
-                <Divider className={styles.dividerCustom} dashed={true} />
-                <span className={styles.infoLine}>
-                    {t('description.assignee')} {assignee}
-                </span>
-                <Divider className={styles.dividerCustom} dashed={true} />
-                <span className={styles.infoLine}>
-                    {t('description.description')} {description}
-                </span>
-                <Divider className={styles.dividerCustom} dashed={true} />
-                <div className={styles.cardButtonContainer}>
-                    <ButtonComponent
-                        onClick={() => {
-                            dispatch(
-                                taskDeleting({
-                                    boardID: Number(fromBoard),
-                                    taskID: id,
-                                }),
-                            );
-                        }}
-                        message={t('description.deleteTask')}
-                    />
-                </div>
+                <CardView taskInfo={{ ...props }} deleteFunc={deleteTask} />
             </div>
         </>
     );

@@ -3,26 +3,14 @@ import { Redirect, useHistory } from 'react-router-dom';
 import styles from './UserPage.less';
 import { useDispatch, useSelector } from 'react-redux';
 import store, { RootState } from '../../redux/store';
-import { Form, Input, Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import Modal from '../../components/custom/Modal/Modal';
-import InputComponent from '../../components/base/Input/InputComponent';
 import ListOfProjects from '../../components/custom/ListOfPojects/ListOfProjects';
 import { addNewAssignee, createNewProject, logOut } from '../../redux/slice';
 import { useTranslation } from 'react-i18next';
 import { IAssignee } from './interfaces';
-
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-};
-
-const validateMessages = {
-    required: '${label} is required!',
-    types: {
-        email: '${label} is not a valid email!',
-    },
-};
+import AdminModalContent from '../../components/custom/AdminModalContent/AdminModalContent';
+import AdminButtons from '../../components/custom/AdminButtons/AdminButtons';
 
 const UserPage: React.FC = () => {
     const dispatch = useDispatch();
@@ -35,13 +23,15 @@ const UserPage: React.FC = () => {
 
     const [projectTitle, setProjectTitle] = useState('');
 
+    const { t } = useTranslation();
+
+    const history = useHistory();
+
     //show or hide modal windows
     const [isModal, setModal] = React.useState(false);
     const onClose = useCallback(() => setModal(false), []);
     const [isModalAssign, setModalAssign] = React.useState(false);
     const onCloseAssign = useCallback(() => setModalAssign(false), []);
-
-    const history = useHistory();
 
     const createProjectHandler = () => {
         store.subscribe(() => {
@@ -67,8 +57,6 @@ const UserPage: React.FC = () => {
         history.push('/about');
     };
 
-    const { t } = useTranslation();
-
     return data ? (
         <div className={styles.wrapper}>
             <section className={styles.onUserPage}>
@@ -82,71 +70,18 @@ const UserPage: React.FC = () => {
             <div className={styles.userPage}>
                 {isAdmin ? (
                     <>
-                        <section className={styles.adminButtons}>
-                            <Button
-                                type="primary"
-                                shape="round"
-                                icon={<PlusOutlined />}
-                                size="large"
-                                onClick={() => setModal(true)}
-                            >
-                                {t('description.addProject')}
-                            </Button>
-                            <Button
-                                type="primary"
-                                shape="round"
-                                icon={<PlusOutlined />}
-                                size="large"
-                                onClick={() => setModalAssign(true)}
-                            >
-                                {t('description.addAssignee')}
-                            </Button>
-                        </section>
+                        <AdminButtons setModal={setModal} setModalAssign={setModalAssign} />
                         <Modal
                             visible={isModal || isModalAssign}
                             title={isModal ? t('description.newProject') : t('description.newAssignee')}
                             onClose={isModal ? createProjectHandler : onCloseAssign}
                         >
-                            <div className={styles.forModal}>
-                                {isModal ? (
-                                    <InputComponent
-                                        type={'text'}
-                                        label={''}
-                                        value={projectTitle}
-                                        onChange={(event) => {
-                                            setProjectTitle(event.target.value);
-                                        }}
-                                        withoutSubstitution={true}
-                                    />
-                                ) : (
-                                    <Form
-                                        {...layout}
-                                        name="nest-messages"
-                                        onFinish={addAssignee}
-                                        validateMessages={validateMessages}
-                                    >
-                                        <Form.Item
-                                            name={['user', 'name']}
-                                            label={t('description.name')}
-                                            rules={[{ required: true }]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                        <Form.Item
-                                            name={['user', 'email']}
-                                            label={t('description.mail')}
-                                            rules={[{ type: 'email' }]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                                            <Button type="primary" htmlType="submit">
-                                                {t('description.add')}
-                                            </Button>
-                                        </Form.Item>
-                                    </Form>
-                                )}
-                            </div>
+                            <AdminModalContent
+                                isModal={isModal}
+                                title={projectTitle}
+                                setProjectTitle={setProjectTitle}
+                                addAssignee={addAssignee}
+                            />
                         </Modal>
                     </>
                 ) : null}

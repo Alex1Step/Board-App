@@ -9,7 +9,9 @@ import cn from 'classnames';
 
 const List = (props: Ilist): React.ReactElement => {
     const { loadThisBoard, deleteCurrentProject, checkRole, projectsList, isAdmin } = { ...props };
+
     const { t } = useTranslation();
+
     const list = isAdmin
         ? Object.keys(projectsList).map((proj, index) => {
               const link = `/boards/${proj}`;
@@ -58,6 +60,7 @@ const List = (props: Ilist): React.ReactElement => {
                   );
               }
           });
+
     return <ul className={styles.linksToProjects}>{list}</ul>;
 };
 

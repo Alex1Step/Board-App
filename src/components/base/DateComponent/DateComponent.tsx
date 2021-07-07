@@ -37,7 +37,7 @@ const DateComponent = (props: {
                 autoFocus={true}
                 showToday={false}
                 dropdownClassName={styles['ant-picker-dropdown-placement-bottomRight']}
-                onChange={props.onChange}
+                onChange={onChange}
                 onBlur={() => setHideShow(1)}
             />
         </div>

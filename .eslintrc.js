@@ -26,6 +26,7 @@ module.exports = {
     rules: {
         // Правила ESLint. Может использоваться для перезаписи правил из расширенных конфигов
         // например "@ typescript-eslint / явный-возвращаемый-тип-функции": "выкл.",
+        '@typescript-eslint/no-non-null-assertion': 'off',
     },
 
     settings: {
