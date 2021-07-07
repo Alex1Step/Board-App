@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import AuthForm from '../../components/custom/AuthForm/AuthForm';
-import SignInUpform from '../../containers/SignInUpform/SignInUpform';
 import styles from './LogInLayout.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../../redux/slice';
@@ -23,10 +22,10 @@ const LogInLayout: React.FC = () => {
 
     return user === '' ? (
         <section className={styles.logInLayout}>
-            <SignInUpform>
+            <section className={styles.signInUpform}>
                 <h1>{t('description.welcome')}</h1>
                 <AuthForm handler={onFinish} textOnButton={t('description.signIn')} />
-            </SignInUpform>
+            </section>
         </section>
     ) : (
         <Redirect to={'/user'} />

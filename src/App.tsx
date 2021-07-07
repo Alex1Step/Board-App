@@ -33,7 +33,7 @@ const App: React.FC = () => {
         { to: '/about', text: `${t('description.aboutLink')}`, exact: true },
         { to: '/login', text: `${t('description.loginLink')}`, exact: true },
         { to: '/register', text: `${t('description.registerLink')}`, exact: true },
-        { to: '/user', text: 'Projects', exact: true },
+        { to: '/user', text: `${t('description.projects')}`, exact: true },
     ];
 
     const beforeUnloadPage = () => {

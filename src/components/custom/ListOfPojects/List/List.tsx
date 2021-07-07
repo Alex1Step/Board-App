@@ -41,9 +41,7 @@ const List = (props: Ilist): React.ReactElement => {
                               </div>
                           }
                       >
-                          <NavLink to={link} onClick={() => props.loadThisBoard(proj)}>
-                              <div className={styles.link}>{proj}</div>
-                          </NavLink>
+                          <div className={styles.link}>{proj}</div>
                       </Tooltip>
                   </li>
               );
