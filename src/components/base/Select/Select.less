@@ -1,13 +1,53 @@
 .selectContainer {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   label {
     text-decoration: underline;
+    margin: 10px 0px;
   }
-  select,
-  span {
+  select {
     margin-left: 5px;
   }
+
+  span {
+    margin: 10px;
+  }
+
+  .selectContainer {
+    display: block;
+    overflow: hidden;
+    position: relative;
+  }
+
+  select {
+    height: 30px;
+    padding: 2px 10px 2px 10px;
+    min-width: 280px;
+    outline: none;
+    background-color: #bfffe8;
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 2px #ddd8dc;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    .option {
+      background-color: white;
+    }
+  }
+  .selectIcon {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    border: 0px;
+  }
+
   span:hover {
     cursor: pointer;
   }

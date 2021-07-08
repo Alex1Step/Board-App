@@ -1,0 +1,57 @@
+.inputDateContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+label {
+  text-decoration: underline;
+  margin: 10px 0px;
+}
+
+.datePicker {
+  background-color: #bfffe8;
+  border-radius: 5px;
+  width: 125px;
+  margin: 0px;
+  padding-right: 15px;
+  margin-left: 5px;
+}
+
+.dateSpan {
+  margin-left: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.textShow {
+  display: block;
+  word-wrap: break-word !important;
+}
+
+.textHide {
+  display: none;
+}
+
+.inputHide {
+  display: none;
+}
+
+.inputShow {
+  display: block;
+}
+
+:global .ant-picker-panel-container {
+  background-color: #bfffe8;
+  border-radius: 5px;
+}
+
+:global .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  background-color: aqua;
+  z-index: -1;
+}
+
+:global .ant-picker-cell-inner {
+  color: black;
+}

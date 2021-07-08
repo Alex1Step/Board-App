@@ -22,7 +22,7 @@ const Pull = ({ isOpen, onClick, listOfLinks }: IpullProps): JSX.Element => {
                     {listOfLinks.map((link, index) => {
                         if (
                             (user !== '' && link.to === '/register') ||
-                            (user === '' && link.to === '/boards') ||
+                            (user === '' && link.to === '/user') ||
                             (user !== '' && link.to === '/login')
                         )
                             return null;

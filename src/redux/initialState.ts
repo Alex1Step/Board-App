@@ -1,6 +1,7 @@
 import { GlobalState } from './interfaces';
 
 export const initialState = {
+    listOfProjects: {},
     userID: 0,
     userName: '',
     boards: [

@@ -1,18 +1,26 @@
 .inputContainer {
   display: flex;
   justify-content: flex-start;
-  
+  align-items: center;
+
   &.wrapLabel {
     flex-direction: column;
   }
 
   label {
     text-decoration: underline;
+    margin: 10px 0px;
   }
 
   input,
   span {
     margin-left: 5px;
+  }
+
+  input,
+  textarea {
+    background-color: #bfffe8;
+    border-radius: 5px;
   }
 
   span:hover {
@@ -25,7 +33,7 @@
 
   .inputShow {
     display: block;
-    margin-bottom: 7px;
+    // margin-bottom: 7px;
   }
 
   .textShow {
@@ -36,4 +44,9 @@
   .textHide {
     display: none;
   }
+}
+
+.ifTextArea {
+  flex-direction: column;
+  align-items: flex-start;
 }

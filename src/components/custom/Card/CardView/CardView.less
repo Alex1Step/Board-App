@@ -1,0 +1,31 @@
+.dividerCustom {
+  margin: 5px 0px;
+}
+.attention {
+  width: fit-content;
+  background-color: rgb(253, 239, 114);
+  padding: 0px 5px 0px 5px;
+  border-radius: 5px;
+}
+.cardButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+.infoLine {
+  word-wrap: break-word;
+  margin-bottom: 5px;
+}
+
+.blink {
+  background: rgb(255, 82, 82);
+  animation-name: blink;
+  animation-timing-function: linear;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.4;
+  }
+}

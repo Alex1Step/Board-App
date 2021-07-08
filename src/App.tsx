@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import styles from './App.less';
 import TasksLayout from './pages/TasksLayout/TasksLayout';
 import Burger from './components/custom/Navigation/Burger/Burger';
@@ -7,14 +7,14 @@ import Pull from './components/custom/Navigation/Pull/Pull';
 import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';
 import AboutLayout from './pages/AboutLayout/AboutLayout';
-import indexApi from './api/indexApi';
-import { onLeavePage, onLoadPage } from './redux/slice';
+import { onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
 import Preloader from './components/custom/Preloader/Preloader';
 import store from './redux/store';
 import i18n from './i18n';
 import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
+import UserPage from './pages/UserPage/UserPage';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -31,15 +31,13 @@ const App: React.FC = () => {
 
     const links = [
         { to: '/about', text: `${t('description.aboutLink')}`, exact: true },
-        { to: '/boards', text: `${t('description.boardsLink')}`, exact: true },
         { to: '/login', text: `${t('description.loginLink')}`, exact: true },
         { to: '/register', text: `${t('description.registerLink')}`, exact: true },
+        { to: '/user', text: `${t('description.projects')}`, exact: true },
     ];
 
     const beforeUnloadPage = () => {
-        localStorage.setItem('user', store.getState().globalReducer.userName.replace(/[\s.,%]/g, ''));
-        const user = indexApi.currentUserApi();
-        if (user?.email) dispatch(onLeavePage(user?.email));
+        localStorage.setItem('user', store.getState().globalReducer.userName);
     };
 
     useEffect(() => {
@@ -63,6 +61,7 @@ const App: React.FC = () => {
                 <Route path="/boards" component={TasksLayout} />
                 <Route path="/login" component={LogInLayout} />
                 <Route path="/register" component={RegLayout} />
+                <Route path="/user" component={UserPage} />
                 <Route path="/" component={AboutLayout} />
             </Switch>
             <div className={styles.languageButtons}>

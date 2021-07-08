@@ -29,6 +29,16 @@
     "assignee": "Assignee:",
     "description": "Description:",
     "attention": "Attention!",
-    "edittask": "Edit Task"
+    "edittask": "Edit Task",
+    "addProject": "Add project",
+    "addAssignee": "Add assignee",
+    "add": "Add",
+    "name": "Name",
+    "newAssignee": "Add new assignee",
+    "newProject": "New Project Title",
+    "noProjects": "You are not marked as an assignee in any of the projects.",
+    "projects": "Projects",
+    "deleteProject": "Delete",
+    "editProject": "Open"
   }
 }

@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Redirect } from 'react-router';
 import styles from './RegLayout.less';
 import AuthForm from '../../components/custom/AuthForm/AuthForm';
-import SignInUpform from '../../containers/SignInUpform/SignInUpform';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../../redux/slice';
 import { RootState } from '../../redux/store';
@@ -14,21 +13,22 @@ const RegLayout: React.FC = () => {
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
     //REGISTER handler
-    const onFinish = (values: LoginI) => {
+    const onFinish = useCallback((values: LoginI) => {
+        localStorage.setItem('user', values.username);
         dispatch(signUp(values));
-    };
+    }, []);
 
     const { t } = useTranslation();
 
     return user === '' ? (
         <section className={styles.regLayout}>
-            <SignInUpform>
+            <section className={styles.signInUpform}>
                 <h1>{t('description.register')}</h1>
                 <AuthForm handler={onFinish} textOnButton={t('description.signUp')} />
-            </SignInUpform>
+            </section>
         </section>
     ) : (
-        <Redirect to={'/boards'} />
+        <Redirect to={'/user'} />
     );
 };
 
