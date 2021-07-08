@@ -41,7 +41,7 @@ const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps
         >
             <BoardHeader id={id} name={name} tasks={tasks} />
             <Divider />
-            <CardList tasks={[...tasks]} />
+            <CardList tasks={tasks} />
         </div>
     );
 };

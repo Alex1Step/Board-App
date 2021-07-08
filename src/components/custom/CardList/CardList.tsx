@@ -1,23 +1,24 @@
 import React from 'react';
-import styles from './CardList.less';
 import Card from '../Card/Card';
 import { TaskI } from '../../../redux/interfaces';
 
-const CardList = (tasks: Array<TaskI>) => {
+const CardList = (props: { tasks: Array<TaskI> }): JSX.Element => {
     return (
-        tasks &&
-        tasks.map((task, index) => (
-            <Card
-                key={index}
-                id={task.id}
-                taskName={task.taskName}
-                deadlineDate={task.deadlineDate}
-                priority={task.priority}
-                assignee={task.assignee}
-                description={task.description}
-                fromBoard={task.fromBoard}
-            />
-        ))
+        <>
+            {props.tasks &&
+                props.tasks.map((task, index) => (
+                    <Card
+                        key={index}
+                        id={task.id}
+                        taskName={task.taskName}
+                        deadlineDate={task.deadlineDate}
+                        priority={task.priority}
+                        assignee={task.assignee}
+                        description={task.description}
+                        fromBoard={task.fromBoard}
+                    />
+                ))}
+        </>
     );
 };
 

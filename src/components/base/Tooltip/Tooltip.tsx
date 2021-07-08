@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './Tooltip.less';
 import cn from 'classnames';
 
-const Tooltip = (props: { children: any; content: any; qtyOfButtons?: number }): JSX.Element => {
+const Tooltip = (props: { children: any; content: any }): JSX.Element => {
     const [show, setShow] = useState(false);
 
     return (
@@ -13,7 +13,7 @@ const Tooltip = (props: { children: any; content: any; qtyOfButtons?: number }):
                     [styles.visible]: show,
                 })}
             >
-                {props.content}
+                {props.content()}
                 <span className={styles.tooltipArrow}></span>
                 <span className={styles.tooltipUnderArrow}></span>
             </div>

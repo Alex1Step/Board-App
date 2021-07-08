@@ -3,7 +3,7 @@ import { RootState } from './store';
 import { IchangeValue } from '../components/custom/Card/interfaces';
 import { moveTaskI, changeBoardNameI, TaskI, BoardI } from './interfaces';
 import { LoginI } from '../pages/LogInLayout/interfaces';
-import { IAssignee } from '../pages/UserPage/interfaces';
+import { IAssignee } from '../containers/AdminPanel/interfaces';
 import { initialState } from './initialState';
 import indexApi from '../api/indexApi';
 import { deleteTask } from '../helper/deleteTask';

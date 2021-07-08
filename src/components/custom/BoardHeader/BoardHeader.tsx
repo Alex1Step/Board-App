@@ -2,27 +2,18 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { BoardI } from '../../../redux/interfaces';
-import { boardDeleting, changeBoardName, taskAdd } from '../../../redux/slice';
-import AddButton from '../../base/AddButton/AddButton';
-import ButtonComponent from '../../base/Button/ButtonComponent';
+import { changeBoardName } from '../../../redux/slice';
+
 import InputComponent from '../../base/Input/InputComponent';
 import Modal from '../Modal/Modal';
 import styles from './BoardHeader.less';
+import BoardControls from './BoardControls/BoardControls';
 
 const BoardHeader = ({ id, name }: BoardI): JSX.Element => {
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
 
-    //Delete this board
-    const deleteBoard = () => {
-        dispatch(boardDeleting(id));
-    };
-
-    //Add new task to board this board
-    const addNewTask = () => {
-        dispatch(taskAdd(id));
-    };
     //Rename this board
     const changeBoardNameHandler = (
         event:
@@ -56,10 +47,7 @@ const BoardHeader = ({ id, name }: BoardI): JSX.Element => {
                     withoutSubstitution={true}
                 />
             </Modal>
-            <div className={styles.boardButtonContainer}>
-                <AddButton className={'addCard'} text={t('description.addTask')} type={'Task'} onClick={addNewTask} />
-                <ButtonComponent onClick={deleteBoard} message={t('description.deleteBoard')} />
-            </div>
+            <BoardControls id={id} />
         </>
     );
 };

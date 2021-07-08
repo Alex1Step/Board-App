@@ -28,7 +28,7 @@ export interface BoardI {
 
 export interface GlobalState {
     listOfProjects?: { [key: string]: BoardI[] };
-    isAdmin?: boolean;
+    isAdmin: boolean;
     assignee?: { [key: string]: string };
     currentProject: string;
     userID: number;

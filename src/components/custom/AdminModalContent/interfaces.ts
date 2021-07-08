@@ -1,4 +1,4 @@
-import { IAssignee } from '../../../pages/UserPage/interfaces';
+import { IAssignee } from '../../../containers/AdminPanel/interfaces';
 
 export interface IAdminModalContent {
     isModal: boolean;

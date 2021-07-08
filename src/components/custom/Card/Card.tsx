@@ -1,25 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { TaskI } from '../../../redux/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFromInput, taskDeleting, moveTask } from '../../../redux/slice';
-import styles from './Card.less';
-import cn from 'classnames';
-import { useDrag, DragSourceMonitor } from 'react-dnd';
-import { IdropResult } from './interfaces';
+import { changeFromInput } from '../../../redux/slice';
 import { useTranslation } from 'react-i18next';
 import Modal from '../Modal/Modal';
 import store, { RootState } from '../../../redux/store';
 import { Moment } from 'moment';
-
+import CardContainer from '../../../containers/CardContainer/CardContainer';
 import CardForm from './CardForm/CardForm';
-import CardView from './CardView/CardView';
-
-const ItemTypes = {
-    box: 'box',
-};
 
 const Card = (props: TaskI): JSX.Element => {
-    const { id, taskName, deadlineDate, priority, assignee, description, fromBoard } = props;
+    const { id, fromBoard } = props;
 
     const assigneeList: { [key: string]: string } | undefined = useSelector(
         (state: RootState) => state.globalReducer.assignee,
@@ -29,18 +20,9 @@ const Card = (props: TaskI): JSX.Element => {
 
     const { t } = useTranslation();
 
-    const [blink, setBlink] = useState(1);
-
     //show or hide modal window
     const [isModal, setModal] = React.useState(false);
     const onClose = useCallback(() => setModal(false), []);
-
-    const forCompare = {
-        taskName: 'New Task',
-        deadlineDate: 'default',
-        assignee: 'anybody',
-        description: 'to do',
-    };
 
     let assigneeArray: Array<string> = [];
     if (assigneeList) {
@@ -74,38 +56,6 @@ const Card = (props: TaskI): JSX.Element => {
         );
     };
 
-    const deleteTask = () => {
-        dispatch(
-            taskDeleting({
-                boardID: Number(fromBoard),
-                taskID: id,
-            }),
-        );
-    };
-
-    //ReactDND for work with active cards
-    const [, drag] = useDrag(
-        () => ({
-            type: ItemTypes.box,
-            item: { taskName },
-            end(item, monitor) {
-                const dropResult = monitor.getDropResult() as IdropResult;
-                if (item && dropResult) {
-                    const moveTaskInfo = {
-                        destinationBoard: dropResult.name,
-                        fromBoard: fromBoard,
-                        taskID: id,
-                    };
-                    dispatch(moveTask(moveTaskInfo));
-                }
-            },
-            collect: (monitor: DragSourceMonitor) => ({
-                opacity: monitor.isDragging() ? 0.9 : 1,
-            }),
-        }),
-        [taskName],
-    );
-
     const handleDateChange = (value: Moment | null, dateString: string) => {
         dispatch(
             changeFromInput({
@@ -127,27 +77,12 @@ const Card = (props: TaskI): JSX.Element => {
                     changeDateFunc={handleDateChange}
                 />
             </Modal>
-            <div
-                ref={
-                    taskName === forCompare.taskName ||
-                    deadlineDate === forCompare.deadlineDate ||
-                    assignee === forCompare.assignee ||
-                    description === forCompare.description
-                        ? null
-                        : drag
-                }
-                className={cn({
-                    [styles.card]: true,
-                    [styles[`${priority.toLowerCase()}`]]: true,
-                    [styles.blink]: blink && priority === 'none',
-                })}
-                onClick={() => {
-                    setBlink(0);
-                    if (currentAssignee === assignee || isAdmin) setModal(true);
-                }}
-            >
-                <CardView taskInfo={{ ...props }} deleteFunc={deleteTask} />
-            </div>
+            <CardContainer
+                taskInfo={{ ...props }}
+                isAdmin={isAdmin}
+                currentAssignee={currentAssignee}
+                setModal={setModal}
+            />
         </>
     );
 };

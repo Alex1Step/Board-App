@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { IAssignee } from '../../pages/UserPage/interfaces';
+import { IAssignee } from '../../containers/AdminPanel/interfaces';
 
 export const newAssigneeToDBApi = (user: IAssignee): Promise<void | firebase.User> =>
     firebase
