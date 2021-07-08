@@ -17,13 +17,7 @@ const AuthForm = ({ handler, textOnButton }: Iprops): JSX.Element => {
     const { t } = useTranslation();
 
     return (
-        <Form
-            className={styles.authForm}
-            {...layout}
-            name="basic"
-            initialValues={{ remember: true }}
-            onFinish={handler}
-        >
+        <Form className={styles.authForm} {...layout} name="basic" onFinish={handler}>
             <Form.Item
                 label={t('description.mail')}
                 name="username"
