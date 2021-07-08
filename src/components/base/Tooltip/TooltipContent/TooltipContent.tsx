@@ -5,12 +5,13 @@ import { Button } from 'antd';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ITooltipContent } from './interfaces';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const TooltipContent = (props: ITooltipContent): JSX.Element => {
     const { t } = useTranslation();
 
     return (
-        <div>
+        <div className={styles.tooltipContent}>
             <NavLink to={props.link} onClick={() => props.loadThisBoard(props.proj)}>
                 <div
                     className={cn({
@@ -18,16 +19,17 @@ const TooltipContent = (props: ITooltipContent): JSX.Element => {
                         [styles.editButton]: true,
                     })}
                 >
-                    {t('description.editProject')}
+                    <EditOutlined />
                 </div>
             </NavLink>
             <Button
                 className={styles.controlBtn}
                 type="primary"
+                shape="circle"
                 danger
                 onClick={() => props.deleteCurrentProject!(props.proj)}
             >
-                {t('description.deleteProject')}
+                <DeleteOutlined />
             </Button>
         </div>
     );
