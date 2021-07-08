@@ -4,10 +4,6 @@ interface IFormSettings {
     submit: (values: { [key: string]: string }) => void;
 }
 
-//TODO
-// interface IRulesSettings {
-// }
-
 export interface ISelectOptions {
     value: string;
     text: string;
@@ -24,6 +20,7 @@ interface IItemsSettings {
     onChange?: () => void;
     checkBoxText?: string;
     defaultChecked?: boolean;
+    rules?: { [key: string]: boolean | string }[];
 }
 
 export interface IFormConstructor {

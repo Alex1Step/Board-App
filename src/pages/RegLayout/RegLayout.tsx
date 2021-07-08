@@ -7,6 +7,7 @@ import { signUp } from '../../redux/slice';
 import { RootState } from '../../redux/store';
 import { LoginI } from './interfaces';
 import { useTranslation } from 'react-i18next';
+import FormConstructor from '../../helper/FormConstructor/FormConstructor';
 
 const RegLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -25,6 +26,25 @@ const RegLayout: React.FC = () => {
             <section className={styles.signInUpform}>
                 <h1>{t('description.register')}</h1>
                 <AuthForm handler={onFinish} textOnButton={t('description.signUp')} />
+                <FormConstructor
+                    formSettings={{ className: 'temp', formName: 'register', submit: (values) => console.log(values) }}
+                    itemsSettings={[
+                        {
+                            type: 'input',
+                            label: 'Mail',
+                            name: 'email',
+                            rules: [{ required: true }],
+                        },
+                        { type: 'input', label: 'Password', name: 'password', rules: [{ required: true }] },
+                        {
+                            type: 'button',
+                            label: 'signup',
+                            name: 'signup',
+                            defaultValue: 'Sign Up',
+                            htmlType: 'submit',
+                        },
+                    ]}
+                />
             </section>
         </section>
     ) : (

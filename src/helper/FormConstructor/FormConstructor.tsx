@@ -56,21 +56,21 @@ const FormConstructor = (props: IFormConstructor): JSX.Element => {
         switch (item.type) {
             case 'input':
                 return (
-                    <Form.Item key={index} name={item.name} label={item.label}>
+                    <Form.Item key={index} name={item.name} label={item.label} rules={item.rules}>
                         {createInput(item.defaultValue)}
                     </Form.Item>
                 );
                 break;
             case 'select':
                 return (
-                    <Form.Item key={index} name={item.name} label={item.label}>
+                    <Form.Item key={index} name={item.name} label={item.label} rules={item.rules}>
                         {createSelect(item.defaultValue, item.optionsForSelect)}
                     </Form.Item>
                 );
                 break;
             case 'date':
                 return (
-                    <Form.Item key={index} name={item.name} label={item.label}>
+                    <Form.Item key={index} name={item.name} label={item.label} rules={item.rules}>
                         {createDate(item.defaultValue, item.dateFormat)}
                     </Form.Item>
                 );
@@ -84,7 +84,7 @@ const FormConstructor = (props: IFormConstructor): JSX.Element => {
                 break;
             case 'checkbox':
                 return (
-                    <Form.Item key={index} name={item.name} label={item.label}>
+                    <Form.Item key={index} name={item.name} label={item.label} rules={item.rules}>
                         {createCheckBox(item.onChange, item.checkBoxText, item.defaultChecked)}
                     </Form.Item>
                 );
@@ -97,7 +97,7 @@ const FormConstructor = (props: IFormConstructor): JSX.Element => {
         }
     });
     return (
-        <div style={{ backgroundColor: 'white' }}>
+        <div>
             <Form className={className} {...layout} name={formName} onFinish={submit}>
                 {items}
             </Form>
