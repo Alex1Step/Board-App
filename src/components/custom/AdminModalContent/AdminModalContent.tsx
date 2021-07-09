@@ -1,21 +1,9 @@
 import React from 'react';
 import InputComponent from '../../base/Input/InputComponent';
 import styles from './AdminModalContent.less';
-import { Form, Input, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { IAdminModalContent } from './interfaces';
-
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-};
-
-const validateMessages = {
-    required: '${label} is required!',
-    types: {
-        email: '${label} is not a valid email!',
-    },
-};
+import CustomForm from '../CustomForm/CustomForm';
 
 const AdminModalContent = (props: IAdminModalContent): JSX.Element => {
     const { isModal, title, setProjectTitle, addAssignee } = props;
@@ -34,19 +22,30 @@ const AdminModalContent = (props: IAdminModalContent): JSX.Element => {
                     withoutSubstitution={true}
                 />
             ) : (
-                <Form {...layout} name="nest-messages" onFinish={addAssignee} validateMessages={validateMessages}>
-                    <Form.Item name={['user', 'name']} label={t('description.name')} rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name={['user', 'email']} label={t('description.mail')} rules={[{ type: 'email' }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                        <Button type="primary" htmlType="submit">
-                            {t('description.add')}
-                        </Button>
-                    </Form.Item>
-                </Form>
+                <CustomForm
+                    formSettings={{ formName: 'nest-messages', submit: addAssignee }}
+                    itemsSettings={[
+                        {
+                            type: 'input',
+                            label: t('description.name'),
+                            name: 'name',
+                            rules: [{ required: true }],
+                        },
+                        {
+                            type: 'input',
+                            label: t('description.mail'),
+                            name: 'email',
+                            rules: [{ required: true }, { type: 'email' }],
+                        },
+                        {
+                            type: 'button',
+                            label: 'add',
+                            name: 'add',
+                            defaultValue: t('description.add'),
+                            htmlType: 'submit',
+                        },
+                    ]}
+                />
             )}
         </div>
     );

@@ -6,7 +6,7 @@ import AdminModalContent from '../../components/custom/AdminModalContent/AdminMo
 import AdminButtons from '../../components/custom/AdminButtons/AdminButtons';
 import Modal from '../../components/custom/Modal/Modal';
 import { addNewAssignee, createNewProject } from '../../redux/slice';
-import { IAssignee, IAdminPanel } from './interfaces';
+import { IAdminPanel } from './interfaces';
 
 const AdminPanel = (props: IAdminPanel): null | JSX.Element => {
     const dispatch = useDispatch();
@@ -31,11 +31,13 @@ const AdminPanel = (props: IAdminPanel): null | JSX.Element => {
         onClose();
     };
 
-    const addAssignee = (values: { user: IAssignee }) => {
+    // const addAssignee = (values: { user: IAssignee }) => {
+    const addAssignee = (values: { name: string; email: string }) => {
+        console.log(values);
         dispatch(
             addNewAssignee({
-                name: values.user.name,
-                email: values.user.email,
+                name: values.name,
+                email: values.email,
             }),
         );
         onCloseAssign();
