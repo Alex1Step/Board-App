@@ -7,6 +7,7 @@ import { RootState } from '../../redux/store';
 import { LoginI } from './interfaces';
 import { useTranslation } from 'react-i18next';
 import CustomForm from '../../components/custom/CustomForm/CustomForm';
+import indexValidation from '../../validation/indexValidation';
 
 const LogInLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -25,19 +26,20 @@ const LogInLayout: React.FC = () => {
             <section className={styles.signInUpform}>
                 <h1>{t('description.welcome')}</h1>
                 <CustomForm
-                    formSettings={{ formName: 'register', submit: onFinish }}
+                    formSettings={{ submit: onFinish }}
                     itemsSettings={[
                         {
                             type: 'input',
                             label: t('description.mail'),
                             name: 'username',
+                            inputType: 'input',
                             rules: [{ required: true }],
                         },
                         {
                             type: 'input',
                             label: t('description.password'),
                             name: 'password',
-                            flag: 'password',
+                            inputType: 'password',
                             rules: [{ required: true }],
                         },
                         {
@@ -52,7 +54,7 @@ const LogInLayout: React.FC = () => {
             </section>
         </section>
     ) : (
-        <Redirect to={'/user'} />
+        <Redirect to="/user" />
     );
 };
 

@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 import styles from './UserPage.less';
 
 import Header from '../../components/custom/Header/Header';
 import UserContent from '../../containers/UserContent/UserContent';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 const UserPage: React.FC = () => {
-    const [data, setData] = useState(true);
+    const projectCreated: boolean = useSelector((state: RootState) => state.globalReducer.projectCreated);
 
-    return data ? (
+    return !projectCreated ? (
         <div className={styles.wrapper}>
             <Header />
-            <UserContent setData={setData} />
+            <UserContent />
         </div>
     ) : (
         <Redirect to={'/boards'} />

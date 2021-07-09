@@ -1,14 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import store, { RootState } from '../../redux/store';
+import { RootState } from '../../redux/store';
 import { useTranslation } from 'react-i18next';
 import AdminModalContent from '../../components/custom/AdminModalContent/AdminModalContent';
 import AdminButtons from '../../components/custom/AdminButtons/AdminButtons';
 import Modal from '../../components/custom/Modal/Modal';
 import { addNewAssignee, createNewProject } from '../../redux/slice';
-import { IAdminPanel } from './interfaces';
 
-const AdminPanel = (props: IAdminPanel): null | JSX.Element => {
+const AdminPanel = (): null | JSX.Element => {
     const dispatch = useDispatch();
 
     const isAdmin: boolean = useSelector((state: RootState) => state.globalReducer.isAdmin);
@@ -24,16 +23,12 @@ const AdminPanel = (props: IAdminPanel): null | JSX.Element => {
     const onCloseAssign = useCallback(() => setModalAssign(false), []);
 
     const createProjectHandler = () => {
-        store.subscribe(() => {
-            props.setData(false);
-        });
         dispatch(createNewProject(projectTitle));
         onClose();
     };
 
     // const addAssignee = (values: { user: IAssignee }) => {
     const addAssignee = (values: { name: string; email: string }) => {
-        console.log(values);
         dispatch(
             addNewAssignee({
                 name: values.name,

@@ -142,6 +142,9 @@ const boardsSlice = createSlice({
         changeBoardName(state, action: PayloadAction<changeBoardNameI>) {
             state.boards[action.payload.boardID].name = action.payload.newBoardName;
         },
+        resetProjectCreated(state) {
+            state.projectCreated = false;
+        },
         moveTask(state, action: PayloadAction<moveTaskI>) {
             const { destinationBoard, fromBoard, taskID } = action.payload;
             const destination = Number(destinationBoard);
@@ -185,6 +188,7 @@ const boardsSlice = createSlice({
             tempState.boards = action.payload.newProject;
             tempState.currentProject = action.payload.title;
             tempState.listOfProjects[`${action.payload.title}`] = [];
+            tempState.projectCreated = true;
             return tempState;
         });
         builder.addCase(loadBoard.fulfilled, (state, action) => {
@@ -207,6 +211,14 @@ const boardsSlice = createSlice({
     },
 });
 
-export const { changeFromInput, boardDeleting, taskDeleting, taskAdd, boardAdd, changeBoardName, moveTask } =
-    boardsSlice.actions;
+export const {
+    changeFromInput,
+    boardDeleting,
+    taskDeleting,
+    taskAdd,
+    boardAdd,
+    changeBoardName,
+    moveTask,
+    resetProjectCreated,
+} = boardsSlice.actions;
 export default boardsSlice.reducer;

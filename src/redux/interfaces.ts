@@ -30,6 +30,7 @@ export interface GlobalState {
     listOfProjects?: { [key: string]: BoardI[] };
     isAdmin: boolean;
     assignee?: { [key: string]: string };
+    projectCreated: boolean;
     currentProject: string;
     userID: number;
     userName: string;

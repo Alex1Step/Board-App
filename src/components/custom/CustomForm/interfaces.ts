@@ -1,5 +1,4 @@
 interface IFormSettings {
-    formName: string;
     submit: (values: any) => void;
 }
 
@@ -12,7 +11,7 @@ interface IItemsSettings {
     type: string;
     label: string;
     name: string;
-    flag?: string;
+    inputType?: string;
     defaultValue?: string;
     optionsForSelect?: ISelectOptions[];
     dateFormat?: string;

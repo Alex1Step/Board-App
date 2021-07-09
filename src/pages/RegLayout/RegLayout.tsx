@@ -24,20 +24,21 @@ const RegLayout: React.FC = () => {
         <section className={styles.regLayout}>
             <section className={styles.signInUpform}>
                 <h1>{t('description.register')}</h1>
-                <CustomForm
-                    formSettings={{ formName: 'register', submit: onFinish }}
+                {/* <CustomForm
+                    formSettings={{ submit: onFinish }}
                     itemsSettings={[
                         {
                             type: 'input',
                             label: t('description.mail'),
                             name: 'username',
+                            inputType: 'input',
                             rules: [{ required: true }],
                         },
                         {
                             type: 'input',
                             label: t('description.password'),
                             name: 'password',
-                            flag: 'password',
+                            inputType: 'password',
                             rules: [{ required: true }],
                         },
                         {
@@ -48,11 +49,11 @@ const RegLayout: React.FC = () => {
                             htmlType: 'submit',
                         },
                     ]}
-                />
+                /> */}
             </section>
         </section>
     ) : (
-        <Redirect to={'/user'} />
+        <Redirect to="/user" />
     );
 };
 
