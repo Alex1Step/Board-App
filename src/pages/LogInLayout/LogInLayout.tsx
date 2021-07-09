@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import AuthForm from '../../components/custom/AuthForm/AuthForm';
 import styles from './LogInLayout.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../../redux/slice';
@@ -7,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { RootState } from '../../redux/store';
 import { LoginI } from './interfaces';
 import { useTranslation } from 'react-i18next';
+import CustomForm from '../../components/custom/CustomForm/CustomForm';
 
 const LogInLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -24,7 +24,31 @@ const LogInLayout: React.FC = () => {
         <section className={styles.logInLayout}>
             <section className={styles.signInUpform}>
                 <h1>{t('description.welcome')}</h1>
-                <AuthForm handler={onFinish} textOnButton={t('description.signIn')} />
+                <CustomForm
+                    formSettings={{ formName: 'register', submit: onFinish }}
+                    itemsSettings={[
+                        {
+                            type: 'input',
+                            label: t('description.mail'),
+                            name: 'username',
+                            rules: [{ required: true }],
+                        },
+                        {
+                            type: 'input',
+                            label: t('description.password'),
+                            name: 'password',
+                            flag: 'password',
+                            rules: [{ required: true }],
+                        },
+                        {
+                            type: 'button',
+                            label: 'signin',
+                            name: 'signin',
+                            defaultValue: t('description.signIn'),
+                            htmlType: 'submit',
+                        },
+                    ]}
+                />
             </section>
         </section>
     ) : (

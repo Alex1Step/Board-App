@@ -1,7 +1,6 @@
 interface IFormSettings {
-    className: string;
     formName: string;
-    submit: (values: { [key: string]: string }) => void;
+    submit: (values: any) => void;
 }
 
 export interface ISelectOptions {
@@ -13,6 +12,7 @@ interface IItemsSettings {
     type: string;
     label: string;
     name: string;
+    flag?: string;
     defaultValue?: string;
     optionsForSelect?: ISelectOptions[];
     dateFormat?: string;

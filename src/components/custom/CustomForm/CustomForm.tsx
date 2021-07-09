@@ -14,10 +14,27 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-const FormConstructor = (props: IFormConstructor): JSX.Element => {
-    const { className, formName, submit } = props.formSettings;
+const CustomForm = (props: IFormConstructor): JSX.Element => {
+    const { formName, submit } = props.formSettings;
 
-    const createInput = (defaultValue = '') => <Input defaultValue={defaultValue ? defaultValue : ''} />;
+    const createInput = (defaultValue = '', flag = '') => {
+        switch (flag) {
+            case '':
+                return <Input defaultValue={defaultValue ? defaultValue : ''} />;
+                break;
+            case 'password':
+                return <Input.Password defaultValue={defaultValue ? defaultValue : ''} />;
+                break;
+            case 'textarea':
+                return <Input.TextArea defaultValue={defaultValue ? defaultValue : ''} />;
+                break;
+            case 'search':
+                return <Input.Search defaultValue={defaultValue ? defaultValue : ''} />;
+                break;
+            default:
+                break;
+        }
+    };
     const createOptions = (option: ISelectOptions, index: number) => (
         <Option key={index} value={option.value}>
             {option.text}
@@ -57,7 +74,7 @@ const FormConstructor = (props: IFormConstructor): JSX.Element => {
             case 'input':
                 return (
                     <Form.Item key={index} name={item.name} label={item.label} rules={item.rules}>
-                        {createInput(item.defaultValue)}
+                        {createInput(item.defaultValue, item.flag)}
                     </Form.Item>
                 );
                 break;
@@ -98,11 +115,11 @@ const FormConstructor = (props: IFormConstructor): JSX.Element => {
     });
     return (
         <div>
-            <Form className={className} {...layout} name={formName} onFinish={submit}>
+            <Form {...layout} name={formName} onFinish={submit}>
                 {items}
             </Form>
         </div>
     );
 };
 
-export default FormConstructor;
+export default CustomForm;

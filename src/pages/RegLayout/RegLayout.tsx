@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react';
 import { Redirect } from 'react-router';
 import styles from './RegLayout.less';
-import AuthForm from '../../components/custom/AuthForm/AuthForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../../redux/slice';
 import { RootState } from '../../redux/store';
 import { LoginI } from './interfaces';
 import { useTranslation } from 'react-i18next';
-import FormConstructor from '../../helper/FormConstructor/FormConstructor';
+import CustomForm from '../../components/custom/CustomForm/CustomForm';
 
 const RegLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -25,22 +24,27 @@ const RegLayout: React.FC = () => {
         <section className={styles.regLayout}>
             <section className={styles.signInUpform}>
                 <h1>{t('description.register')}</h1>
-                <AuthForm handler={onFinish} textOnButton={t('description.signUp')} />
-                <FormConstructor
-                    formSettings={{ className: 'temp', formName: 'register', submit: (values) => console.log(values) }}
+                <CustomForm
+                    formSettings={{ formName: 'register', submit: onFinish }}
                     itemsSettings={[
                         {
                             type: 'input',
-                            label: 'Mail',
-                            name: 'email',
+                            label: t('description.mail'),
+                            name: 'username',
                             rules: [{ required: true }],
                         },
-                        { type: 'input', label: 'Password', name: 'password', rules: [{ required: true }] },
+                        {
+                            type: 'input',
+                            label: t('description.password'),
+                            name: 'password',
+                            flag: 'password',
+                            rules: [{ required: true }],
+                        },
                         {
                             type: 'button',
                             label: 'signup',
                             name: 'signup',
-                            defaultValue: 'Sign Up',
+                            defaultValue: t('description.signUp'),
                             htmlType: 'submit',
                         },
                     ]}
