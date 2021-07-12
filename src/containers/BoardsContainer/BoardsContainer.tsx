@@ -22,7 +22,7 @@ const BoardsContainer = (): JSX.Element => {
             <div className={styles.container}>
                 <h1>{currentProject}</h1>
             </div>
-            <AddButton className={'addBoard'} onClick={addBoard} text={t('description.addBoard')} type={'Board'} />
+            <AddButton className={'addBoard'} onClick={addBoard} text={t('description.addBoard')} type="Board" />
             <BoardsList />
         </section>
     );

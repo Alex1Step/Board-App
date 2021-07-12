@@ -42,25 +42,18 @@ const ListOfProjects = (): JSX.Element => {
         dispatch(deleteProject(proj));
     };
 
+    const isAdmin = store.getState().globalReducer.isAdmin;
+
     return (
         <>
             <h1 className={styles.projectsTitle}>{t('description.projects')}</h1>
-
-            {store.getState().globalReducer.isAdmin ? (
-                <List
-                    projectsList={projectsList!}
-                    loadThisBoard={loadThisBoard}
-                    deleteCurrentProject={deleteCurrentProject}
-                    isAdmin={store.getState().globalReducer.isAdmin!}
-                />
-            ) : (
-                <List
-                    projectsList={projectsList!}
-                    loadThisBoard={loadThisBoard}
-                    checkRole={checkRole}
-                    isAdmin={store.getState().globalReducer.isAdmin!}
-                />
-            )}
+            <List
+                projectsList={projectsList!}
+                loadThisBoard={loadThisBoard}
+                deleteCurrentProject={isAdmin ? deleteCurrentProject : undefined}
+                checkRole={!isAdmin ? checkRole : undefined}
+                isAdmin={isAdmin}
+            />
         </>
     );
 };

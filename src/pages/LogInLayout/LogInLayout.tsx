@@ -26,21 +26,42 @@ const LogInLayout: React.FC = () => {
             <section className={styles.signInUpform}>
                 <h1>{t('description.welcome')}</h1>
                 <CustomForm
+                    validation={indexValidation.authSchema}
                     formSettings={{ submit: onFinish }}
                     itemsSettings={[
+                        {
+                            type: 'checkbox',
+                            label: 'checkbox',
+                            name: 'chkbx',
+                            defaultValue: 'true',
+                        },
+                        {
+                            type: 'select',
+                            label: 'select',
+                            name: 'select',
+                            optionsForSelect: [
+                                { value: '1', label: 'one' },
+                                { value: '2', label: 'two' },
+                                { value: '3', label: 'three' },
+                            ],
+                        },
+                        {
+                            type: 'date',
+                            label: 'date',
+                            name: 'date',
+                            dateFormat: 'YYYY/MM/DD',
+                        },
                         {
                             type: 'input',
                             label: t('description.mail'),
                             name: 'username',
                             inputType: 'input',
-                            rules: [{ required: true }],
                         },
                         {
                             type: 'input',
                             label: t('description.password'),
                             name: 'password',
                             inputType: 'password',
-                            rules: [{ required: true }],
                         },
                         {
                             type: 'button',

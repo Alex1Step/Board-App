@@ -7,6 +7,7 @@ import { RootState } from '../../redux/store';
 import { LoginI } from './interfaces';
 import { useTranslation } from 'react-i18next';
 import CustomForm from '../../components/custom/CustomForm/CustomForm';
+import indexValidation from '../../validation/indexValidation';
 
 const RegLayout: React.FC = () => {
     const dispatch = useDispatch();
@@ -24,7 +25,8 @@ const RegLayout: React.FC = () => {
         <section className={styles.regLayout}>
             <section className={styles.signInUpform}>
                 <h1>{t('description.register')}</h1>
-                {/* <CustomForm
+                <CustomForm
+                    validation={indexValidation.authSchema}
                     formSettings={{ submit: onFinish }}
                     itemsSettings={[
                         {
@@ -32,24 +34,22 @@ const RegLayout: React.FC = () => {
                             label: t('description.mail'),
                             name: 'username',
                             inputType: 'input',
-                            rules: [{ required: true }],
                         },
                         {
                             type: 'input',
                             label: t('description.password'),
                             name: 'password',
                             inputType: 'password',
-                            rules: [{ required: true }],
                         },
                         {
                             type: 'button',
-                            label: 'signup',
-                            name: 'signup',
-                            defaultValue: t('description.signUp'),
+                            label: 'signin',
+                            name: 'signin',
+                            defaultValue: t('description.signIn'),
                             htmlType: 'submit',
                         },
                     ]}
-                /> */}
+                />
             </section>
         </section>
     ) : (

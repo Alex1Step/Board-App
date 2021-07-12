@@ -4,7 +4,7 @@ interface IFormSettings {
 
 export interface ISelectOptions {
     value: string;
-    text: string;
+    label: string;
 }
 
 interface IItemsSettings {
@@ -16,13 +16,10 @@ interface IItemsSettings {
     optionsForSelect?: ISelectOptions[];
     dateFormat?: string;
     htmlType?: string;
-    onChange?: () => void;
-    checkBoxText?: string;
-    defaultChecked?: boolean;
-    rules?: { [key: string]: boolean | string }[];
 }
 
 export interface IFormConstructor {
     formSettings: IFormSettings;
     itemsSettings: IItemsSettings[];
+    validation?: any;
 }
