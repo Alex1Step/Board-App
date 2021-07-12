@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from './BoardsContainer.less';
 import AddButton from '../../components/base/AddButton/AddButton';
 import { boardAdd } from '../../redux/slice';
@@ -13,9 +13,9 @@ const BoardsContainer = (): JSX.Element => {
     const currentProject: string = useSelector((state: RootState) => state.globalReducer.currentProject);
     const dispatch = useDispatch();
 
-    const addBoard = () => {
+    const addBoard = useCallback(() => {
         dispatch(boardAdd());
-    };
+    }, []);
 
     return (
         <section className={styles.tasksLayout}>

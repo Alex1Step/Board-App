@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './CardContainer.less';
 import CardView from '../../components/custom/Card/CardView/CardView';
 import cn from 'classnames';
@@ -25,14 +25,14 @@ const CardContainer = (props: ICardContainer): JSX.Element => {
         description: 'to do',
     };
 
-    const deleteTask = () => {
+    const deleteTask = useCallback(() => {
         dispatch(
             taskDeleting({
                 boardID: Number(fromBoard),
                 taskID: id,
             }),
         );
-    };
+    }, []);
 
     //ReactDND for work with active cards
     const [, drag] = useDrag(

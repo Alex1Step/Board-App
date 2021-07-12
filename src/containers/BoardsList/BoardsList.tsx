@@ -10,11 +10,11 @@ const BoardsList = (): JSX.Element => {
 
     return (
         <section className={styles.boardsContainer}>
-            {boards
-                ? boards.map((b, i) => {
-                      if (b !== null) return <Board key={i} id={b.id} name={b.name} tasks={b.tasks} />;
-                  })
-                : null}
+            {boards &&
+                boards.map((board, index) => {
+                    if (board !== null)
+                        return <Board key={index} id={board.id} name={board.name} tasks={board.tasks} />;
+                })}
         </section>
     );
 };

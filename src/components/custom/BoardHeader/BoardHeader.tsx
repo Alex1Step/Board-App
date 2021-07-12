@@ -15,19 +15,22 @@ const BoardHeader = ({ id, name }: BoardI): JSX.Element => {
     const { t } = useTranslation();
 
     //Rename this board
-    const changeBoardNameHandler = (
-        event:
-            | React.ChangeEvent<HTMLInputElement>
-            | React.ChangeEvent<HTMLSelectElement>
-            | React.ChangeEvent<HTMLTextAreaElement>,
-    ) => {
-        dispatch(
-            changeBoardName({
-                boardID: id,
-                newBoardName: event.target.value,
-            }),
-        );
-    };
+    const changeBoardNameHandler = useCallback(
+        (
+            event:
+                | React.ChangeEvent<HTMLInputElement>
+                | React.ChangeEvent<HTMLSelectElement>
+                | React.ChangeEvent<HTMLTextAreaElement>,
+        ) => {
+            dispatch(
+                changeBoardName({
+                    boardID: id,
+                    newBoardName: event.target.value,
+                }),
+            );
+        },
+        [],
+    );
 
     //show or hide modal window
     const [isModal, setModal] = React.useState(false);

@@ -37,26 +37,29 @@ const Card = (props: TaskI): JSX.Element => {
     const isAdmin = stateForCheckRole.isAdmin;
 
     //handler for listening changes in inputs
-    const handleChange = (
-        event:
-            | React.ChangeEvent<HTMLInputElement>
-            | React.ChangeEvent<HTMLSelectElement>
-            | React.ChangeEvent<HTMLTextAreaElement>,
-        boardID: number,
-        taskID: number,
-        inputID: string,
-    ) => {
-        dispatch(
-            changeFromInput({
-                boardID: boardID,
-                taskID: taskID,
-                inputID: inputID,
-                payLoad: event.target.value,
-            }),
-        );
-    };
+    const handleChange = useCallback(
+        (
+            event:
+                | React.ChangeEvent<HTMLInputElement>
+                | React.ChangeEvent<HTMLSelectElement>
+                | React.ChangeEvent<HTMLTextAreaElement>,
+            boardID: number,
+            taskID: number,
+            inputID: string,
+        ) => {
+            dispatch(
+                changeFromInput({
+                    boardID: boardID,
+                    taskID: taskID,
+                    inputID: inputID,
+                    payLoad: event.target.value,
+                }),
+            );
+        },
+        [],
+    );
 
-    const handleDateChange = (value: Moment | null, dateString: string) => {
+    const handleDateChange = useCallback((value: Moment | null, dateString: string) => {
         dispatch(
             changeFromInput({
                 boardID: fromBoard,
@@ -65,7 +68,7 @@ const Card = (props: TaskI): JSX.Element => {
                 payLoad: dateString,
             }),
         );
-    };
+    }, []);
 
     return (
         <>

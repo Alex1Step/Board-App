@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from './Header.less';
 import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -13,19 +13,19 @@ const Header = (): JSX.Element => {
     const history = useHistory();
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
-    const beforeRefreshPage = () => {
+    const beforeRefreshPage = useCallback(() => {
         dispatch(refreshBoardPage(user));
-    };
+    }, []);
 
-    const logOutHandler = () => {
+    const logOutHandler = useCallback(() => {
         localStorage.removeItem('user');
         dispatch(logOut(user));
         history.push('/about');
-    };
+    }, []);
 
     return (
         <header className={styles.header}>
-            {window.location.href.includes('boards') && (
+            {history.location.pathname.includes('boards') && (
                 <Button
                     className={styles.projectButton}
                     type="primary"
@@ -37,7 +37,7 @@ const Header = (): JSX.Element => {
                     {t('description.projects')}
                 </Button>
             )}
-            {window.location.href.includes('user') && (
+            {history.location.pathname.includes('user') && (
                 <div className={styles.userName}>
                     <p>{user}</p>
                 </div>

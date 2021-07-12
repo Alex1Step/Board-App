@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styles from './Modal.less';
 import { ImodalProps } from './interfaces';
 import { Button } from 'antd';
@@ -7,7 +7,7 @@ import { CheckOutlined } from '@ant-design/icons';
 const Modal = (props: ImodalProps): JSX.Element | null => {
     const { visible = false, title = '', onClose, children } = props;
 
-    const onKeydown = ({ key }: KeyboardEvent) => {
+    const onKeydown = useCallback(({ key }: KeyboardEvent) => {
         switch (key) {
             case 'Enter':
                 onClose();
@@ -16,7 +16,7 @@ const Modal = (props: ImodalProps): JSX.Element | null => {
                 onClose();
                 break;
         }
-    };
+    }, []);
 
     useEffect(() => {
         document.addEventListener('keydown', onKeydown);
@@ -25,7 +25,7 @@ const Modal = (props: ImodalProps): JSX.Element | null => {
 
     return !visible ? null : (
         <div className={styles.modal}>
-            <div className={styles.modalDialog} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalDialog}>
                 <div className={styles.modalHeader}>
                     <h3 className={styles.modalTitle}>{title}</h3>
                     <Button type="primary" shape="circle" icon={<CheckOutlined />} onClick={onClose} />

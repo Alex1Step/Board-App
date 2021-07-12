@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from './BoardControls.less';
 import AddButton from '../../../base/AddButton/AddButton';
 import ButtonComponent from '../../../base/Button/ButtonComponent';
@@ -12,14 +12,14 @@ const BoardControls = (props: { id: number }): JSX.Element => {
     const { t } = useTranslation();
 
     //Delete this board
-    const deleteBoard = () => {
+    const deleteBoard = useCallback(() => {
         dispatch(boardDeleting(props.id));
-    };
+    }, []);
 
     //Add new task to board this board
-    const addNewTask = () => {
+    const addNewTask = useCallback(() => {
         dispatch(taskAdd(props.id));
-    };
+    }, []);
 
     return (
         <div className={styles.boardButtonContainer}>

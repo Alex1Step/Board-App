@@ -36,9 +36,9 @@ const App: React.FC = () => {
         { to: '/user', text: `${t('description.projects')}`, exact: true },
     ];
 
-    const beforeUnloadPage = () => {
+    const beforeUnloadPage = useCallback(() => {
         localStorage.setItem('user', store.getState().globalReducer.userName);
-    };
+    }, []);
 
     useEffect(() => {
         dispatch(onLoadPage(setData));
@@ -48,9 +48,9 @@ const App: React.FC = () => {
         };
     }, []);
 
-    const changeLanguage = (language: string | undefined) => {
+    const changeLanguage = useCallback((language: string | undefined) => {
         i18n.changeLanguage(language);
-    };
+    }, []);
 
     return data ? (
         <>

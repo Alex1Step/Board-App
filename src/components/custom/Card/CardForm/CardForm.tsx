@@ -28,7 +28,7 @@ const CardForm = (props: ICardForm): JSX.Element => {
             />
             <Divider className={styles.dividerCustom} dashed={true} />
             <DateComponent onChange={changeDateFunc} value={deadlineDate} label={'Deadline'} />
-            {new Date(deadlineDate) < new Date() ? (
+            {new Date(deadlineDate) < new Date() && (
                 <span
                     className={cn({
                         [styles.attention]: true,
@@ -37,7 +37,7 @@ const CardForm = (props: ICardForm): JSX.Element => {
                 >
                     {t('description.attention')}
                 </span>
-            ) : null}
+            )}
             <Divider className={styles.dividerCustom} dashed={true} />
             <SelectComponent
                 type={'select'}

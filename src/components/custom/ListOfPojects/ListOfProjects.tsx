@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import store, { RootState } from '../../../redux/store';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,7 @@ const ListOfProjects = (): JSX.Element => {
     let currentAssignee = '';
     if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
 
-    const checkRole = (project: string): boolean => {
+    const checkRole = useCallback((project: string): boolean => {
         let flag = false;
         if (stateForCheckRole.listOfProjects) {
             Object.values(stateForCheckRole.listOfProjects[project]).forEach((board) => {
@@ -32,15 +32,15 @@ const ListOfProjects = (): JSX.Element => {
             });
         }
         return flag;
-    };
+    }, []);
 
-    const loadThisBoard = (proj: string) => {
+    const loadThisBoard = useCallback((proj: string) => {
         dispatch(loadBoard(proj));
-    };
+    }, []);
 
-    const deleteCurrentProject = (proj: string) => {
+    const deleteCurrentProject = useCallback((proj: string) => {
         dispatch(deleteProject(proj));
-    };
+    }, []);
 
     const isAdmin = store.getState().globalReducer.isAdmin;
 

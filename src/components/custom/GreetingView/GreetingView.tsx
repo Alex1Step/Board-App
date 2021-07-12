@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from './GreetingView.less';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'antd';
@@ -14,18 +14,19 @@ const GreetingView = (): JSX.Element => {
 
     const user: string = useSelector((state: RootState) => state.globalReducer.userName);
 
-    const letSignUp = () => {
+    const letSignUp = useCallback(() => {
         history.push('/register');
-    };
+    }, []);
 
-    const letSignIn = () => {
+    const letSignIn = useCallback(() => {
         history.push('/login');
-    };
+    }, []);
 
-    const logOutHandler = () => {
+    const logOutHandler = useCallback(() => {
         dispatch(logOut(user));
         history.push('./about');
-    };
+    }, []);
+
     return (
         <div className={styles.wrapper}>
             <h1>{t('description.greet')}</h1>

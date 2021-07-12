@@ -28,7 +28,7 @@ const AdminPanel = (): null | JSX.Element => {
     };
 
     // const addAssignee = (values: { user: IAssignee }) => {
-    const addAssignee = (values: { name: string; email: string }) => {
+    const addAssignee = useCallback((values: { name: string; email: string }) => {
         dispatch(
             addNewAssignee({
                 name: values.name,
@@ -36,7 +36,7 @@ const AdminPanel = (): null | JSX.Element => {
             }),
         );
         onCloseAssign();
-    };
+    }, []);
 
     return isAdmin ? (
         <>

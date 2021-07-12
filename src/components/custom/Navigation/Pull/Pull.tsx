@@ -19,24 +19,23 @@ const Pull = ({ isOpen, onClick, listOfLinks }: IpullProps): JSX.Element => {
                 })}
             >
                 <ul className={styles.linksInNav}>
-                    {listOfLinks.map((link, index) => {
-                        if (
-                            (user !== '' && link.to === '/register') ||
-                            (user === '' && link.to === '/user') ||
-                            (user !== '' && link.to === '/login')
-                        )
-                            return null;
-                        return (
-                            <li key={index}>
-                                <NavLink to={link.to} exact={link.exact} onClick={onClick}>
-                                    {link.text}
-                                </NavLink>
-                            </li>
-                        );
-                    })}
+                    {listOfLinks.map(
+                        (link, index) =>
+                            !(
+                                (user !== '' && link.to === '/register') ||
+                                (user === '' && link.to === '/user') ||
+                                (user !== '' && link.to === '/login')
+                            ) && (
+                                <li key={index}>
+                                    <NavLink to={link.to} exact={link.exact} onClick={onClick}>
+                                        {link.text}
+                                    </NavLink>
+                                </li>
+                            ),
+                    )}
                 </ul>
             </nav>
-            {isOpen ? <Blackout isOpen={isOpen} onClick={onClick} /> : null}
+            {isOpen && <Blackout isOpen={isOpen} onClick={onClick} />}
         </>
     );
 };

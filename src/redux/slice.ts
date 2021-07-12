@@ -6,9 +6,9 @@ import { LoginI } from '../pages/LogInLayout/interfaces';
 import { IAssignee } from '../containers/AdminPanel/interfaces';
 import { initialState } from './initialState';
 import indexApi from '../api/indexApi';
-import { deleteTask } from '../helper/deleteTask';
-import { deleteBoard } from '../helper/deleteBoard';
-import deepCopy from '../helper/deepCopy';
+import { deleteTask } from '../utils/deleteTask';
+import { deleteBoard } from '../utils/deleteBoard';
+import deepCopy from '../utils/deepCopy';
 
 export const deleteProject = createAsyncThunk('board/deleteProject', async (project: string) => {
     indexApi.deleteProjectFromDBApi(project);
