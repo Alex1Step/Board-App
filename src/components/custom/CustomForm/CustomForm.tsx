@@ -14,6 +14,22 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
+const INPUT_ELEMENTS = {
+    input: 'input',
+    select: 'select',
+    date: 'date',
+    button: 'button',
+    checkbox: 'checkbox',
+    divider: 'divider',
+};
+
+const TYPE_OF_TEXTINPUT = {
+    input: 'input',
+    password: 'password',
+    textarea: 'textarea',
+    search: 'search',
+};
+
 const CustomForm = (props: IFormConstructor): React.ReactElement => {
     const { submit } = props.formSettings;
 
@@ -23,7 +39,6 @@ const CustomForm = (props: IFormConstructor): React.ReactElement => {
         initialValues: Object.fromEntries(initialValues),
         validationSchema: props.validation,
         onSubmit: (values) => {
-            console.log(values);
             submit(values);
         },
     });
@@ -31,7 +46,7 @@ const CustomForm = (props: IFormConstructor): React.ReactElement => {
     const createInput = (inputType = 'input', index: number, name: string) => {
         const inputTypes = new Map([
             [
-                'input',
+                TYPE_OF_TEXTINPUT.input,
                 <Input
                     key={index}
                     name={name}
@@ -42,7 +57,7 @@ const CustomForm = (props: IFormConstructor): React.ReactElement => {
                 />,
             ],
             [
-                'password',
+                TYPE_OF_TEXTINPUT.password,
                 <Input.Password
                     key={index}
                     name={name}
@@ -53,7 +68,7 @@ const CustomForm = (props: IFormConstructor): React.ReactElement => {
                 />,
             ],
             [
-                'textarea',
+                TYPE_OF_TEXTINPUT.textarea,
                 <Input.TextArea
                     key={index}
                     name={name}
@@ -64,7 +79,7 @@ const CustomForm = (props: IFormConstructor): React.ReactElement => {
                 />,
             ],
             [
-                'search',
+                TYPE_OF_TEXTINPUT.search,
                 <Input.Search
                     key={index}
                     name={name}
@@ -133,36 +148,36 @@ const CustomForm = (props: IFormConstructor): React.ReactElement => {
     const items = props.itemsSettings.map((item, index) => {
         const formElements = new Map([
             [
-                'input',
+                INPUT_ELEMENTS.input,
                 <Form.Item key={index} name={item.name} label={item.label}>
                     {createInput(item.inputType, index, item.name)}
                 </Form.Item>,
             ],
             [
-                'select',
+                INPUT_ELEMENTS.select,
                 <Form.Item key={index} name={item.name} label={item.label}>
                     {createSelect(item.optionsForSelect, item.name)}
                 </Form.Item>,
             ],
             [
-                'date',
+                INPUT_ELEMENTS.date,
                 <Form.Item key={index} name={item.name} label={item.label}>
                     {createDate(item.name, item.defaultValue, item.dateFormat)}
                 </Form.Item>,
             ],
             [
-                'button',
+                INPUT_ELEMENTS.button,
                 <Form.Item {...tailLayout} key={index}>
                     {createButton(item.defaultValue, item.htmlType)}
                 </Form.Item>,
             ],
             [
-                'checkbox',
+                INPUT_ELEMENTS.checkbox,
                 <Form.Item key={index} name={item.name} label={item.label}>
                     {createCheckBox(item.name)}
                 </Form.Item>,
             ],
-            ['divider', <Divider key={index} />],
+            [INPUT_ELEMENTS.divider, <Divider key={index} />],
         ]);
         return formElements.get(item.type);
     });
