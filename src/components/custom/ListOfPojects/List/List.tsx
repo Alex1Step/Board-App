@@ -1,10 +1,13 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import styles from './List.less';
-import { Ilist } from './intefaces';
-import Tooltip from '../../../base/Tooltip/Tooltip';
 
+import { NavLink } from 'react-router-dom';
+
+import { Ilist } from './intefaces';
+
+import Tooltip from '../../../base/Tooltip/Tooltip';
 import TooltipContent from '../../../base/Tooltip/TooltipContent/TooltipContent';
+
+import styles from './List.less';
 
 const List = (props: Ilist): React.ReactElement => {
     const { loadThisBoard, deleteCurrentProject, checkRole, projectsList, isAdmin } = { ...props };

@@ -1,14 +1,20 @@
 import React from 'react';
-import styles from './Pull.less';
-import Blackout from '../Blackout/Blackout';
+
 import { NavLink } from 'react-router-dom';
+
+import Blackout from '../Blackout/Blackout';
+
 import { IpullProps } from './interfaces';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+
+import indexSelectors from '../../../../redux/selectors/indexSelectors';
+
 import cn from 'classnames';
 
-const Pull = ({ isOpen, onClick, listOfLinks }: IpullProps): JSX.Element => {
-    const user: string = useSelector((state: RootState) => state.globalReducer.userName);
+import styles from './Pull.less';
+
+const Pull = ({ isOpen, onClick, listOfLinks }: IpullProps): React.ReactElement => {
+    const user: string = useSelector(indexSelectors.user);
 
     return (
         <>

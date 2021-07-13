@@ -1,8 +1,10 @@
 import React from 'react';
+
 import Card from '../Card/Card';
+
 import { TaskI } from '../../../redux/interfaces';
 
-const CardList = (props: { tasks: Array<TaskI> }): JSX.Element => {
+const CardList = (props: { tasks: Array<TaskI> }): React.ReactElement => {
     return (
         <>
             {props.tasks &&

@@ -9,6 +9,7 @@ import indexApi from '../api/indexApi';
 import { deleteTask } from '../utils/deleteTask';
 import { deleteBoard } from '../utils/deleteBoard';
 import deepCopy from '../utils/deepCopy';
+import replacer from '../utils/replacer';
 
 export const deleteProject = createAsyncThunk('board/deleteProject', async (project: string) => {
     indexApi.deleteProjectFromDBApi(project);
@@ -17,7 +18,7 @@ export const deleteProject = createAsyncThunk('board/deleteProject', async (proj
 
 export const addNewAssignee = createAsyncThunk('board/addNewAssignee', async (user: IAssignee) => {
     const changedAssignee = {
-        email: user.email.replace(/[\s.,%]/g, ''),
+        email: replacer(user.email),
         name: user.name,
     };
     indexApi.newAssigneeToDBApi(changedAssignee);
@@ -47,7 +48,7 @@ export const onLoadPage = createAsyncThunk(
             listOfProjects = await indexApi.fetchListOfProjectsApi();
             listOfAssignee = await indexApi.fetchListOfAssigneeApi();
             const admins = await indexApi.fetchListOfAdminsApi();
-            if (user.replace(/[\s.,%]/g, '') in admins) isAdmin = true;
+            if (replacer(user) in admins) isAdmin = true;
         }
         setData(true);
         return { listOfProjects, listOfAssignee, isAdmin, userName };
@@ -71,7 +72,7 @@ export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) 
         listOfProjects = await indexApi.fetchListOfProjectsApi();
         listOfAssignee = await indexApi.fetchListOfAssigneeApi();
         const admins = await indexApi.fetchListOfAdminsApi();
-        if (userData.username.replace(/[\s.,%]/g, '') in admins) isAdmin = true;
+        if (replacer(userData.username) in admins) isAdmin = true;
     }
     return { listOfProjects, isAdmin, userName, listOfAssignee };
 });
@@ -84,7 +85,7 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
     if (response) {
         listOfProjects = await indexApi.fetchListOfProjectsApi();
         const admins = await indexApi.fetchListOfAdminsApi();
-        if (userData.username.replace(/[\s.,%]/g, '') in admins) isAdmin = true;
+        if (replacer(userData.username) in admins) isAdmin = true;
     }
     return { listOfProjects, isAdmin, userName };
 });

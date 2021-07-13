@@ -1,18 +1,22 @@
 import React from 'react';
 import { Divider } from 'antd';
-import type { BoardI } from '../../redux/interfaces';
-import styles from './Board.less';
-import { DropTargetMonitor, useDrop } from 'react-dnd';
-import { IdustbinProps } from './interfaces';
-import cn from 'classnames';
 import BoardHeader from '../../components/custom/BoardHeader/BoardHeader';
 import CardList from '../../components/custom/CardList/CardList';
+
+import type { BoardI } from '../../redux/interfaces';
+
+import { DropTargetMonitor, useDrop } from 'react-dnd';
+import { IdustbinProps } from './interfaces';
+
+import cn from 'classnames';
+
+import styles from './Board.less';
 
 const ItemTypes = {
     box: 'box',
 };
 
-const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): JSX.Element => {
+const Board = ({ id, name, tasks }: BoardI, { allowedDropEffect }: IdustbinProps): React.ReactElement => {
     //ReactDND for handle active board
     const [{ canDrop, isOver }, drop] = useDrop(
         () => ({

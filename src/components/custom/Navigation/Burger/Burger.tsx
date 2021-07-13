@@ -1,10 +1,13 @@
 import React from 'react';
-import styles from './Burger.less';
+
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
 import { IburgerProps } from './interfaces';
+
 import cn from 'classnames';
 
-const Burger = ({ isOpen, onClick }: IburgerProps): JSX.Element => {
+import styles from './Burger.less';
+
+const Burger = ({ isOpen, onClick }: IburgerProps): React.ReactElement => {
     return isOpen ? (
         <CloseOutlined className={cn({ [styles.burger]: true, [styles.open]: isOpen })} onClick={onClick} />
     ) : (

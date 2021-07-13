@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import styles from './Select.less';
-import { IselectProps } from './interfaces';
-import cn from 'classnames';
-import { useTranslation } from 'react-i18next';
+
 import { ArrowDownOutlined } from '@ant-design/icons';
 
-const SelectComponent = (props: IselectProps): JSX.Element => {
+import { IselectProps } from './interfaces';
+
+import { useTranslation } from 'react-i18next';
+
+import cn from 'classnames';
+
+import styles from './Select.less';
+
+const SelectComponent = (props: IselectProps): React.ReactElement => {
     const { type, options, labelForOptions, label, value, onChange } = props;
 
     const [hideShow, setHideShow] = useState(1);

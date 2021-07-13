@@ -1,12 +1,17 @@
 import React from 'react';
-import styles from './TooltipContent.less';
-import cn from 'classnames';
-import { Button } from 'antd';
+
 import { NavLink } from 'react-router-dom';
-import { ITooltipContent } from './interfaces';
+
+import { Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const TooltipContent = (props: ITooltipContent): JSX.Element => {
+import { ITooltipContent } from './interfaces';
+
+import cn from 'classnames';
+
+import styles from './TooltipContent.less';
+
+const TooltipContent = (props: ITooltipContent): React.ReactElement => {
     return (
         <div className={styles.tooltipContent}>
             <NavLink to={props.link} onClick={() => props.loadThisBoard(props.proj)}>

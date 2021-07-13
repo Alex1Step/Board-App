@@ -1,7 +1,8 @@
 import React from 'react';
-import styles from './AboutLayout.less';
 
 import GreetingView from '../../components/custom/GreetingView/GreetingView';
+
+import styles from './AboutLayout.less';
 
 const AboutLayout: React.FC = () => {
     return (

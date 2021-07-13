@@ -1,12 +1,16 @@
 import React, { useCallback } from 'react';
-import styles from './BoardControls.less';
+
 import AddButton from '../../../base/AddButton/AddButton';
 import ButtonComponent from '../../../base/Button/ButtonComponent';
+
 import { boardDeleting, taskAdd } from '../../../../redux/slice';
 import { useDispatch } from 'react-redux';
+
 import { useTranslation } from 'react-i18next';
 
-const BoardControls = (props: { id: number }): JSX.Element => {
+import styles from './BoardControls.less';
+
+const BoardControls = (props: { id: number }): React.ReactElement => {
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
@@ -23,7 +27,7 @@ const BoardControls = (props: { id: number }): JSX.Element => {
 
     return (
         <div className={styles.boardButtonContainer}>
-            <AddButton className={'addCard'} text={t('description.addTask')} type={'Task'} onClick={addNewTask} />
+            <AddButton className="addCard" text={t('description.addTask')} type="Task" onClick={addNewTask} />
             <ButtonComponent onClick={deleteBoard} message={t('description.deleteBoard')} />
         </div>
     );

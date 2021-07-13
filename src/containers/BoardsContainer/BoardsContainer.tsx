@@ -1,16 +1,21 @@
 import React, { useCallback } from 'react';
-import styles from './BoardsContainer.less';
+
 import AddButton from '../../components/base/AddButton/AddButton';
-import { boardAdd } from '../../redux/slice';
-import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../redux/store';
 import BoardsList from '../BoardsList/BoardsList';
 
-const BoardsContainer = (): JSX.Element => {
+import { boardAdd } from '../../redux/slice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+
+import indexSelectors from '../../redux/selectors/indexSelectors';
+
+import { useTranslation } from 'react-i18next';
+
+import styles from './BoardsContainer.less';
+
+const BoardsContainer = (): React.ReactElement => {
     const { t } = useTranslation();
-    const currentProject: string = useSelector((state: RootState) => state.globalReducer.currentProject);
+    const currentProject: string = useSelector(indexSelectors.currentProject);
     const dispatch = useDispatch();
 
     const addBoard = useCallback(() => {
@@ -22,7 +27,7 @@ const BoardsContainer = (): JSX.Element => {
             <div className={styles.container}>
                 <h1>{currentProject}</h1>
             </div>
-            <AddButton className={'addBoard'} onClick={addBoard} text={t('description.addBoard')} type="Board" />
+            <AddButton className="addBoard" onClick={addBoard} text={t('description.addBoard')} type="Board" />
             <BoardsList />
         </section>
     );

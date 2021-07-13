@@ -1,14 +1,19 @@
-import { Divider } from 'antd';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+
+import { Divider } from 'antd';
 import DateComponent from '../../../base/DateComponent/DateComponent';
 import InputComponent from '../../../base/Input/InputComponent';
 import SelectComponent from '../../../base/Select/SelectComponent';
-import styles from './CardForm.less';
-import cn from 'classnames';
+
 import { ICardForm } from './interfaces';
 
-const CardForm = (props: ICardForm): JSX.Element => {
+import { useTranslation } from 'react-i18next';
+
+import cn from 'classnames';
+
+import styles from './CardForm.less';
+
+const CardForm = (props: ICardForm): React.ReactElement => {
     const { taskInfo, assigneeArray, changeFunc, changeDateFunc } = props;
     const { id, taskName, deadlineDate, priority, assignee, description, fromBoard } = taskInfo;
 

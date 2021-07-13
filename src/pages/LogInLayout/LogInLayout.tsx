@@ -1,17 +1,23 @@
 import React, { useCallback } from 'react';
-import styles from './LogInLayout.less';
+
+import { Redirect } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../../redux/slice';
-import { Redirect } from 'react-router-dom';
-import { RootState } from '../../redux/store';
 import { LoginI } from './interfaces';
+
 import { useTranslation } from 'react-i18next';
+
 import CustomForm from '../../components/custom/CustomForm/CustomForm';
+
 import indexValidation from '../../validation/indexValidation';
+import indexSelectors from '../../redux/selectors/indexSelectors';
+
+import styles from './LogInLayout.less';
 
 const LogInLayout: React.FC = () => {
     const dispatch = useDispatch();
-    const user: string = useSelector((state: RootState) => state.globalReducer.userName);
+    const user: string = useSelector(indexSelectors.user);
 
     //LogIn handler
     const onFinish = useCallback((values: LoginI) => {
@@ -29,28 +35,6 @@ const LogInLayout: React.FC = () => {
                     validation={indexValidation.authSchema}
                     formSettings={{ submit: onFinish }}
                     itemsSettings={[
-                        {
-                            type: 'checkbox',
-                            label: 'checkbox',
-                            name: 'chkbx',
-                            defaultValue: 'true',
-                        },
-                        {
-                            type: 'select',
-                            label: 'select',
-                            name: 'select',
-                            optionsForSelect: [
-                                { value: '1', label: 'one' },
-                                { value: '2', label: 'two' },
-                                { value: '3', label: 'three' },
-                            ],
-                        },
-                        {
-                            type: 'date',
-                            label: 'date',
-                            name: 'date',
-                            dateFormat: 'YYYY/MM/DD',
-                        },
                         {
                             type: 'input',
                             label: t('description.mail'),

@@ -1,5 +1,5 @@
-interface IFormSettings {
-    submit: (values: any) => void;
+interface IFormSettings<T> {
+    submit: (values: T) => void;
 }
 
 export interface ISelectOptions {
@@ -18,8 +18,8 @@ interface IItemsSettings {
     htmlType?: string;
 }
 
-export interface IFormConstructor {
-    formSettings: IFormSettings;
+export interface IFormConstructor<T, U> {
+    formSettings: IFormSettings<T>;
     itemsSettings: IItemsSettings[];
-    validation?: any;
+    validation?: U;
 }

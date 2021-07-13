@@ -1,15 +1,18 @@
 import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { useDispatch } from 'react-redux';
 import { BoardI } from '../../../redux/interfaces';
 import { changeBoardName } from '../../../redux/slice';
 
 import InputComponent from '../../base/Input/InputComponent';
 import Modal from '../Modal/Modal';
-import styles from './BoardHeader.less';
 import BoardControls from './BoardControls/BoardControls';
 
-const BoardHeader = ({ id, name }: BoardI): JSX.Element => {
+import { useTranslation } from 'react-i18next';
+
+import styles from './BoardHeader.less';
+
+const BoardHeader = ({ id, name }: BoardI): React.ReactElement => {
     const dispatch = useDispatch();
 
     const { t } = useTranslation();

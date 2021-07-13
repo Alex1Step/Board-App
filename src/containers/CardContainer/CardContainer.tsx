@@ -1,19 +1,25 @@
 import React, { useCallback, useState } from 'react';
-import styles from './CardContainer.less';
+
 import CardView from '../../components/custom/Card/CardView/CardView';
-import cn from 'classnames';
+
 import { useDrag, DragSourceMonitor } from 'react-dnd';
+
 import { ICardContainer, IdropResult } from './interfaces';
 import { taskDeleting, moveTask } from '../../redux/slice';
 import { useDispatch } from 'react-redux';
+
+import cn from 'classnames';
+
+import styles from './CardContainer.less';
 
 const ItemTypes = {
     box: 'box',
 };
 
-const CardContainer = (props: ICardContainer): JSX.Element => {
+const CardContainer = (props: ICardContainer): React.ReactElement => {
     const { taskInfo, isAdmin, currentAssignee, setModal } = props;
     const { id, taskName, deadlineDate, priority, assignee, description, fromBoard } = taskInfo;
+
     const dispatch = useDispatch();
 
     const [blink, setBlink] = useState(1);

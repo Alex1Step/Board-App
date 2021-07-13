@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+
 import { Input } from 'antd';
-import styles from './InputComponent.less';
+
 import { IinputProps } from './interfaces';
+
 import cn from 'classnames';
-import { toUpper } from 'lodash';
+
+import styles from './InputComponent.less';
 
 const { TextArea } = Input;
 
-const InputComponent = (props: IinputProps): JSX.Element => {
+const InputComponent = (props: IinputProps): React.ReactElement => {
     const { withWrap, type, label, value, onChange, withoutSubstitution } = props;
 
     const [hideShow, setHideShow] = useState(1);
@@ -20,7 +23,7 @@ const InputComponent = (props: IinputProps): JSX.Element => {
     ) : (
         <div
             className={cn({
-                [styles.inputContainer]: toUpper,
+                [styles.inputContainer]: true,
                 [styles.wrapLabel]: withWrap,
                 [styles.ifTextArea]: inputType === 'textarea',
             })}

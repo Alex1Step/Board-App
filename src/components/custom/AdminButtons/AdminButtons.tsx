@@ -1,11 +1,15 @@
 import React from 'react';
-import styles from './AdminButtons.less';
+
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useTranslation } from 'react-i18next';
+
 import { IAdminsButton } from './interfaces';
 
-const AdminButtons = (props: IAdminsButton): JSX.Element => {
+import { useTranslation } from 'react-i18next';
+
+import styles from './AdminButtons.less';
+
+const AdminButtons = (props: IAdminsButton): React.ReactElement => {
     const { setModal, setModalAssign } = props;
 
     const { t } = useTranslation();

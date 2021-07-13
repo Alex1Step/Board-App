@@ -1,10 +1,14 @@
 import React from 'react';
+
 import { Button } from 'antd';
-import styles from './AddButton.less';
+
 import { IaddButtonProps } from './interfaces';
+
 import cn from 'classnames';
 
-const AddButton = (props: IaddButtonProps): JSX.Element => {
+import styles from './AddButton.less';
+
+const AddButton = (props: IaddButtonProps): React.ReactElement => {
     return (
         <Button
             className={cn({

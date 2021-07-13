@@ -1,12 +1,17 @@
 import React from 'react';
-import styles from './CardView.less';
+
 import { Divider } from 'antd';
 import ButtonComponent from '../../../base/Button/ButtonComponent';
-import cn from 'classnames';
-import { useTranslation } from 'react-i18next';
+
 import { ICardView } from './interfaces';
 
-const CardView = (props: ICardView): JSX.Element => {
+import { useTranslation } from 'react-i18next';
+
+import cn from 'classnames';
+
+import styles from './CardView.less';
+
+const CardView = (props: ICardView): React.ReactElement => {
     const { taskInfo, deleteFunc } = props;
     const { taskName, deadlineDate, priority, assignee, description } = taskInfo;
 

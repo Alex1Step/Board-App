@@ -1,20 +1,24 @@
 import React, { useCallback } from 'react';
+
 import { TaskI } from '../../../redux/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeFromInput } from '../../../redux/slice';
-import { useTranslation } from 'react-i18next';
-import Modal from '../Modal/Modal';
-import store, { RootState } from '../../../redux/store';
-import { Moment } from 'moment';
+import store from '../../../redux/store';
+
 import CardContainer from '../../../containers/CardContainer/CardContainer';
 import CardForm from './CardForm/CardForm';
+import Modal from '../Modal/Modal';
 
-const Card = (props: TaskI): JSX.Element => {
+import indexSelectors from '../../../redux/selectors/indexSelectors';
+import replacer from '../../../utils/replacer';
+
+import { Moment } from 'moment';
+import { useTranslation } from 'react-i18next';
+
+const Card = (props: TaskI): React.ReactElement => {
     const { id, fromBoard } = props;
 
-    const assigneeList: { [key: string]: string } | undefined = useSelector(
-        (state: RootState) => state.globalReducer.assignee,
-    );
+    const assigneeList: { [key: string]: string } | undefined = useSelector(indexSelectors.assigneeList);
 
     const dispatch = useDispatch();
 
@@ -31,7 +35,7 @@ const Card = (props: TaskI): JSX.Element => {
 
     //check role of user
     const stateForCheckRole = store.getState().globalReducer;
-    const currentUser = stateForCheckRole.userName.replace(/[\s.,%]/g, '');
+    const currentUser = replacer(stateForCheckRole.userName);
     let currentAssignee = '';
     if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
     const isAdmin = stateForCheckRole.isAdmin;

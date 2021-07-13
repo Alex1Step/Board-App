@@ -1,7 +1,8 @@
 import React from 'react';
+
 import styles from './Preloader.less';
 
-const Preloader = (): JSX.Element => (
+const Preloader = (): React.ReactElement => (
     <div className={styles.center}>
         <div className={styles.ldsFacebook}>
             <div></div>

@@ -1,13 +1,18 @@
 import React, { useCallback } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import store, { RootState } from '../../../redux/store';
-import { useTranslation } from 'react-i18next';
 import { BoardI } from '../../../redux/interfaces';
-import List from './List/List';
-import styles from './ListOfProjects.less';
 import { deleteProject, loadBoard } from '../../../redux/slice';
 
-const ListOfProjects = (): JSX.Element => {
+import List from './List/List';
+
+import replacer from '../../../utils/replacer';
+import { useTranslation } from 'react-i18next';
+
+import styles from './ListOfProjects.less';
+
+const ListOfProjects = (): React.ReactElement => {
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
@@ -18,7 +23,7 @@ const ListOfProjects = (): JSX.Element => {
 
     //check role of user
     const stateForCheckRole = store.getState().globalReducer;
-    const currentUser = stateForCheckRole.userName.replace(/[\s.,%]/g, '');
+    const currentUser = replacer(stateForCheckRole.userName);
     let currentAssignee = '';
     if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
 

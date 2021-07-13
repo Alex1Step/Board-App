@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
-import styles from './Modal.less';
-import { ImodalProps } from './interfaces';
+
 import { Button } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
-const Modal = (props: ImodalProps): JSX.Element | null => {
+import { ImodalProps } from './interfaces';
+
+import styles from './Modal.less';
+
+const Modal = (props: ImodalProps): React.ReactElement | null => {
     const { visible = false, title = '', onClose, children } = props;
 
     const onKeydown = useCallback(({ key }: KeyboardEvent) => {

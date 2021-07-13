@@ -1,17 +1,26 @@
 import React, { useCallback } from 'react';
-import styles from './Header.less';
-import { Button } from 'antd';
-import { useTranslation } from 'react-i18next';
+
 import { useHistory } from 'react-router-dom';
+
+import { Button } from 'antd';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut, refreshBoardPage } from '../../../redux/slice';
-import { RootState } from '../../../redux/store';
 
-const Header = (): JSX.Element => {
+import indexSelectors from '../../../redux/selectors/indexSelectors';
+
+import { useTranslation } from 'react-i18next';
+
+import styles from './Header.less';
+
+const Header = (): React.ReactElement => {
     const dispatch = useDispatch();
+
     const { t } = useTranslation();
+
     const history = useHistory();
-    const user: string = useSelector((state: RootState) => state.globalReducer.userName);
+
+    const user: string = useSelector(indexSelectors.user);
 
     const beforeRefreshPage = useCallback(() => {
         dispatch(refreshBoardPage(user));

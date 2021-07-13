@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import styles from './Date.less';
-import cn from 'classnames';
+
 import { DatePicker } from 'antd';
+
 import { Moment } from 'moment';
 import moment from 'moment';
+
+import cn from 'classnames';
+
+import styles from './Date.less';
 
 const DateComponent = (props: {
     value: string;
     onChange: (value: Moment | null, dateString: string) => void;
     label: string;
-}): JSX.Element => {
+}): React.ReactElement => {
     const { onChange, value, label } = props;
 
     const [hideShow, setHideShow] = useState(1);

@@ -1,12 +1,16 @@
 import React from 'react';
-import styles from './BoardsList.less';
+
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../redux/store';
 import { BoardI } from '../../redux/interfaces';
+
 import Board from '../../containers/Board/Board';
 
-const BoardsList = (): JSX.Element => {
-    const boards: BoardI[] = useSelector((state: RootState) => state.globalReducer.boards);
+import indexSelectors from '../../redux/selectors/indexSelectors';
+
+import styles from './BoardsList.less';
+
+const BoardsList = (): React.ReactElement => {
+    const boards: BoardI[] = useSelector(indexSelectors.boards);
 
     return (
         <section className={styles.boardsContainer}>

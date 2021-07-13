@@ -1,12 +1,17 @@
 import React from 'react';
+
 import InputComponent from '../../base/Input/InputComponent';
-import styles from './AdminModalContent.less';
-import { useTranslation } from 'react-i18next';
-import { IAdminModalContent } from './interfaces';
 import CustomForm from '../CustomForm/CustomForm';
+
+import { IAdminModalContent } from './interfaces';
+
 import indexValidation from '../../../validation/indexValidation';
 
-const AdminModalContent = (props: IAdminModalContent): JSX.Element => {
+import { useTranslation } from 'react-i18next';
+
+import styles from './AdminModalContent.less';
+
+const AdminModalContent = (props: IAdminModalContent): React.ReactElement => {
     const { isModal, title, setProjectTitle, addAssignee } = props;
     const { t } = useTranslation();
 

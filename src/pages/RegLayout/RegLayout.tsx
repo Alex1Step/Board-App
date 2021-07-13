@@ -1,12 +1,18 @@
 import React, { useCallback } from 'react';
+
 import { Redirect } from 'react-router';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../../redux/slice';
 import { LoginI } from './interfaces';
+
 import { useTranslation } from 'react-i18next';
+
 import CustomForm from '../../components/custom/CustomForm/CustomForm';
+
 import indexValidation from '../../validation/indexValidation';
 import indexSelectors from '../../redux/selectors/indexSelectors';
+
 import styles from './RegLayout.less';
 
 const RegLayout: React.FC = () => {

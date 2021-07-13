@@ -1,8 +1,13 @@
 import React from 'react';
-import { IFormConstructor } from './interfaces';
+
 import { Form, Input, Button, Select, DatePicker, Divider, Checkbox } from 'antd';
+
 import moment from 'moment';
 import { useFormik } from 'formik';
+import { IFormConstructor } from './interfaces';
+
+import { INPUT_ELEMENTS, TYPE_OF_TEXTINPUT } from '../../../constants/constants';
+
 import styles from './CustomForm.less';
 
 const layout = {
@@ -14,23 +19,7 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-const INPUT_ELEMENTS = {
-    input: 'input',
-    select: 'select',
-    date: 'date',
-    button: 'button',
-    checkbox: 'checkbox',
-    divider: 'divider',
-};
-
-const TYPE_OF_TEXTINPUT = {
-    input: 'input',
-    password: 'password',
-    textarea: 'textarea',
-    search: 'search',
-};
-
-const CustomForm = (props: IFormConstructor): React.ReactElement => {
+const CustomForm = <T, U>(props: IFormConstructor<T, U>): React.ReactElement => {
     const { submit } = props.formSettings;
 
     const initialValues = props.itemsSettings.map((item) => [item.name, item.defaultValue || '']);
@@ -110,15 +99,11 @@ const CustomForm = (props: IFormConstructor): React.ReactElement => {
         </>
     );
 
-    const createDate = (
-        name: string,
-        defaultValue = new Date().toISOString().slice(0, 10),
-        dateFormat = 'YYYY/MM/DD',
-    ) => (
+    const createDate = (name: string, dateFormat = 'YYYY/MM/DD') => (
         <>
             <DatePicker
                 name={name}
-                defaultValue={moment(formik.values[name] || defaultValue, dateFormat)}
+                defaultValue={moment()}
                 onChange={(value) => formik.setFieldValue(name, value)}
                 value={formik.values[name]}
                 format={dateFormat}
@@ -162,7 +147,7 @@ const CustomForm = (props: IFormConstructor): React.ReactElement => {
             [
                 INPUT_ELEMENTS.date,
                 <Form.Item key={index} name={item.name} label={item.label}>
-                    {createDate(item.name, item.defaultValue, item.dateFormat)}
+                    {createDate(item.name, item.dateFormat)}
                 </Form.Item>,
             ],
             [

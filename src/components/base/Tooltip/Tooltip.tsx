@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import styles from './Tooltip.less';
+
 import cn from 'classnames';
 
-const Tooltip = (props: { children: any; content: any }): JSX.Element => {
+import styles from './Tooltip.less';
+
+const Tooltip = (props: { children: any; content: any }): React.ReactElement => {
     const [show, setShow] = useState(false);
 
     return (

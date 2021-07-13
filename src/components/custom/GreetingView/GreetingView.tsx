@@ -1,18 +1,24 @@
 import React, { useCallback } from 'react';
-import styles from './GreetingView.less';
-import { useTranslation } from 'react-i18next';
-import { Button } from 'antd';
-import { logOut } from '../../../redux/slice';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
 
-const GreetingView = (): JSX.Element => {
+import { useHistory } from 'react-router-dom';
+
+import { Button } from 'antd';
+
+import { logOut } from '../../../redux/slice';
+import { useDispatch, useSelector } from 'react-redux';
+
+import indexSelectors from '../../../redux/selectors/indexSelectors';
+
+import { useTranslation } from 'react-i18next';
+
+import styles from './GreetingView.less';
+
+const GreetingView = (): React.ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const user: string = useSelector((state: RootState) => state.globalReducer.userName);
+    const user: string = useSelector(indexSelectors.user);
 
     const letSignUp = useCallback(() => {
         history.push('/register');
