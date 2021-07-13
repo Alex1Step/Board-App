@@ -1,9 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import rootReducer from './slice';
+import cardReducer from './cardSlice/cardSlice';
+import boardReducer from './boardSlice/boardSlice';
+import projectReducer from './projectSlice/projectSlice';
+import userReducer from './userSlice/userSlice';
 
 const store = configureStore({
     reducer: {
-        globalReducer: rootReducer,
+        card: cardReducer,
+        board: boardReducer,
+        project: projectReducer,
+        user: userReducer,
     },
 });
 
