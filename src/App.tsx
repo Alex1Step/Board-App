@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import styles from './App.less';
+import UserPage from './pages/UserPage/UserPage';
 import TasksLayout from './pages/TasksLayout/TasksLayout';
 import Burger from './components/custom/Navigation/Burger/Burger';
 import Pull from './components/custom/Navigation/Pull/Pull';
 import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';
 import AboutLayout from './pages/AboutLayout/AboutLayout';
+import Preloader from './components/custom/Preloader/Preloader';
+import { Button } from 'antd';
 import { onLoadPage } from './redux/slice';
 import { useDispatch } from 'react-redux';
-import Preloader from './components/custom/Preloader/Preloader';
 import store from './redux/store';
 import i18n from './i18n';
-import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
-import UserPage from './pages/UserPage/UserPage';
+import styles from './App.less';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -56,7 +56,6 @@ const App: React.FC = () => {
         <>
             <Burger isOpen={burgerOpen} onClick={handlerBurger} />
             <Pull isOpen={burgerOpen} onClick={handlerBurgerClose} listOfLinks={links} />
-
             <Switch>
                 <Route path="/boards" component={TasksLayout} />
                 <Route path="/login" component={LogInLayout} />

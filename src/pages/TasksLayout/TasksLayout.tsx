@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../../redux/store';
 import { refreshBoardPage, resetProjectCreated } from '../../redux/slice';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import styles from './TasksLayout.less';
 import BoardsContainer from '../../containers/BoardsContainer/BoardsContainer';
 import Header from '../../components/custom/Header/Header';
+import indexSelectors from '../../redux/selectors/indexSelectors';
+import styles from './TasksLayout.less';
 
 const TasksLayout: React.FC = () => {
     const dispatch = useDispatch();
 
-    const user: string = useSelector((state: RootState) => state.globalReducer.userName);
+    const user: string = useSelector(indexSelectors.user);
 
     const beforeRefreshPage = useCallback(() => {
         dispatch(refreshBoardPage(user));
