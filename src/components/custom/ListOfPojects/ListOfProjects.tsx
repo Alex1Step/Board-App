@@ -1,11 +1,13 @@
 import React, { useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import store, { RootState } from '../../../redux/store';
+import store from '../../../redux/store';
 import { BoardI } from '../../../redux/interfaces';
-import { deleteProject, loadBoard } from '../../../redux/slice';
+import { deleteProject, loadBoard } from '../../../redux/projectSlice/projectSlice';
 
 import List from './List/List';
+
+import indexSelectors from '../../../redux/selectors/indexSelectors';
 
 import replacer from '../../../utils/replacer';
 import { useTranslation } from 'react-i18next';
@@ -17,12 +19,10 @@ const ListOfProjects = (): React.ReactElement => {
 
     const dispatch = useDispatch();
 
-    const projectsList: { [key: string]: BoardI[] } | undefined = useSelector(
-        (state: RootState) => state.globalReducer.listOfProjects,
-    );
+    const projectsList: { [key: string]: BoardI[] } | undefined = useSelector(indexSelectors.projectsList);
 
     //check role of user
-    const stateForCheckRole = store.getState().globalReducer;
+    const stateForCheckRole = store.getState().userReducer;
     const currentUser = replacer(stateForCheckRole.userName);
     let currentAssignee = '';
     if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
@@ -47,7 +47,7 @@ const ListOfProjects = (): React.ReactElement => {
         dispatch(deleteProject(proj));
     }, []);
 
-    const isAdmin = store.getState().globalReducer.isAdmin;
+    const isAdmin = store.getState().userReducer.isAdmin;
 
     return (
         <>

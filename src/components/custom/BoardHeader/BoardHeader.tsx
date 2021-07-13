@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { BoardI } from '../../../redux/interfaces';
-import { changeBoardName } from '../../../redux/slice';
+import { changeBoardName } from '../../../redux/boardSlice/boardSlice';
 
 import InputComponent from '../../base/Input/InputComponent';
 import Modal from '../Modal/Modal';
@@ -46,8 +46,8 @@ const BoardHeader = ({ id, name }: BoardI): React.ReactElement => {
             </span>
             <Modal visible={isModal} title={t('description.changeBoardName')} onClose={onClose}>
                 <InputComponent
-                    type={'text'}
-                    label={''}
+                    type="text"
+                    label=""
                     value={name}
                     onChange={(event) => changeBoardNameHandler(event)}
                     withoutSubstitution={true}

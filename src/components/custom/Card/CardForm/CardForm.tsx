@@ -26,13 +26,13 @@ const CardForm = (props: ICardForm): React.ReactElement => {
             })}
         >
             <InputComponent
-                type={'text'}
+                type="text"
                 label={t('description.task')}
                 value={taskName}
                 onChange={(event) => changeFunc(event, Number(fromBoard), id, 'taskName')}
             />
             <Divider className={styles.dividerCustom} dashed={true} />
-            <DateComponent onChange={changeDateFunc} value={deadlineDate} label={'Deadline'} />
+            <DateComponent onChange={changeDateFunc} value={deadlineDate} label="Deadline" />
             {new Date(deadlineDate) < new Date() && (
                 <span
                     className={cn({
@@ -45,7 +45,7 @@ const CardForm = (props: ICardForm): React.ReactElement => {
             )}
             <Divider className={styles.dividerCustom} dashed={true} />
             <SelectComponent
-                type={'select'}
+                type="select"
                 options={['High', 'Medium', 'Low']}
                 labelForOptions={[`${t('description.high')}`, `${t('description.medium')}`, `${t('description.low')}`]}
                 label={t('description.priority')}
@@ -54,7 +54,7 @@ const CardForm = (props: ICardForm): React.ReactElement => {
             />
             <Divider className={styles.dividerCustom} dashed={true} />
             <SelectComponent
-                type={'select'}
+                type="select"
                 options={[...assigneeArray]}
                 labelForOptions={[...assigneeArray]}
                 label={t('description.assignee')}
@@ -64,7 +64,7 @@ const CardForm = (props: ICardForm): React.ReactElement => {
             <Divider className={styles.dividerCustom} dashed={true} />
             <InputComponent
                 withWrap={true}
-                type={'textarea'}
+                type="textarea"
                 label={t('description.description')}
                 value={description}
                 onChange={(event) => changeFunc(event, Number(fromBoard), id, 'description')}

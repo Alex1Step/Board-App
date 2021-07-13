@@ -5,7 +5,7 @@ import CardView from '../../components/custom/Card/CardView/CardView';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 
 import { ICardContainer, IdropResult } from './interfaces';
-import { taskDeleting, moveTask } from '../../redux/slice';
+import { taskDeleting, moveTask } from '../../redux/boardSlice/boardSlice';
 import { useDispatch } from 'react-redux';
 
 import cn from 'classnames';

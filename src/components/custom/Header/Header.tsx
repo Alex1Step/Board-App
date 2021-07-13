@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { logOut, refreshBoardPage } from '../../../redux/slice';
+import { logOut, refreshBoardPage } from '../../../redux/userSlice/userSlice';
 
 import indexSelectors from '../../../redux/selectors/indexSelectors';
 

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Divider } from 'antd';
 import BoardHeader from '../../components/custom/BoardHeader/BoardHeader';
 import CardList from '../../components/custom/CardList/CardList';

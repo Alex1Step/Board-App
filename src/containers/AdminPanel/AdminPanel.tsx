@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addNewAssignee, createNewProject } from '../../redux/slice';
+import { addNewAssignee } from '../../redux/userSlice/userSlice';
+import { createNewProject } from '../../redux/projectSlice/projectSlice';
 
 import AdminModalContent from '../../components/custom/AdminModalContent/AdminModalContent';
 import AdminButtons from '../../components/custom/AdminButtons/AdminButtons';

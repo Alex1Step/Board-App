@@ -8,7 +8,7 @@ import indexApi from '../../api/indexApi';
 import deepCopy from '../../utils/deepCopy';
 import replacer from '../../utils/replacer';
 
-export const addNewAssignee = createAsyncThunk('board/addNewAssignee', async (user: IAssignee) => {
+export const addNewAssignee = createAsyncThunk('user/addNewAssignee', async (user: IAssignee) => {
     const changedAssignee = {
         email: replacer(user.email),
         name: user.name,
@@ -18,14 +18,17 @@ export const addNewAssignee = createAsyncThunk('board/addNewAssignee', async (us
 });
 
 export const refreshBoardPage = createAsyncThunk<void, string, { state: RootState }>(
-    'board/refreshPage/fullfiled',
+    'user/refreshPage',
     async (user: string, thunkApi) => {
-        indexApi.sendToDatabaseApi(thunkApi.getState().user.boards, thunkApi.getState().user.currentProject);
+        indexApi.sendToDatabaseApi(
+            thunkApi.getState().userReducer.boards,
+            thunkApi.getState().userReducer.currentProject,
+        );
     },
 );
 
 export const onLoadPage = createAsyncThunk(
-    'board/pageLoad',
+    'user/pageLoad',
     async (setData: React.Dispatch<React.SetStateAction<boolean>>) => {
         const user = localStorage.getItem('user');
         let listOfProjects: { [key: string]: BoardI[] } = {};
@@ -44,7 +47,7 @@ export const onLoadPage = createAsyncThunk(
     },
 );
 
-export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) => {
+export const signIn = createAsyncThunk('user/signIn', async (userData: LoginI) => {
     let listOfProjects: { [key: string]: BoardI[] } = {};
     let listOfAssignee: { [key: string]: string } = {};
     let isAdmin = false;
@@ -59,7 +62,7 @@ export const signIn = createAsyncThunk('board/signIn', async (userData: LoginI) 
     return { listOfProjects, isAdmin, userName, listOfAssignee };
 });
 
-export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) => {
+export const signUp = createAsyncThunk('user/signUp', async (userData: LoginI) => {
     let listOfProjects: { [key: string]: BoardI[] } = {};
     let isAdmin = false;
     const userName = userData.username;
@@ -73,9 +76,12 @@ export const signUp = createAsyncThunk('board/signUp', async (userData: LoginI) 
 });
 
 export const logOut = createAsyncThunk<void, string, { state: RootState }>(
-    'board/logOut/fullfiled',
+    'user/logOut',
     async (user: string, thunkApi) => {
-        indexApi.sendToDatabaseApi(thunkApi.getState().user.boards, thunkApi.getState().user.currentProject);
+        indexApi.sendToDatabaseApi(
+            thunkApi.getState().userReducer.boards,
+            thunkApi.getState().userReducer.currentProject,
+        );
         indexApi.logOutApi();
     },
 );
@@ -110,6 +116,7 @@ const userSlice = createSlice({
         });
         builder.addCase(addNewAssignee.fulfilled, (state, action) => {
             const tempState = deepCopy(state);
+            console.log(tempState);
             tempState.assignee[action.payload.email] = action.payload.name;
             return tempState;
         });

@@ -4,19 +4,19 @@ import { initialState } from '../initialState';
 import indexApi from '../../api/indexApi';
 import deepCopy from '../../utils/deepCopy';
 
-export const deleteProject = createAsyncThunk('board/deleteProject', async (project: string) => {
+export const deleteProject = createAsyncThunk('project/deleteProject', async (project: string) => {
     indexApi.deleteProjectFromDBApi(project);
     return project;
 });
 
-export const createNewProject = createAsyncThunk('board/createNewProject', async (projectTitle: string) => {
+export const createNewProject = createAsyncThunk('project/createNewProject', async (projectTitle: string) => {
     const newProject: BoardI[] = [...initialState.boards];
     const title = projectTitle;
     await indexApi.sendToDatabaseApi(newProject, projectTitle);
     return { newProject, title };
 });
 
-export const loadBoard = createAsyncThunk('board/loadBoard', async (project: string) => {
+export const loadBoard = createAsyncThunk('project/loadBoard/fulfilled', async (project: string) => {
     let thisBoards: BoardI[] = deepCopy(initialState.boards);
     thisBoards = await indexApi.fetchUserDataFromBaseApi(project);
     return { thisBoards, project };
@@ -37,6 +37,7 @@ const projectSlice = createSlice({
             tempState.currentProject = action.payload.title;
             tempState.listOfProjects[`${action.payload.title}`] = [];
             tempState.projectCreated = true;
+            console.log(tempState.projectCreated);
             return tempState;
         });
         builder.addCase(loadBoard.fulfilled, (state, action) => {

@@ -3,7 +3,9 @@ import React, { useCallback } from 'react';
 import AddButton from '../../../base/AddButton/AddButton';
 import ButtonComponent from '../../../base/Button/ButtonComponent';
 
-import { boardDeleting, taskAdd } from '../../../../redux/slice';
+import { boardDeleting } from '../../../../redux/boardSlice/boardSlice';
+import { taskAdd } from '../../../../redux/boardSlice/boardSlice';
+
 import { useDispatch } from 'react-redux';
 
 import { useTranslation } from 'react-i18next';

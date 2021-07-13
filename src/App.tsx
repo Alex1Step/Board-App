@@ -12,7 +12,7 @@ import AboutLayout from './pages/AboutLayout/AboutLayout';
 import Preloader from './components/custom/Preloader/Preloader';
 import { Button } from 'antd';
 
-import { onLoadPage } from './redux/slice';
+import { onLoadPage } from './redux/userSlice/userSlice';
 import { useDispatch } from 'react-redux';
 import store from './redux/store';
 
@@ -42,7 +42,7 @@ const App: React.FC = () => {
     ];
 
     const beforeUnloadPage = useCallback(() => {
-        localStorage.setItem('user', store.getState().globalReducer.userName);
+        localStorage.setItem('user', store.getState().userReducer.userName);
     }, []);
 
     useEffect(() => {

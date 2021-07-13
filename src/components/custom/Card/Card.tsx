@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { TaskI } from '../../../redux/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFromInput } from '../../../redux/slice';
+import { changeFromInput } from '../../../redux/boardSlice/boardSlice';
 import store from '../../../redux/store';
 
 import CardContainer from '../../../containers/CardContainer/CardContainer';
@@ -34,7 +34,7 @@ const Card = (props: TaskI): React.ReactElement => {
     }
 
     //check role of user
-    const stateForCheckRole = store.getState().globalReducer;
+    const stateForCheckRole = store.getState().userReducer;
     const currentUser = replacer(stateForCheckRole.userName);
     let currentAssignee = '';
     if (stateForCheckRole.assignee) currentAssignee = stateForCheckRole.assignee[currentUser];
