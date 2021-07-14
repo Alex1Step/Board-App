@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { BoardI } from '../../../redux/interfaces';
-import { changeBoardName } from '../../../redux/boardSlice/boardSlice';
+import { changeBoardName } from '../../../redux/slices/projectSlice/projectSlice';
 
 import InputComponent from '../../base/Input/InputComponent';
 import Modal from '../Modal/Modal';

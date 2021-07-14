@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { signIn } from '../../redux/userSlice/userSlice';
+import { signIn } from '../../redux/slices/async/signIn';
 import { LoginI } from './interfaces';
 
 import { useTranslation } from 'react-i18next';

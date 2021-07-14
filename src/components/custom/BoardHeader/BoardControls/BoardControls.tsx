@@ -3,8 +3,7 @@ import React, { useCallback } from 'react';
 import AddButton from '../../../base/AddButton/AddButton';
 import ButtonComponent from '../../../base/Button/ButtonComponent';
 
-import { boardDeleting } from '../../../../redux/boardSlice/boardSlice';
-import { taskAdd } from '../../../../redux/boardSlice/boardSlice';
+import { boardDeleting, taskAdd } from '../../../../redux/slices/projectSlice/projectSlice';
 
 import { useDispatch } from 'react-redux';
 

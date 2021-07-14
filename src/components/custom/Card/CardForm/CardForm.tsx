@@ -5,10 +5,11 @@ import DateComponent from '../../../base/DateComponent/DateComponent';
 import InputComponent from '../../../base/Input/InputComponent';
 import SelectComponent from '../../../base/Select/SelectComponent';
 
+import { PRIORITY_OF_TASK } from '../../../../constants/constants';
+
 import { ICardForm } from './interfaces';
 
 import { useTranslation } from 'react-i18next';
-
 import cn from 'classnames';
 
 import styles from './CardForm.less';
@@ -46,7 +47,7 @@ const CardForm = (props: ICardForm): React.ReactElement => {
             <Divider className={styles.dividerCustom} dashed={true} />
             <SelectComponent
                 type="select"
-                options={['High', 'Medium', 'Low']}
+                options={[PRIORITY_OF_TASK.high, PRIORITY_OF_TASK.medium, PRIORITY_OF_TASK.low]}
                 labelForOptions={[`${t('description.high')}`, `${t('description.medium')}`, `${t('description.low')}`]}
                 label={t('description.priority')}
                 value={priority}

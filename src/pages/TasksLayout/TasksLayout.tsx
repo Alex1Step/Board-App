@@ -7,8 +7,8 @@ import BoardsContainer from '../../containers/BoardsContainer/BoardsContainer';
 import Header from '../../components/custom/Header/Header';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { refreshBoardPage } from '../../redux/userSlice/userSlice';
-import { resetProjectCreated } from '../../redux/projectSlice/projectSlice';
+import { refreshBoardPage } from '../../redux/slices/async/refreshBoardPage';
+import { resetProjectCreated } from '../../redux/slices/projectSlice/projectSlice';
 
 import indexSelectors from '../../redux/selectors/indexSelectors';
 

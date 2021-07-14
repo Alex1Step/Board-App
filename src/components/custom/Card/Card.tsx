@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { TaskI } from '../../../redux/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFromInput } from '../../../redux/boardSlice/boardSlice';
+import { changeFromInput } from '../../../redux/slices/projectSlice/projectSlice';
 import store from '../../../redux/store';
 
 import CardContainer from '../../../containers/CardContainer/CardContainer';

@@ -13,3 +13,9 @@ export const TYPE_OF_TEXTINPUT = {
     textarea: 'textarea',
     search: 'search',
 };
+
+export const PRIORITY_OF_TASK = {
+    high: 'High',
+    medium: 'Medium',
+    low: 'Low',
+};

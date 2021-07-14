@@ -3,7 +3,8 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import store from '../../../redux/store';
 import { BoardI } from '../../../redux/interfaces';
-import { deleteProject, loadBoard } from '../../../redux/projectSlice/projectSlice';
+import { loadBoard } from '../../../redux/slices/async/loadBoard';
+import { deleteProject } from '../../../redux/slices/async/deleteProject';
 
 import List from './List/List';
 

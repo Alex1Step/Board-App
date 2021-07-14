@@ -12,7 +12,7 @@ import AboutLayout from './pages/AboutLayout/AboutLayout';
 import Preloader from './components/custom/Preloader/Preloader';
 import { Button } from 'antd';
 
-import { onLoadPage } from './redux/userSlice/userSlice';
+import { onLoadPage } from './redux/slices/async/onLoadPage';
 import { useDispatch } from 'react-redux';
 import store from './redux/store';
 

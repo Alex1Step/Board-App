@@ -1,16 +1,20 @@
 import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
-import { changeBoardNameI, BoardI } from '../interfaces';
-import { initialState } from '../initialState';
-import { deleteBoard } from '../../utils/deleteBoard';
-import deepCopy from '../../utils/deepCopy';
-import { IchangeValue } from '../../components/custom/Card/interfaces';
-import { moveTaskI, TaskI } from '../interfaces';
-import { deleteTask } from '../../utils/deleteTask';
+import { BoardI, changeBoardNameI, moveTaskI, TaskI } from '../../interfaces';
+import { initialState } from '../../initialState';
+import deepCopy from '../../../utils/deepCopy';
+import { deleteTask } from '../../../utils/deleteTask';
+import { IchangeValue } from '../../../components/custom/Card/interfaces';
+import { deleteBoard } from '../../../utils/deleteBoard';
+import { createNewProject } from '../async/createNewProject';
+import { loadBoard } from '../async/loadBoard';
 
-const boardSlice = createSlice({
-    name: 'board',
+const projectSlice = createSlice({
+    name: 'project',
     initialState,
     reducers: {
+        resetProjectCreated(state) {
+            state.projectCreated = false;
+        },
         boardDeleting(state, action: PayloadAction<number>) {
             return deleteBoard(deepCopy(current(state)), action.payload);
         },
@@ -55,8 +59,30 @@ const boardSlice = createSlice({
             return deleteTask(tempState, from, taskID);
         },
     },
+    extraReducers: (builder) => {
+        builder.addCase(createNewProject.fulfilled, (state, action) => {
+            const tempState = deepCopy(state);
+            tempState.boards = action.payload.newProject;
+            tempState.currentProject = action.payload.title;
+            tempState.listOfProjects[`${action.payload.title}`] = [];
+            tempState.projectCreated = true;
+            return tempState;
+        });
+        builder.addCase(loadBoard.fulfilled, (state, action) => {
+            state.boards = action.payload.thisBoards;
+            state.currentProject = action.payload.project;
+        });
+    },
 });
 
-export const { boardDeleting, boardAdd, changeBoardName, changeFromInput, taskDeleting, taskAdd, moveTask } =
-    boardSlice.actions;
-export default boardSlice.reducer;
+export const {
+    resetProjectCreated,
+    boardDeleting,
+    boardAdd,
+    changeBoardName,
+    changeFromInput,
+    taskDeleting,
+    taskAdd,
+    moveTask,
+} = projectSlice.actions;
+export default projectSlice.reducer;

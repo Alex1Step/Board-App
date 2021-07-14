@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import AddButton from '../../components/base/AddButton/AddButton';
 import BoardsList from '../BoardsList/BoardsList';
 
-import { boardAdd } from '../../redux/boardSlice/boardSlice';
+import { boardAdd } from '../../redux/slices/projectSlice/projectSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 import indexSelectors from '../../redux/selectors/indexSelectors';
