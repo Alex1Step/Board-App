@@ -1,19 +1,17 @@
+@import '../../lessVariables.less';
+
 .tasksLayout {
-  display: flex;
+  .pos-left-center;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .pos-center-center;
     padding: 40px;
     margin-bottom: 10px;
     background-image: url(../../images/userNameBCKGRND.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     h1 {
-      color: white;
+      color: @main-text-color;
       margin: 0;
     }
   }

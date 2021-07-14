@@ -1,7 +1,7 @@
+@import '../../lessVariables.less';
+
 .regLayout {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .pos-center-center;
   flex-direction: column;
   background-image: url(../../images/mainBackground.jpg);
   background-repeat: no-repeat;
@@ -10,9 +10,7 @@
   width: 100vw;
   height: 100vh;
   .signInUpform {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    .pos-center-center;
     flex-direction: column;
     background: linear-gradient(45deg, #8a75756e 48%, #ffffff);
     border: 1px solid rgb(190, 183, 183);
@@ -20,24 +18,23 @@
     padding: 50px;
     width: 425px;
     h1 {
-      color: white;
+      color: @main-text-color;
     }
     label {
       display: block;
       width: 85px;
       text-align: right;
       margin-right: 0px;
-      color: white;
+      color: @main-text-color;
       &::after {
         margin: 0px;
       }
     }
     button {
       width: 115px;
-      background-color: #00000085;
-      border: 1px solid #612f0585;
+      .user-forms-background;
       &:hover {
-        background-color: #d18f15;
+        background-color: @buttons-hover-color;
       }
     }
   }

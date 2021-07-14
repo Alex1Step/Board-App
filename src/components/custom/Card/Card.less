@@ -1,3 +1,5 @@
+@import '../../../lessVariables.less';
+
 .card {
   display: flex;
   flex-direction: column;
@@ -42,13 +44,13 @@
 }
 
 .high {
-  background: linear-gradient(45deg, rgb(255, 0, 0) 30%, rgb(255, 157, 0));
+  background: @high-priority-color;
 }
 .medium {
-  background: linear-gradient(225deg, rgb(164, 180, 71), rgb(255, 236, 0) 100%);
+  background: @medium-priority-color;
 }
 .low {
-  background: linear-gradient(225deg, rgb(0, 238, 196), rgb(15, 255, 0) 100%);
+  background: @low-priotiy-color;
 }
 
 .blink {

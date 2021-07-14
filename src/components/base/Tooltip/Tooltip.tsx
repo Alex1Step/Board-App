@@ -4,7 +4,7 @@ import cn from 'classnames';
 
 import styles from './Tooltip.less';
 
-const Tooltip = (props: { children: any; content: any }): React.ReactElement => {
+const Tooltip = (props: { children: React.ReactElement; content: () => React.ReactElement }): React.ReactElement => {
     const [show, setShow] = useState(false);
 
     return (

@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { Route, Switch } from 'react-router-dom';
 
-import UserPage from './pages/UserPage/UserPage';
-import TasksLayout from './pages/TasksLayout/TasksLayout';
-import Burger from './components/custom/Navigation/Burger/Burger';
+import UserPage from 'pages/UserPage/UserPage';
+import TasksLayout from 'pages/TasksLayout/TasksLayout';
+import Burger from 'components/custom/Navigation/Burger/Burger';
 import Pull from './components/custom/Navigation/Pull/Pull';
 import LogInLayout from './pages/LogInLayout/LogInLayout';
 import RegLayout from './pages/RegLayout/RegLayout';

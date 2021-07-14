@@ -1,7 +1,7 @@
+@import '../../../lessVariables.less';
+
 .inputContainer {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  .pos-left-center;
 
   &.wrapLabel {
     flex-direction: column;
@@ -19,7 +19,7 @@
 
   input,
   textarea {
-    background-color: #bfffe8;
+    background-color: @inputs-background-color;
     border-radius: 5px;
   }
 

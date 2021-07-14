@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.extend.json",
   "compilerOptions": {
     "target": "es5",
     "lib": [
@@ -21,10 +22,10 @@
     "jsx": "react-jsx",
     "rootDir": "src",
     "outDir": "build",
-    "baseUrl": "./src"
+    // "baseUrl": ".src",
   },
   "include": [
     "src",
-    "src/externals.d.ts"
+    "src/externals.d.ts",
   ]
 }

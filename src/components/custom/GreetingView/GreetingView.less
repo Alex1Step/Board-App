@@ -1,22 +1,21 @@
+@import '../../../lessVariables.less';
+
 .wrapper {
   width: 340px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .pos-center-center;
   flex-direction: column;
   background: linear-gradient(45deg, #435371b3 48%, #ffffff);
   border-radius: 10px;
   padding: 40px;
   h1 {
-    color: white;
+    color: @main-text-color;
   }
   .singleButton {
     width: 195px;
     margin: 40px;
-    background-color: #00000085;
-    border: 1px solid #612f0585;
+    .user-forms-background;
     &:hover {
-      background-color: #d18f15;
+      background-color: @buttons-hover-color;
     }
   }
   .buttonContainer {
@@ -29,10 +28,9 @@
       width: 115px;
       height: 40px;
       margin: 10px;
-      background-color: #00000085;
-      border: 1px solid #612f0585;
+      .user-forms-background;
       &:hover {
-        background-color: #d18f15;
+        background-color: @buttons-hover-color;
       }
     }
   }

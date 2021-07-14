@@ -1,5 +1,9 @@
 const CracoAntDesignPlugin = require('craco-antd');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+// const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+// const CracoAlias = require('craco-alias');
+// import CracoAntDesignPlugin from 'craco-antd';
+// import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
+// import CracoAlias from 'craco-alias';
 
 module.exports = {
     plugins: [

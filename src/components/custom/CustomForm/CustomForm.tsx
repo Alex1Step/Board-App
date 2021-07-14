@@ -24,7 +24,15 @@ const CustomForm = <T, U>(props: IFormConstructor<T, U>): React.ReactElement => 
 
     const initialValues = props.itemsSettings.map((item) => [item.name, item.defaultValue || '']);
 
+    // const temp: { [key: string]: string | undefined } = {};
+    // props.itemsSettings.forEach((item) => (temp[item.name] = item.defaultValue));
+
     const formik = useFormik({
+        // initialValues: temp,
+        // initialValues: props.itemsSettings.reduce((acc, item) => {
+        //     acc[item.name] = item.defaultValue || '';
+        //     return acc;
+        // }, {} as { [key: string]: string }),
         initialValues: Object.fromEntries(initialValues),
         validationSchema: props.validation,
         onSubmit: (values) => {

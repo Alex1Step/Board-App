@@ -1,16 +1,18 @@
+@import '../../../../lessVariables.less';
+
 .dividerCustom {
   margin: 5px 0px;
 }
 .attention {
   width: fit-content;
-  background-color: rgb(255, 136, 0);
+  background-color: @attention-color;
   padding: 0px 5px 0px 5px;
   border-radius: 5px;
 }
 
 .cardOnModal {
   padding: 20px;
-  background-color: burlywood;
+  background-color: @card-view-background-color;
   border-radius: 10px;
   .dividerCustom {
     margin: 5px 0px;
@@ -18,7 +20,7 @@
 }
 
 .blink {
-  background: rgb(255, 82, 82);
+  background: @attention-color;
   animation-name: blink;
   animation-timing-function: linear;
   animation-duration: 1.2s;

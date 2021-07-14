@@ -1,7 +1,7 @@
+@import '../../../lessVariables.less';
+
 .inputDateContainer {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  .pos-left-center;
 }
 
 label {
@@ -10,7 +10,7 @@ label {
 }
 
 .datePicker {
-  background-color: #bfffe8;
+  background-color: @inputs-background-color;
   border-radius: 5px;
   width: 125px;
   margin: 0px;
@@ -43,7 +43,7 @@ label {
 }
 
 :global .ant-picker-panel-container {
-  background-color: #bfffe8;
+  background-color: @inputs-background-color;
   border-radius: 5px;
 }
 
