@@ -40,14 +40,12 @@ const LogInLayout: React.FC = () => {
                             label: t('description.mail'),
                             name: 'username',
                             inputType: 'input',
-                            defaultValue: 'hello',
                         },
                         {
                             type: 'input',
                             label: t('description.password'),
                             name: 'password',
                             inputType: 'password',
-                            defaultValue: 'world',
                         },
                         {
                             type: 'button',
