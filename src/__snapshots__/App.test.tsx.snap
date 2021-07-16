@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing simple component renders correctly 1`] = `
+<div>
+  <span
+    className="child"
+    onClick={[Function]}
+  >
+    hello
+  </span>
+  <p
+    className="child"
+  >
+    hello
+  </p>
+</div>
+`;

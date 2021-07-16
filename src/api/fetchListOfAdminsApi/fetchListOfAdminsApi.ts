@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
-export const fetchListOfAdminsApi = (): Promise<{ [key: string]: string }> => {
-    return firebase
+export const fetchListOfAdminsApi = (): Promise<{ [key: string]: string }> =>
+    firebase
         .database()
         .ref()
         .child('admins')
@@ -11,4 +11,3 @@ export const fetchListOfAdminsApi = (): Promise<{ [key: string]: string }> => {
                 return snapshot.val();
             }
         });
-};

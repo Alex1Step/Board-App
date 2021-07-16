@@ -2,24 +2,24 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { Route, Switch } from 'react-router-dom';
 
-import UserPage from 'pages/UserPage/UserPage';
-import TasksLayout from 'pages/TasksLayout/TasksLayout';
-import Burger from 'components/custom/Navigation/Burger/Burger';
-import Pull from 'components/custom/Navigation/Pull/Pull';
-import LogInLayout from 'pages/LogInLayout/LogInLayout';
-import RegLayout from 'pages/RegLayout/RegLayout';
-import AboutLayout from 'pages/AboutLayout/AboutLayout';
-import Preloader from 'components/custom/Preloader/Preloader';
+import UserPage from './pages/UserPage/UserPage';
+import TasksLayout from './pages/TasksLayout/TasksLayout';
+import Burger from './components/custom/Navigation/Burger/Burger';
+import Pull from './components/custom/Navigation/Pull/Pull';
+import LogInLayout from './pages/LogInLayout/LogInLayout';
+import RegLayout from './pages/RegLayout/RegLayout';
+import AboutLayout from './pages/AboutLayout/AboutLayout';
+import Preloader from './components/custom/Preloader/Preloader';
 import { Button } from 'antd';
 
-import { onLoadPage } from 'redux/slices/async/onLoadPage';
+import { onLoadPage } from './redux/slices/async/onLoadPage';
 import { useDispatch } from 'react-redux';
-import store from 'redux/store';
+import store from './redux/store';
 
-import i18n from 'i18n';
+import i18n from './i18n';
 import { useTranslation } from 'react-i18next';
 
-import styles from 'App.less';
+import styles from './App.less';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();

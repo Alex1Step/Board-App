@@ -29,6 +29,7 @@
     "i18next-http-backend": "^1.2.6",
     "less": "^4.1.1",
     "less-loader": "^9.0.0",
+    "node-fetch": "^2.6.1",
     "react": "^17.0.2",
     "react-dnd": "^14.0.2",
     "react-dnd-html5-backend": "^14.0.0",
@@ -45,7 +46,14 @@
   "babel": {
     "presets": [
       "@babel/preset-react",
-      "@babel/preset-env",
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
       "@babel/preset-typescript"
     ],
     "plugins": [
@@ -56,7 +64,9 @@
     "moduleNameMapper": {
       "^.+.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
     },
-    "setupFilesAfterEnv": ["<rootDir>/test-setup.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/test-setup.js"
+    ]
   },
   "scripts": {
     "start": "craco start",
@@ -87,12 +97,13 @@
     "@babel/preset-typescript": "^7.14.5",
     "@types/enzyme": "^3.10.9",
     "@types/lodash": "^4.14.170",
+    "@types/node-fetch": "^2.5.11",
     "@types/react-test-renderer": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.3",
     "craco-alias": "^3.0.1",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

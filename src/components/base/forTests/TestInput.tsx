@@ -6,7 +6,13 @@ const Input = (): React.ReactElement => {
 
     return (
         <div>
-            <span className="child" onClick={() => setText('world')}>
+            <span
+                className="child"
+                onClick={() => {
+                    setText('world');
+                    return 44;
+                }}
+            >
                 {text}
             </span>
             <p className="child">hello</p>

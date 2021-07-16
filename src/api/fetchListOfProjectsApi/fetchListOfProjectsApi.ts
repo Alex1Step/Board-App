@@ -1,8 +1,8 @@
 import firebase from 'firebase';
 import { BoardI } from '../../redux/interfaces';
 
-export const fetchListOfProjectsApi = (): Promise<{ [key: string]: BoardI[] }> => {
-    return firebase
+export const fetchListOfProjectsApi = (): Promise<{ [key: string]: BoardI[] }> =>
+    firebase
         .database()
         .ref()
         .child('projects')
@@ -12,4 +12,3 @@ export const fetchListOfProjectsApi = (): Promise<{ [key: string]: BoardI[] }> =
                 return snapshot.val();
             }
         });
-};
