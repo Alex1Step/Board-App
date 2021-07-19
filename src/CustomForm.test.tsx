@@ -57,7 +57,7 @@ describe('form', () => {
 
     it('submitting and sending data correctly when form is valid', async () => {
         const spy = jest.fn((values) => {
-            console.log(values);
+            values;
         });
         const form = mount(
             <CustomForm
@@ -91,9 +91,21 @@ describe('form', () => {
                         name: 'chckbx',
                         defaultValue: 'true',
                     },
+                    {
+                        type: 'select',
+                        label: 'select',
+                        name: 'select',
+                        defaultValue: '3',
+                        optionsForSelect: [
+                            { value: '1', label: '1' },
+                            { value: '2', label: '2' },
+                            { value: '3', label: '3' },
+                        ],
+                    },
                 ]}
             />,
         );
+
         form.find('input[name="chckbx"]').simulate('change', { target: { name: 'checkbx', checked: false } });
         form.find('form').simulate('submit');
 
@@ -101,7 +113,12 @@ describe('form', () => {
             expect(spy.mock.calls.length).toBe(1);
             expect(spy).toHaveBeenCalled();
             expect(spy).toBeCalledWith(
-                expect.objectContaining({ username: 'uni-omni@mail.ru', password: '123123123' }),
+                expect.objectContaining({
+                    username: 'uni-omni@mail.ru',
+                    password: '123123123',
+                    chckbx: false,
+                    select: '3',
+                }),
             );
         });
     });
@@ -140,20 +157,48 @@ describe('form', () => {
                         name: 'chckbx',
                         defaultValue: 'nope',
                     },
+                    {
+                        type: 'select',
+                        label: 'select',
+                        name: 'select',
+                        optionsForSelect: [
+                            { value: '1', label: '1' },
+                            { value: '2', label: '2' },
+                            { value: '3', label: '3' },
+                        ],
+                    },
+                    {
+                        type: 'date',
+                        label: 'date',
+                        name: 'date',
+                        dateFormat: 'YYYY/MM/DD',
+                    },
                 ]}
             />,
         );
-
+        expect(form.find('input[role="combobox"]').prop('value')).toEqual('');
         expect(form.find('input[name="chckbx"]').prop('checked')).toEqual(true);
 
         form.find('input[name="username"]').simulate('change', { target: { name: 'username', value: 'qwe' } });
         form.find('input[name="password"]').simulate('change', { target: { name: 'password', value: 'asd' } });
         form.find('input[name="chckbx"]').simulate('change', { target: { name: 'checkbx', checked: false } });
+        // form.find('input[name="date"]').simulate('change', { target: { name: 'date', value: '1987/05/07' } });
+
+        form.find('[name="date"]').prop();
+        form.find('.ant-select-selector').simulate('mousedown');
+        await waitFor(() => {
+            form.update();
+            expect(form.find('.ant-select-item')).toHaveLength(3);
+        });
+        form.find('.ant-select-item').first().simulate('click');
 
         await waitFor(() => {
+            form.update();
             expect(form.find('input[name="username"]').prop('value')).toEqual('qwe');
             expect(form.find('input[name="password"]').prop('value')).toEqual('asd');
             expect(form.find('input[name="chckbx"]').prop('checked')).toEqual(false);
+            expect(form.find('.ant-select-selection-item').text()).toEqual('1');
+            console.log(form.find('input[name="date"]').debug());
         });
     });
 
