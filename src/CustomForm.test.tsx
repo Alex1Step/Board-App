@@ -14,10 +14,11 @@ Object.defineProperty(window, 'matchMedia', {
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import renderer from 'react-test-renderer';
+import renderer, { act } from 'react-test-renderer';
 import CustomForm from './components/custom/CustomForm/CustomForm';
 import indexValidation from './validation/indexValidation';
 import { Button, Input } from 'antd';
+import { waitFor } from '@testing-library/react';
 // import Password from 'antd/lib/input/Password';
 
 describe('form', () => {
@@ -56,24 +57,28 @@ describe('form', () => {
         expect(rend).toMatchSnapshot();
     });
 
-    it('submitting', () => {
-        const onFinish = jest.fn((values) => console.log(values));
+    it('submitting', async () => {
+        const spy = jest.fn((values) => {
+            values;
+        });
         const form = mount(
             <CustomForm
                 validation={indexValidation.authSchema}
-                formSettings={{ submit: onFinish }}
+                formSettings={{ submit: spy }}
                 itemsSettings={[
                     {
                         type: 'input',
                         label: 'mail',
                         name: 'username',
                         inputType: 'input',
+                        defaultValue: 'uni-omni@mail.ru',
                     },
                     {
                         type: 'input',
                         label: 'password',
                         name: 'password',
                         inputType: 'password',
+                        defaultValue: '123123123',
                     },
                     {
                         type: 'button',
@@ -85,13 +90,15 @@ describe('form', () => {
                 ]}
             />,
         );
-        form.find('button').forEach((item) => item.prop('onClick'));
+        form.find('form').simulate('submit');
 
-        expect(onFinish.mock.calls.length).toBe(1);
-        expect(onFinish).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(spy.mock.calls.length).toBe(1);
+            expect(spy).toHaveBeenCalled();
+        });
     });
 
-    it('submitting', () => {
+    it('submitting', async () => {
         const onFinish = jest.fn(() => console.log('hello'));
         const form = mount(
             <CustomForm
@@ -122,9 +129,15 @@ describe('form', () => {
                 ]}
             />,
         );
-        // console.log(form.debug());
-        // console.log(form.find('input').debug());
-        form.find('input').forEach((item) => item.simulate('change', { target: { value: 100 } }));
-        form.find('input').forEach((item) => console.log(item.prop('name')));
+
+        form.find('input[name="username"]').forEach((item) => {
+            item.simulate('change', { target: { name: 'username', value: 'qweasdzxc@qweasdzxc.ru' } });
+        });
+
+        await waitFor(() => {
+            form.find('input[name="username"]').forEach((item) =>
+                expect(item.prop('value')).toEqual('qweasdzxc@qweasdzxc.ru'),
+            );
+        });
     });
 });
