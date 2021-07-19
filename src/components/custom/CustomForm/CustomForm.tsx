@@ -125,7 +125,7 @@ const CustomForm = <T, U>(props: IFormConstructor<T, U>): React.ReactElement => 
 
     const createCheckBox = (name: string) => (
         <>
-            <Checkbox defaultChecked={formik.values[name]} onChange={formik.handleChange} value={formik.values[name]} />
+            <Checkbox defaultChecked={formik.values[name]} onChange={formik.handleChange} name={name} />
             {formik.errors[name] && <span className={styles.error}>{formik.errors[name]}</span>}
         </>
     );

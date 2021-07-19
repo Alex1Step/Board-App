@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`form renders correctly 1`] = `
+exports[`form rendering correctly 1`] = `
 <div>
   <form
     className="ant-form ant-form-horizontal"

@@ -13,18 +13,16 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import renderer, { act } from 'react-test-renderer';
+import { mount } from 'enzyme';
+import renderer from 'react-test-renderer';
 import CustomForm from './components/custom/CustomForm/CustomForm';
 import indexValidation from './validation/indexValidation';
-import { Button, Input } from 'antd';
 import { waitFor } from '@testing-library/react';
-// import Password from 'antd/lib/input/Password';
+import { string } from 'yup/lib/locale';
 
 describe('form', () => {
-    it('renders correctly', () => {
+    it('rendering correctly', () => {
         const onFinish = jest.fn();
-
         const rend = renderer
             .create(
                 <CustomForm
@@ -57,9 +55,9 @@ describe('form', () => {
         expect(rend).toMatchSnapshot();
     });
 
-    it('submitting', async () => {
+    it('submitting and sending data correctly when form is valid', async () => {
         const spy = jest.fn((values) => {
-            values;
+            console.log(values);
         });
         const form = mount(
             <CustomForm
@@ -87,18 +85,79 @@ describe('form', () => {
                         defaultValue: 'signIn',
                         htmlType: 'submit',
                     },
+                    {
+                        type: 'checkbox',
+                        label: 'remember',
+                        name: 'chckbx',
+                        defaultValue: 'true',
+                    },
                 ]}
             />,
         );
+        form.find('input[name="chckbx"]').simulate('change', { target: { name: 'checkbx', checked: false } });
         form.find('form').simulate('submit');
 
         await waitFor(() => {
             expect(spy.mock.calls.length).toBe(1);
             expect(spy).toHaveBeenCalled();
+            expect(spy).toBeCalledWith(
+                expect.objectContaining({ username: 'uni-omni@mail.ru', password: '123123123' }),
+            );
         });
     });
 
-    it('submitting', async () => {
+    it('changing value in input', async () => {
+        const onFinish = jest.fn(() => console.log('hello'));
+        const form = mount(
+            <CustomForm
+                validation={indexValidation.authSchema}
+                formSettings={{ submit: onFinish }}
+                itemsSettings={[
+                    {
+                        type: 'input',
+                        label: 'mail',
+                        name: 'username',
+                        inputType: 'input',
+                        defaultValue: 'first',
+                    },
+                    {
+                        type: 'input',
+                        label: 'password',
+                        name: 'password',
+                        inputType: 'password',
+                        defaultValue: 'second',
+                    },
+                    {
+                        type: 'button',
+                        label: 'signin',
+                        name: 'signin',
+                        defaultValue: 'signIn',
+                        htmlType: 'submit',
+                    },
+                    {
+                        type: 'checkbox',
+                        label: 'remember',
+                        name: 'chckbx',
+                        defaultValue: 'nope',
+                    },
+                ]}
+            />,
+        );
+
+        expect(form.find('input[name="chckbx"]').prop('checked')).toEqual(true);
+
+        form.find('input[name="username"]').simulate('change', { target: { name: 'username', value: 'qwe' } });
+        form.find('input[name="password"]').simulate('change', { target: { name: 'password', value: 'asd' } });
+        form.find('input[name="chckbx"]').simulate('change', { target: { name: 'checkbx', checked: false } });
+
+        await waitFor(() => {
+            expect(form.find('input[name="username"]').prop('value')).toEqual('qwe');
+            expect(form.find('input[name="password"]').prop('value')).toEqual('asd');
+            expect(form.find('input[name="chckbx"]').prop('checked')).toEqual(false);
+        });
+    });
+
+    it('validation throw error', async () => {
         const onFinish = jest.fn(() => console.log('hello'));
         const form = mount(
             <CustomForm
@@ -130,14 +189,16 @@ describe('form', () => {
             />,
         );
 
-        form.find('input[name="username"]').forEach((item) => {
-            item.simulate('change', { target: { name: 'username', value: 'qweasdzxc@qweasdzxc.ru' } });
-        });
+        expect(form.exists('.error')).toEqual(false);
+
+        form.find('input[name="username"]').simulate('change', { target: { name: 'username', value: 'qwe' } });
+        form.find('input[name="username"]').simulate('blur');
+        form.find('form').simulate('submit');
 
         await waitFor(() => {
-            form.find('input[name="username"]').forEach((item) =>
-                expect(item.prop('value')).toEqual('qweasdzxc@qweasdzxc.ru'),
-            );
+            form.update();
+            // expect(form.find('span.error').exists()).toEqual(true);
+            // expect(form.contains('span.error')).toEqual(true);
         });
     });
 });
