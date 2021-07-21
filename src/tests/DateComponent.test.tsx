@@ -21,6 +21,7 @@ import '@testing-library/jest-dom/extend-expect';
 import DateComponent from '../components/base/DateComponent/DateComponent';
 import { debug } from 'console';
 import moment from 'moment';
+import { mount } from 'enzyme';
 
 describe('Date Component', () => {
     it('Rendering correctly', () => {
@@ -53,14 +54,27 @@ describe('Date Component', () => {
         userEvent.click(screen.getByTestId('datepicker'));
         expect(document.querySelector('.ant-picker-dropdown')).toBeInTheDocument();
     });
-
-    it('onChange function works', () => {
+    //???????????????????????????????????????????????????????????????????????????????????????????????????
+    it('onChange function works', async () => {
         const spy = jest.fn(() => console.log('!!!'));
         render(<DateComponent value="1987-05-07" onChange={spy} label="Date:" />);
-        userEvent.click(screen.getByText('1987-05-07'));
-        fireEvent.mouseDown(screen.getByTestId('datepicker'));
-        fireEvent.change(screen.getByTestId('datepicker'), { target: { value: moment('1988-06-08') } });
-        fireEvent.click(document.querySelector('.ant-picker-cell-selected'));
-        expect(spy.mock.calls.length).toBeGreaterThan(0);
+        await waitFor(() => userEvent.click(screen.getByText('1987-05-07')));
+        await waitFor(() => fireEvent.mouseDown(screen.getByTestId('datepicker')));
+        await waitFor(() =>
+            fireEvent.change(screen.getByTestId('datepicker'), { target: { value: moment('1988-06-08') } }),
+        );
+        await waitFor(() => fireEvent.click(document.querySelector('.ant-picker-cell-selected')));
+        // await waitFor(() => expect(spy.mock.calls.length).toBeGreaterThan(0));
+
+        // const datePicker = mount(<DateComponent value="1987-05-07" onChange={spy} label="Date:" />);
+        // datePicker.find('span[data-testid="spanid"]').simulate('click');
+        // datePicker.find('input').simulate('click');
+        // datePicker.find('input').simulate('change', { target: { value: moment('1988-06-08') } });
+        // datePicker.find('.ant-picker-cell-selected').simulate('click');
+        // await waitFor(() => {
+        //     datePicker.update();
+        //     expect(datePicker.find('input').prop('value')).toEqual('1988-06-08');
+        //     expect(spy).toHaveBeenCalled();
+        // });
     });
 });

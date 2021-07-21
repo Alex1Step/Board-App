@@ -17,9 +17,8 @@ import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 import ButtonComponent from '../components/base/Button/ButtonComponent';
 import { Button } from 'antd';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import userEvent from '@testing-library/user-event';
 
 describe('Button for deleting components', () => {
     it('Rendering correctly', () => {
@@ -55,9 +54,8 @@ describe('Button for deleting components', () => {
                 }}
             />,
         );
-        fireEvent.mouseEnter(screen.getByTestId('btnWithTooltip'));
-        // userEvent.hover(screen.getByTestId('btnWithTooltip'));
-        // expect(document.querySelector('.ant-tooltip-open')).toBeInTheDocument();
-        expect(screen.queryByText('message!!!')).not.toBeNull();
+        const btn = screen.getByTestId('btnWithTooltip');
+        fireEvent.mouseEnter(btn);
+        await waitFor(() => expect(screen.queryByText('message!!!')).not.toBeNull());
     });
 });

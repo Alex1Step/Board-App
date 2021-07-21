@@ -22,6 +22,7 @@ const DateComponent = (props: {
         <div className={styles.inputDateContainer}>
             <label>{label}</label>
             <span
+                data-testid="spanid"
                 className={styles.dateSpan}
                 onClick={() => {
                     setHideShow(0);

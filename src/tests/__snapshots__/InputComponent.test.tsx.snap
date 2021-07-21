@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Tooltip Rendering correctly 1`] = `
+exports[`Date Component Rendering correctly 1`] = `
 Object {
   "debug": [Function],
   "findAllByAltText": [Function],
