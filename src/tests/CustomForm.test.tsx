@@ -267,11 +267,10 @@ describe('Form', () => {
         await waitFor(() => {
             form.update();
         });
-        //CLASSES?
+
         await waitFor(() => {
-            // console.log(form.find('span').debug());
-            // expect(form.find('span').at(0).exists()).toEqual(true);
-            // expect(onFinish.mock.calls.length).toBe(0);
+            expect(form.find('span.error').at(0).exists()).toEqual(true);
+            expect(onFinish.mock.calls.length).toBe(0);
         });
     });
 

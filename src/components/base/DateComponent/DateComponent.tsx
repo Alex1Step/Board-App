@@ -30,6 +30,7 @@ const DateComponent = (props: {
                 {value}
             </span>
             <DatePicker
+                data-testid="datepicker"
                 className={cn({
                     [styles.datePicker]: true,
                     [styles.inputHide]: hideShow,

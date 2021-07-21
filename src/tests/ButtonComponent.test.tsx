@@ -4,8 +4,8 @@ Object.defineProperty(window, 'matchMedia', {
         matches: false,
         media: query,
         onchange: null,
-        addListener: jest.fn(), // deprecated
-        removeListener: jest.fn(), // deprecated
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
         dispatchEvent: jest.fn(),
@@ -17,7 +17,8 @@ import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 import ButtonComponent from '../components/base/Button/ButtonComponent';
 import { Button } from 'antd';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
 describe('Button for deleting components', () => {
@@ -37,13 +38,6 @@ describe('Button for deleting components', () => {
         expect(spy.mock.calls.length).toEqual(3);
     });
 
-    //CLASSES
-    it('Has classes', () => {
-        const spy = jest.fn();
-        const btnElement = shallow(<ButtonComponent classes="test" message="message" onClick={spy} />);
-        // expect(btnElement.find(Button).hasClass('addButton')).toBeTruthy();
-    });
-
     it('Has inner content and own view', () => {
         const spy = jest.fn();
         const btnElement = mount(<ButtonComponent classes="test" message="message" onClick={spy} />);
@@ -61,7 +55,9 @@ describe('Button for deleting components', () => {
                 }}
             />,
         );
-        // screen.debug();
-        userEvent.hover(screen.getByTestId('btnWithTooltip'));
+        fireEvent.mouseEnter(screen.getByTestId('btnWithTooltip'));
+        // userEvent.hover(screen.getByTestId('btnWithTooltip'));
+        // expect(document.querySelector('.ant-tooltip-open')).toBeInTheDocument();
+        expect(screen.queryByText('message!!!')).not.toBeNull();
     });
 });

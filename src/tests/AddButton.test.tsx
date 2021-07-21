@@ -38,12 +38,11 @@ describe('Button for adding components', () => {
         expect(spy).toHaveBeenCalled();
         expect(spy.mock.calls.length).toEqual(3);
     });
-    //CLASSES
-    it('Has classes', () => {
+
+    it('Has recieved classes', () => {
         const spy = jest.fn();
         const btnElement = shallow(<AddButton className="addBoard" text="text" type="primary" onClick={spy} />);
-        // console.log(btnElement.find(Button).debug());
-        // expect(btnElement.find(Button).hasClass('addButton')).toBeTruthy();
+        expect(btnElement.find(Button).hasClass('addButton')).toBeTruthy();
     });
 
     it('Has label text', () => {
