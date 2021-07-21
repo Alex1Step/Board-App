@@ -11,8 +11,7 @@ import styles from './AddButton.less';
 const AddButton = (props: IaddButtonProps): React.ReactElement => {
     return (
         <Button
-            className={cn({
-                [styles.addButton]: true,
+            className={cn(styles.addButton, {
                 [styles.addBoard]: props.className === 'addBoard',
                 [styles.addCard]: props.className === 'addCard',
             })}

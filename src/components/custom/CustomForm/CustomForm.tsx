@@ -118,7 +118,15 @@ const CustomForm = <T, U>(props: IFormConstructor<T, U>): React.ReactElement => 
                 {textOnButton}
             </Button>
         ) : (
-            <Button type="primary" htmlType="reset">
+            <Button
+                type="primary"
+                htmlType="reset"
+                onClick={() => {
+                    for (const key in formik.values) {
+                        formik.setFieldValue(key, '');
+                    }
+                }}
+            >
                 {textOnButton}
             </Button>
         );

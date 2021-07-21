@@ -27,6 +27,7 @@
     "i18next": "^20.3.2",
     "i18next-browser-languagedetector": "^6.1.2",
     "i18next-http-backend": "^1.2.6",
+    "jest-css-modules-transform": "^4.3.0",
     "less": "^4.1.1",
     "less-loader": "^9.0.0",
     "node-fetch": "^2.6.1",

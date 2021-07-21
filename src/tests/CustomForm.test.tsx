@@ -4,24 +4,26 @@ Object.defineProperty(window, 'matchMedia', {
         matches: false,
         media: query,
         onchange: null,
-        addListener: jest.fn(), // deprecated
-        removeListener: jest.fn(), // deprecated
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
         dispatchEvent: jest.fn(),
     })),
 });
 
+//with ENZYME
+
 import React from 'react';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
-import CustomForm from './components/custom/CustomForm/CustomForm';
-import indexValidation from './validation/indexValidation';
+import CustomForm from '../components/custom/CustomForm/CustomForm';
+import indexValidation from '../validation/indexValidation';
 import { waitFor } from '@testing-library/react';
-import { string } from 'yup/lib/locale';
+import moment from 'moment';
 
-describe('form', () => {
-    it('rendering correctly', () => {
+describe('Form', () => {
+    it('Form rendering correctly', () => {
         const onFinish = jest.fn();
         const rend = renderer
             .create(
@@ -55,7 +57,7 @@ describe('form', () => {
         expect(rend).toMatchSnapshot();
     });
 
-    it('submitting and sending data correctly when form is valid', async () => {
+    it('Submitting and sending data correctly when form is valid', async () => {
         const spy = jest.fn((values) => {
             values;
         });
@@ -106,7 +108,6 @@ describe('form', () => {
             />,
         );
 
-        form.find('input[name="chckbx"]').simulate('change', { target: { name: 'checkbx', checked: false } });
         form.find('form').simulate('submit');
 
         await waitFor(() => {
@@ -116,15 +117,15 @@ describe('form', () => {
                 expect.objectContaining({
                     username: 'uni-omni@mail.ru',
                     password: '123123123',
-                    chckbx: false,
+                    chckbx: 'true',
                     select: '3',
                 }),
             );
         });
     });
 
-    it('changing value in input', async () => {
-        const onFinish = jest.fn(() => console.log('hello'));
+    it('Changing value in input works', async () => {
+        const onFinish = jest.fn();
         const form = mount(
             <CustomForm
                 validation={indexValidation.authSchema}
@@ -167,24 +168,17 @@ describe('form', () => {
                             { value: '3', label: '3' },
                         ],
                     },
-                    {
-                        type: 'date',
-                        label: 'date',
-                        name: 'date',
-                        dateFormat: 'YYYY/MM/DD',
-                    },
                 ]}
             />,
         );
-        expect(form.find('input[role="combobox"]').prop('value')).toEqual('');
+        expect(form.find('input[name="username"]').prop('value')).toEqual('first');
+        expect(form.find('input[name="password"]').prop('value')).toEqual('second');
         expect(form.find('input[name="chckbx"]').prop('checked')).toEqual(true);
+        expect(form.find('input[role="combobox"]').prop('value')).toEqual('');
 
         form.find('input[name="username"]').simulate('change', { target: { name: 'username', value: 'qwe' } });
         form.find('input[name="password"]').simulate('change', { target: { name: 'password', value: 'asd' } });
         form.find('input[name="chckbx"]').simulate('change', { target: { name: 'checkbx', checked: false } });
-        // form.find('input[name="date"]').simulate('change', { target: { name: 'date', value: '1987/05/07' } });
-
-        form.find('[name="date"]').prop();
         form.find('.ant-select-selector').simulate('mousedown');
         await waitFor(() => {
             form.update();
@@ -198,12 +192,40 @@ describe('form', () => {
             expect(form.find('input[name="password"]').prop('value')).toEqual('asd');
             expect(form.find('input[name="chckbx"]').prop('checked')).toEqual(false);
             expect(form.find('.ant-select-selection-item').text()).toEqual('1');
-            console.log(form.find('input[name="date"]').debug());
         });
     });
 
-    it('validation throw error', async () => {
-        const onFinish = jest.fn(() => console.log('hello'));
+    it('Change value in datepicker works', async () => {
+        const onFinish = jest.fn();
+        const form = mount(
+            <CustomForm
+                validation={indexValidation.authSchema}
+                formSettings={{ submit: onFinish }}
+                itemsSettings={[
+                    {
+                        type: 'date',
+                        label: 'date',
+                        name: 'date',
+                        dateFormat: 'YYYY/MM/DD',
+                    },
+                ]}
+            />,
+        );
+
+        expect(form.find('input[name="date"]').prop('value')).toEqual('');
+
+        form.find('input[name="date"]').simulate('mousedown');
+        form.find('input[name="date"]').simulate('change', { target: { value: moment('1987-05-07') } });
+        form.find('.ant-picker-cell-selected').simulate('click');
+
+        await waitFor(() => {
+            form.update();
+            expect(form.find('input[name="date"]').prop('value')).toEqual('1987/05/07');
+        });
+    });
+
+    it('Validation throw error and form doesn`t submitting', async () => {
+        const onFinish = jest.fn();
         const form = mount(
             <CustomForm
                 validation={indexValidation.authSchema}
@@ -236,14 +258,55 @@ describe('form', () => {
 
         expect(form.exists('.error')).toEqual(false);
 
-        form.find('input[name="username"]').simulate('change', { target: { name: 'username', value: 'qwe' } });
-        form.find('input[name="username"]').simulate('blur');
-        form.find('form').simulate('submit');
+        await waitFor(() =>
+            form.find('input[name="username"]').simulate('change', { target: { name: 'username', value: 'qwe' } }),
+        );
+
+        await waitFor(() => form.find('input[name="username"]').simulate('blur'));
 
         await waitFor(() => {
             form.update();
-            // expect(form.find('span.error').exists()).toEqual(true);
-            // expect(form.contains('span.error')).toEqual(true);
+        });
+        //CLASSES?
+        await waitFor(() => {
+            // console.log(form.find('span').debug());
+            // expect(form.find('span').at(0).exists()).toEqual(true);
+            // expect(onFinish.mock.calls.length).toBe(0);
+        });
+    });
+
+    it('Reset button works correctly', async () => {
+        const onFinish = jest.fn();
+        const form = mount(
+            <CustomForm
+                validation={indexValidation.authSchema}
+                formSettings={{ submit: onFinish }}
+                itemsSettings={[
+                    {
+                        type: 'input',
+                        label: 'mail',
+                        name: 'username',
+                        inputType: 'input',
+                        defaultValue: 'first',
+                    },
+                    {
+                        type: 'button',
+                        label: 'reset',
+                        name: 'reset',
+                        defaultValue: 'reset',
+                        htmlType: 'reset',
+                    },
+                ]}
+            />,
+        );
+
+        expect(form.find('input[name="username"]').prop('value')).toEqual('first');
+
+        await waitFor(() => form.find('button').simulate('click'));
+
+        await waitFor(() => {
+            form.update();
+            expect(form.find('input[name="username"]').prop('value')).toEqual('');
         });
     });
 });

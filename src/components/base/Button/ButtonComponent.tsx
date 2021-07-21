@@ -9,8 +9,9 @@ import styles from './Button.less';
 
 const ButtonComponent = (props: IbuttonProps): React.ReactElement => {
     return (
-        <Tooltip title={props.message}>
+        <Tooltip title={props.message} data-testid="tooltip">
             <Button
+                data-testid="btnWithTooltip"
                 className={styles.button}
                 type="primary"
                 shape="circle"
