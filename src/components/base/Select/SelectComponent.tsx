@@ -24,6 +24,7 @@ const SelectComponent = (props: IselectProps): React.ReactElement => {
         <div className={styles.selectContainer}>
             <label htmlFor={htmlFor}>{label}</label>
             <span
+                data-testid="span-with-select"
                 className={cn({
                     [styles.textShow]: hideShow === 1,
                     [styles.textHide]: hideShow === 0,
@@ -38,6 +39,7 @@ const SelectComponent = (props: IselectProps): React.ReactElement => {
             </span>
             <div className={styles.selectContainer}>
                 <select
+                    data-testid="select-test"
                     ref={(ref) => ref?.focus()}
                     id={htmlFor}
                     value={value}

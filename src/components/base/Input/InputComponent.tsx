@@ -15,7 +15,12 @@ const InputComponent = (props: IinputProps): React.ReactElement => {
 
     const [hideShow, setHideShow] = useState(1);
 
-    const inputType: string = type || 'text';
+    const types = new Map([
+        ['text', 'text'],
+        ['textarea', 'textarea'],
+    ]);
+
+    const inputType: string = types.get(type) || 'text';
     const htmlFor = `${inputType}-${Math.random()}`;
 
     return withoutSubstitution ? (
@@ -30,6 +35,7 @@ const InputComponent = (props: IinputProps): React.ReactElement => {
         >
             <label htmlFor={htmlFor}>{label}</label>
             <span
+                data-testid="span-with-input"
                 className={cn({
                     [styles.textShow]: hideShow,
                     [styles.textHide]: !hideShow,
@@ -55,6 +61,7 @@ const InputComponent = (props: IinputProps): React.ReactElement => {
                 />
             ) : (
                 <Input
+                    data-testid="input-test"
                     ref={(ref) => ref?.focus()}
                     className={cn({
                         [styles.inputHide]: hideShow === 1,

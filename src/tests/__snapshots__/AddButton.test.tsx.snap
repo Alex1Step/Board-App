@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button for adding components Rendering correctly 1`] = `
+<button
+  className="ant-btn ant-btn-primary addButton addBoard"
+  onClick={[Function]}
+  type="button"
+>
+  <span>
+    text
+  </span>
+</button>
+`;
