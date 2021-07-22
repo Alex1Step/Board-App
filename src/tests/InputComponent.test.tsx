@@ -15,12 +15,12 @@ Object.defineProperty(window, 'matchMedia', {
 //with React-Testing-Library
 
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import InputComponent from '../components/base/Input/InputComponent';
 
-describe('Date Component', () => {
+describe('Input Component', () => {
     it('Rendering correctly', () => {
         const spy = jest.fn();
         render(<InputComponent type="text" label="textinput" value="" onChange={spy} />);
@@ -82,10 +82,19 @@ describe('Date Component', () => {
     });
 
     it('onChange function works', async () => {
-        const spy = jest.fn();
-        render(<InputComponent type="text" label="textinput" value="" onChange={spy} />);
+        let currentValue = '';
+        const spy = jest.fn((e) => {
+            currentValue = e.target.value;
+        });
+        const { rerender } = render(
+            <InputComponent type="text" label="textinput" value={currentValue} onChange={(event) => spy(event)} />,
+        );
         userEvent.click(screen.getByTestId('span-with-input'));
-        userEvent.type(screen.getByTestId('input-test'), 'hello');
+        fireEvent.change(screen.getByTestId('input-test'), { target: { value: 'hello' } });
         expect(spy.mock.calls.length).toBeGreaterThan(0);
+        rerender(
+            <InputComponent type="text" label="textinput" value={currentValue} onChange={(event) => spy(event)} />,
+        );
+        expect(document.querySelector('input')?.value).toBe('hello');
     });
 });
